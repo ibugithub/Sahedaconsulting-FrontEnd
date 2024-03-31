@@ -1,6 +1,6 @@
 # Saheda Consulting Frontend
 
-Blood-Help is a full-stack web application that connects users with blood donors in their vicinity. Users can easily find and contact potential donors, making it a convenient solution during emergencies.
+Saheda consulting is a full-stack web application that connects users with blood donors in their vicinity. Users can easily find and contact potential donors, making it a convenient solution during emergencies.
 
 ## Features
 
