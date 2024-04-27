@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Protected } from "../utils/protectRoutes";
-import { useRouter } from "next/navigation"; // Import useRouter hook
-import handleLogout from "../utils/AuthLogout"; // Import handleLogout function
+import { useRouter } from "next/navigation"; 
+import handleLogout from "../utils/AuthLogout";
 
 const Profile = () => {
   const isAuthenticated = Protected();
@@ -20,7 +20,6 @@ const Profile = () => {
     });
   }, []);
 
-  // Get the router object using useRouter hook
   const router = useRouter();
 
   if (!isAuthenticated) {
@@ -28,7 +27,6 @@ const Profile = () => {
   }
 
   const handleLogoutClick = () => {
-    // Pass the router object as an argument to handleLogout function
     handleLogout(router);
   };
 

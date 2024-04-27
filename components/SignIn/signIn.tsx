@@ -23,8 +23,9 @@ const SignIn = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/users/login`
       const req = await axios.post(
-        "http://localhost:3000/api/users/login",
+        url,
         formData
       );
       if (req.status === 200) {
