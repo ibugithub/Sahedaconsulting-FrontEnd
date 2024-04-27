@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className="bg-slate-400">
         <Navbar />
         <ToastContainer />
-        <div className="mt-64">{children}</div>
+        <div className="mt-[64px]">{children}</div>
       </body>
     </html>
   );
