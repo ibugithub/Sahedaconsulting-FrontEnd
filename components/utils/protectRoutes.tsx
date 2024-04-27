@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export const Protected = () => {
-  const route = "http://localhost:3000/api/users/authenticate";
+  const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/users/authenticate`
+  const route = url;
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -50,6 +51,5 @@ export const Protected = () => {
       router.push("/signin");
     }
   };
-
   return isAuthenticated;
 };

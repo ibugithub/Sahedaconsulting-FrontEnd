@@ -40,8 +40,9 @@ const SignUp = () => {
     setError("");
 
     try {
+      const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/users/register`
       const req: AxiosResponse<any> = await axios.post(
-        "http://localhost:3000/api/users/register",
+        url,
         formData
       );
       if (req.status === 201) {

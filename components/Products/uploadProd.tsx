@@ -16,7 +16,8 @@ export const Uploadprod = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/prod/upload', formData, {
+      const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/prod/upload`
+      const response = await axios.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

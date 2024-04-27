@@ -19,12 +19,13 @@ export const EditProduct = ({ product, onSave, onCancel }: EditProductProps) => 
     imgPath: product.image,
     imgFile: null as File | unknown 
   })
-  console.log('the edited Prod is ***', editedProd)
+
   const [error, setError] = useState('');
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:3000/api/prod/edit/${editedProd._id}`, editedProd, {
+      const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/prod/edit/${editedProd._id}`
+      const response = await axios.put(url, editedProd, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

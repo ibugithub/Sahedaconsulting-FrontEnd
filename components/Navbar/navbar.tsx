@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
   };
 
   const handleLogoutClick = () => {
-    setShowDropdown(false); // Close the dropdown when logout is clicked
+    setShowDropdown(false);
   };
 
   return (

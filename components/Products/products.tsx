@@ -11,7 +11,8 @@ export const ShowProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [editingProd, setEditingProd] = useState<Product | null>(null);
   const fetch = async () => {
-    const response = await axios.get("http://localhost:3000/api/prod/showprod");
+    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/prod/showprod`
+    const response = await axios.get(url);
     setProducts(response.data.products);
   };
 
@@ -49,7 +50,8 @@ export const ShowProducts = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:3000/api/prod/del/${id}`);
+      const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/prod/del/${id}`
+      await axios.delete(url);
       fetch();
       toast.success("Product deleted successfully");
     } catch (err) {
@@ -77,7 +79,7 @@ export const ShowProducts = () => {
                 <p>Prize: {product.price}</p>
                 <p>Quantiy: {product.quantity}</p>
                 <Image
-                  src={`http://localhost:3000/${product.image}`}
+                  src={`${process.env.NEXT_PUBLIC_baseApiUrl}/${product.image}`}
                   alt="Description of Image"
                   width={400}
                   height={200}

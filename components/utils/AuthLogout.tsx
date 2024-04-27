@@ -12,11 +12,12 @@ const handleLogout = async (router: any) => {
   const headers = { Authorization: `Bearer ${parsedAccessToken}` };
 
   try {
-    await axios.post("http://localhost:3000/api/users/logout", null, {
+    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/users/logout`
+    await axios.post(url, null, {
       headers,
       withCredentials: true,
     });
-    localStorage.clear(); // Clear all items in localStorage
+    localStorage.clear();
     toast.success("Logout successful");
     router.push("/");
   } catch (error) {
