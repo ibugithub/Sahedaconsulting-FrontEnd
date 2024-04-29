@@ -1,8 +1,7 @@
-export interface Product {
+export interface Service {
   _id: string;
-  name: string;
+  title: string;
   description: string;
   price: number;
-  quantity: number;
   image: string;
 }
