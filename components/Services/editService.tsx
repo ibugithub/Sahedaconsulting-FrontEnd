@@ -12,7 +12,7 @@ interface EditServiceProps {
 
 export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => {
 
-  const [editedService, setEditedservice] = useState({
+  const [editedService, setEditedService] = useState({
     _id: service._id,
     title: service.title,
     description: service.description,
@@ -20,6 +20,7 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
     imgPath: service.image,
     imgFile: null as File | unknown
   })
+  const [isImageChanged, setIsChangedImage] = useState(false);
 
   const [error, setError] = useState('');
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,7 +30,7 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
       service.title !== editedService?.title ||
       service.description !== editedService?.description ||
       service.price !== editedService?.price ||
-      service.image !== editedService?.imgPath;
+      isImageChanged;
     if (isChanged) {
       try {
         const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/edit/${editedService._id}`
@@ -51,7 +52,7 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setEditedservice({ ...editedService, [e.target.name]: e.target.value })
+    setEditedService({ ...editedService, [e.target.name]: e.target.value })
   }
 
   const handleChangeImg = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +61,8 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
       setError('Please choose a file')
       return;
     }
-    setEditedservice({ ...editedService, imgFile: selectedImage })
+    setEditedService({ ...editedService, imgFile: selectedImage })
+    setIsChangedImage(true)
   }
   return (
     <>
