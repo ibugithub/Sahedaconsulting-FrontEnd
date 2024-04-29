@@ -24,7 +24,8 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar-items">
         <div className="left-nav-items">
-          <Image src={logoImage} alt="Logo" className="logo-image" />
+          <Image src="https://th.bing.com/th/id/R.fd721f81cf12ebf7b3234c2c665b584c?rik=VX6HpLVptUIOMQ&riu=http%3a%2f%2fwww.freepnglogos.com%2fuploads%2fpokemon-symbol-logo-png-31.png&ehk=aSt1644QEFHVKT7thXmBsOPsr2lNpCODH4hF6OqUS5M%3d&risl=&pid=ImgRaw&r=0" alt="Logo" className="logo-image" width={20}
+            height={20} />
           <a href="/" className="logo-text">
             SalonHub
           </a>

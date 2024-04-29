@@ -2,8 +2,8 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: `${process.env.NEXT_PUBLIC_baseApiUrl}`, pathname: '**' },
-      { protocol: 'http', hostname: 'localhost', pathname: '**' },
+      { protocol: 'https', hostname: 'res.cloudinary.com', pathname: '**' },
+      { protocol: 'https', hostname: 'th.bing.com', pathname: '**' }
     ],
   },
 }

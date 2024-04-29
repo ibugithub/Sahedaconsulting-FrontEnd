@@ -79,7 +79,7 @@ export const ShowProducts = () => {
                 <p>Prize: {product.price}</p>
                 <p>Quantiy: {product.quantity}</p>
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_baseApiUrl}/${product.image}`}
+                  src={`https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969/${product.image}`}
                   alt="Description of Image"
                   width={400}
                   height={200}
