@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -9,19 +10,19 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-4">Company</h3>
             <ul>
               <li>
-                <a href="#" className="hover:text-gray-400">
+                <Link href="#" className="hover:text-gray-400">
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-400">
+                <Link href="#" className="hover:text-gray-400">
                   Careers
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-400">
+                <Link href="#" className="hover:text-gray-400">
                   Blog
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -29,19 +30,19 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-4">Services</h3>
             <ul>
               <li>
-                <a href="#" className="hover:text-gray-400">
+                <Link href="#" className="hover:text-gray-400">
                   Software Development
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-400">
+                <Link href="#" className="hover:text-gray-400">
                   Cloud Services
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-400">
+                <Link href="#" className="hover:text-gray-400">
                   Cybersecurity
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -49,19 +50,19 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-4">Contact</h3>
             <ul>
               <li>
-                <a href="#" className="hover:text-gray-400">
+                <Link href="#" className="hover:text-gray-400">
                   Support
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-400">
+                <Link href="#" className="hover:text-gray-400">
                   Sales
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-400">
+                <Link href="#" className="hover:text-gray-400">
                   General Inquiries
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -69,15 +70,15 @@ const Footer = () => {
         <div className="mt-8 border-t border-gray-700 pt-8 flex justify-between items-center">
           <p>&copy; 2024 Saheda Consulancy. All rights reserved.</p>
           <div className="flex space-x-4">
-            <a href="#" className="hover:text-gray-400">
+            <Link href="#" className="hover:text-gray-400">
               <i className="fab fa-facebook fa-lg"></i>
-            </a>
-            <a href="#" className="hover:text-gray-400">
+            </Link>
+            <Link href="#" className="hover:text-gray-400">
               <i className="fab fa-twitter fa-lg"></i>
-            </a>
-            <a href="#" className="hover:text-gray-400">
+            </Link>
+            <Link href="#" className="hover:text-gray-400">
               <i className="fab fa-instagram fa-lg"></i>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
