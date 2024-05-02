@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "@/components/Navbar/navbar";
 import Footer from "@/components/Footer/footer";
+import StoreProvider from "./StoreProvider";
 
 
 export const metadata: Metadata = {
@@ -17,13 +18,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-slate-400">
-        <Navbar />
-        <ToastContainer />
-        <div className=" min-h-screen text-black dark:text-white bg-gradient-to-b from-gray-200 to-white dark:from-black dark:to-black ">{children}</div>
-        <Footer />
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body className="bg-slate-400">
+          <Navbar />
+          <ToastContainer />
+          <div className=" min-h-screen text-black dark:text-white bg-gradient-to-b from-gray-200 to-white dark:from-black dark:to-black ">{children}</div>
+          <Footer />
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

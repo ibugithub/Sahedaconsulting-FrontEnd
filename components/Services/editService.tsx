@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { Service } from "./interface";
+import { Service } from "../interface";
 import { toast } from "react-toastify";
 
 interface EditServiceProps {

@@ -7,8 +7,11 @@ import { toast } from "react-toastify";
 import logoImage from "../../assets/logo.jpg";
 import "../../styles/login-register.css"; 
 import Image from "next/image";
+import { login, logout } from "@/lib/features/auth/authSlice";
+import { useAppDispatch } from "@/lib/hooks";
 
 const SignIn = () => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -36,7 +39,6 @@ const SignIn = () => {
           "accessToken",
           JSON.stringify(response.accessToken)
         );
-
         const cookieName = "refreshToken";
         const cookieValue = response.refreshToken;
         const expirationDate = new Date();
@@ -44,8 +46,10 @@ const SignIn = () => {
         document.cookie = `${cookieName}=${cookieValue}; expires=${expirationDate.toUTCString()}; path=/; SameSite=strict`;
         router.push("/profile");
         toast.success("Login successful");
+        dispatch(login())
       }
     } catch (error: unknown) {
+      dispatch(logout())
       if (axios.isAxiosError(error) && error.response) {
         if (
           error.response.data.error === 'Invalid Credintails'
@@ -62,6 +66,7 @@ const SignIn = () => {
       }
     }
   };
+
 
   return (
     <div className="login-container">

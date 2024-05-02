@@ -5,7 +5,7 @@ import axios from "axios";
 import Image from "next/image";
 import { EditService } from "./editService";
 import { toast } from "react-toastify";
-import { Service } from "./interface";
+import { Service } from "../interface";
 
 export const ShowServices = () => {
   const [services, setServices] = useState<Service[]>([]);

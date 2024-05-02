@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../../assets/logo.jpg'
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { login } from '@/lib/features/auth/authSlice';
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -23,7 +26,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (token) {
-      setIsAuthenticated(true);
+      dispatch(login());
     }
   }, [])
 
@@ -54,12 +57,14 @@ const Navbar = () => {
                 Upload
               </Link>
               {isAuthenticated ? (
-                <button
-                  className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
-                  aria-haspopup="true"
-                >
-                  Profile
-                </button>
+                <Link href='/profile'>
+                  <button
+                    className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
+                    aria-haspopup="true"
+                  >
+                    Profile
+                  </button>
+                </Link>
               ) : (
                 <Link href='signin'>
                   <button
