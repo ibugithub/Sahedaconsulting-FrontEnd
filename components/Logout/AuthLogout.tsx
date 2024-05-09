@@ -42,7 +42,8 @@ export const HandleLogout = async (router: CustomRouter) => {
   const reqInstance = AxiosRequests(router);
   const refresh_token = Cookies.get("refreshToken")
   const formData = { "refreshToken": refresh_token }
-  const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/users/logout`
+  const BaseUrl = process.env.NEXT_PUBLIC_baseApiUrl
+  const url = `${BaseUrl}/api/users/logout`
   try {
     const res = await reqInstance.post(url, formData);
     dispatch(logout())

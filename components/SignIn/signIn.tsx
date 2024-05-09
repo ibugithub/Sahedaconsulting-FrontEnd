@@ -102,7 +102,7 @@ const SignIn = () => {
               />
             </div>
             <div className="text-center mt-2">
-              <input type="submit" value="Submit" className="submit-btn" />
+              <input type="submit" value="Sign In" className="submit-btn" />
             </div>
           </form>
           <div>

@@ -1,11 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Protected } from "../utils/protectRoutes";
 import { useRouter } from "next/navigation"; 
-import handleLogout from "../utils/AuthLogout";
+import { Logout } from "../Logout/logout";
+import { useAppDispatch } from "@/lib/hooks"
 
 const Profile = () => {
-  const isAuthenticated = Protected();
+  const [isAuthenticated, setIsAuthenticated ]= useState(false);
+  const dispatch = useAppDispatch();
   const [userInfo, setUserInfo] = useState({
     name: "",
     email: "",
@@ -14,6 +15,9 @@ const Profile = () => {
   useEffect(() => {
     const storedName = localStorage.getItem("name") ?? "";
     const storedEmail = localStorage.getItem("email") ?? "";
+    if(storedName && storedEmail) {
+      setIsAuthenticated(true);
+    }
     setUserInfo({
       name: storedName,
       email: storedEmail,
@@ -27,7 +31,7 @@ const Profile = () => {
   }
 
   const handleLogoutClick = () => {
-    handleLogout(router);
+    Logout(router, dispatch);
   };
 
   return (
