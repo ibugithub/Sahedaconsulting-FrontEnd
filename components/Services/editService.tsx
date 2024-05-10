@@ -65,19 +65,93 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
     setIsChangedImage(true)
   }
   return (
-    <>
-      <form onSubmit={handleSubmit} className="py-5 flex flex-col gap-2 w-[250px] items-start">
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Edit Service</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <span className="text-red-500">{error}</span>
-        <input type="text" name="title" value={editedService.title} placeholder="Service" onChange={handleChange} />
-        <textarea cols={20} rows={2} name="description" value={editedService.description} placeholder="Description" onChange={handleChange} />
-        <input type="number" name="price" value={editedService.price} placeholder="Price" onChange={handleChange} />
-        <input type="file" name="image" placeholder="Image" onChange={handleChangeImg} />
-        <div className="flex gap-2">
-          <button className="bg-blue-300 py-1 px-3" type="submit">Save</button>
-          <button className="bg-red-300 py-1 px-3" type="button" onClick={onCancel}>Cancel</button>
+        <div>
+          <label
+            htmlFor="title"
+            className="block text-gray-700 font-semibold mb-2"
+          >
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={editedService.title}
+            placeholder="Service"
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md px-4 py-2 w-full"
+          />
         </div>
-
+        <div>
+          <label
+            htmlFor="description"
+            className="block text-gray-700 font-semibold mb-2"
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            value={editedService.description}
+            placeholder="Description"
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md px-4 py-2 w-full"
+            rows={3}
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="price"
+            className="block text-gray-700 font-semibold mb-2"
+          >
+            Price
+          </label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            value={editedService.price}
+            placeholder="Price"
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md px-4 py-2 w-full"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="image"
+            className="block text-gray-700 font-semibold mb-2"
+          >
+            Image
+          </label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            placeholder="Image"
+            onChange={handleChangeImg}
+            className="border border-gray-300 rounded-md px-4 py-2 w-full"
+          />
+        </div>
+        <div className="flex justify-end gap-4">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
+          >
+            Save
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 }
