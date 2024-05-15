@@ -35,7 +35,7 @@ export const AxiosRequests = (router? : CustomRouter) => {
         try {
           const res = await axios.post(url, data);
           if (res.status === 200) {
-            const newToken = res.data.access;
+            const newToken = res.data.accessToken;
             const authorization = `Bearer ${newToken}`;
             localStorage.setItem("accessToken", JSON.stringify(newToken));
             req.headers.Authorization = authorization;

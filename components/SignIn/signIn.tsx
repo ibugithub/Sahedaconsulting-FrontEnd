@@ -33,8 +33,6 @@ const SignIn = () => {
       );
       if (req.status === 200) {
         const response = req.data;
-        localStorage.setItem("name", JSON.stringify(response.name));
-        localStorage.setItem("email", JSON.stringify(response.email));
         localStorage.setItem(
           "accessToken",
           JSON.stringify(response.accessToken)
