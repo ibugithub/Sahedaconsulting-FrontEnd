@@ -19,6 +19,7 @@ export const ShowServices = () => {
     setServices(response.data.services);
     setIsLoading(false);
   };
+  const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969"
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -85,7 +86,7 @@ export const ShowServices = () => {
                 <>
                   <div className="relative h-48">
                     <Image
-                      src={`https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969/${service.image}`}
+                      src={`${cloudinaryUrl}/${service.image}`}
                       alt="Description of Image"
                       layout="fill"
                       objectFit="cover"

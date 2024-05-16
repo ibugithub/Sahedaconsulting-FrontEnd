@@ -28,6 +28,7 @@ export const AxiosRequests = (router? : CustomRouter) => {
   reqInstance.interceptors.request.use(async (req) => {
     if (access_token) {
       const user = jwtDecode(access_token);
+      req.headers.AccessToken = access_token;
       const isExpired = dayjs.unix(user.exp ?? 0).diff(dayjs()) < 1;
       if (isExpired) {
         const url = `${requestBaseUrl}/users/refresh`;
@@ -39,6 +40,7 @@ export const AxiosRequests = (router? : CustomRouter) => {
             const authorization = `Bearer ${newToken}`;
             localStorage.setItem("accessToken", JSON.stringify(newToken));
             req.headers.Authorization = authorization;
+            req.headers.AccessToken = JSON.stringify(newToken);
             toast.success("Token regenereted successfully")
           }
         } catch (error : any) {
