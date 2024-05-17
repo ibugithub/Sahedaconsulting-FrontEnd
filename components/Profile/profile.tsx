@@ -39,18 +39,23 @@ const Profile = () => {
               email: response.data.userInfo.email,
               profileImage: response.data.userInfo.image
             });
+          } else {
+            setIsAuthenticated('notAuthenticated');
           }
         } catch (err) {
-          setIsAuthenticated("notAuthenticated");
+          setIsAuthenticated('notAuthenticated');
           console.error("Error while fetching profile data at profile.tsx", err)
         }
+      }
+      else {
+        setIsAuthenticated('notAuthenticated');
       }
     }
     fetchInfo();
   }, []);
 
   if (isAuthenticated == "notAuthenticated") {
-    return <p> You are not authenticated </p>;
+    router.push('/signin')
   }
 
   const handleLogoutClick = () => {
