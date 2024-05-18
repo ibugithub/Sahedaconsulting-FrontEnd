@@ -9,7 +9,7 @@ import "../../styles/login-register.css";
 import Image from "next/image";
 import Link from "next/link";
 
-const SignUp = () => {
+export const SignUp = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
@@ -81,6 +81,9 @@ const SignUp = () => {
         <div className="text-center">
           <Image src={logoImage} alt="Logo" className="mx-auto h-12 w-auto" />
           <p className="mt-2 text-sm text-gray-600">Sahada Consultancy <span className="text-green-700 font-bold"> Buyer</span>  account</p>
+        </div>
+        <div className="flex justify-center text-sm ">
+          <div className="text-red-800">{error}</div>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
@@ -172,15 +175,11 @@ const SignUp = () => {
           </div>
           <div className="text-sm font-medium text-indigo-600">
             Wanna work as a freelancer?
-            <Link className="hover:text-indigo-500" href="/signin" > Freelancer Account
+            <Link className="hover:text-indigo-500" href="/signup/freelancerSignup" > Freelancer Account
             </Link>
           </div>
         </div>
       </div>
     </div>
   );
-
-
 };
-
-export default SignUp;

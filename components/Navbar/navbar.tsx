@@ -15,14 +15,6 @@ const Navbar = () => {
     setShowDropdown(!showDropdown);
   };
 
-  const clickOnAccount = () => {
-
-  };
-
-  const handleLogoutClick = () => {
-    setShowDropdown(false);
-  };
-
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (token) {
@@ -91,7 +83,6 @@ const Navbar = () => {
               <button
                 className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
                 aria-haspopup="true"
-                onClick={clickOnAccount}
               >
                 Account
               </button>

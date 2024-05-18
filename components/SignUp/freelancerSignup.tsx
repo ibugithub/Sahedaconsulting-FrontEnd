@@ -7,8 +7,9 @@ import { toast } from "react-toastify";
 import logoImage from "../../assets/logo.jpg";
 import "../../styles/login-register.css";
 import Image from "next/image";
+import Link from "next/link";
 
-const SignUp = () => {
+export const FreelancerSignUp = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
@@ -75,16 +76,16 @@ const SignUp = () => {
   };
 
   return (
-    <div className="login-container items-center justify-center min-h-screen bg-gray-100">
-      <div className="login-card max-w-md w-full space-y-8 p-6 bg-white rounded-xl shadow-md flex flex-col">
-        <div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-md z-10">
+        <div className="text-center">
           <Image src={logoImage} alt="Logo" className="mx-auto h-12 w-auto" />
-          <h6 className="mt-6 text-center text-xl font-extrabold text-gray-900">
-            Register as a Freelancer
-          </h6>
+          <p className="mt-2 text-sm text-gray-600">Sahada Consultancy <span className="text-green-700 font-bold"> Freelancer</span>  account</p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <input type="hidden" name="remember" value="true" />
+        <div className="flex justify-center text-sm ">
+          <div className="text-red-800">{error}</div>
+        </div>
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email-address" className="sr-only">Email address</label>
@@ -94,7 +95,7 @@ const SignUp = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-t-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 value={email}
                 onChange={handleChange}
@@ -108,7 +109,7 @@ const SignUp = () => {
                 type="text"
                 autoComplete="given-name"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="First Name"
                 value={firstName}
                 onChange={handleChange}
@@ -122,7 +123,7 @@ const SignUp = () => {
                 type="text"
                 autoComplete="family-name"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Last Name"
                 value={lastName}
                 onChange={handleChange}
@@ -136,7 +137,7 @@ const SignUp = () => {
                 type="password"
                 autoComplete="new-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={password}
                 onChange={handleChange}
@@ -150,7 +151,7 @@ const SignUp = () => {
                 type="password"
                 autoComplete="new-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-b-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Confirm Password"
                 value={cPassword}
                 onChange={handleChange}
@@ -166,17 +167,21 @@ const SignUp = () => {
             </button>
           </div>
         </form>
-        <div className="flex items-center justify-center">
-          <div className="text-sm">
-            <a href="/signin" className="font-medium text-indigo-600 hover:text-indigo-500">
-              Already have an account? Sign In
-            </a>
+        <div className="flex flex-col items-center justify-center">
+          <div className="text-sm  font-medium text-indigo-600">
+
+            Already have an account? <Link href="/signin" className=" hover:text-indigo-500"> Sign In
+            </Link>
+          </div>
+          <div className="text-sm font-medium text-indigo-600">
+            Wanna Post some works?
+            <Link className="hover:text-indigo-500" href="/signup/buyerSignup" > Buyer Account
+            </Link>
           </div>
         </div>
       </div>
     </div>
   );
-  
 };
 
-export default SignUp;
+
