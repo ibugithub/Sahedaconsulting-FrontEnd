@@ -31,7 +31,6 @@ const Profile = () => {
         try {
           const response = await protectedRoute.post(url)
           setIsLoading(false);
-          console.log("response: ", response)
           if (response.status === 200) {
             setUserInfo({
               first_name: response.data.userInfo.firstName,

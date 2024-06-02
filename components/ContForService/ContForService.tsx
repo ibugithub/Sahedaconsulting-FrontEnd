@@ -1,21 +1,28 @@
 'use client'
-
 import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const ContForServices = () => {
-  const [form, setForm] = useState({
+  const [formData, setForm] = useState({
     firstName: '',
     lastName: '',
     email: '',
     serviceType: '',
+    description: ''
   });
 
-  const handleChange = (e : React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setForm({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e : React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/sendMail`
+    const response = await axios.post(url, formData)
+    if (response.status === 200) {
+      toast.success('An Email has been sent to the according administrator')
+    }
   };
 
   return (
@@ -29,7 +36,7 @@ export const ContForServices = () => {
             </label>
           </div>
           <div className="md:w-2/3">
-            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="firstName" type="text" name="firstName" value={form.firstName} onChange={handleChange} />
+            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="firstName" type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
           </div>
         </div>
         <div className="md:flex md:items-center mb-6">
@@ -39,7 +46,7 @@ export const ContForServices = () => {
             </label>
           </div>
           <div className="md:w-2/3">
-            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="lastName" type="text" name="lastName" value={form.lastName} onChange={handleChange} />
+            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="lastName" type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
           </div>
         </div>
         <div className="md:flex md:items-center mb-6">
@@ -49,7 +56,7 @@ export const ContForServices = () => {
             </label>
           </div>
           <div className="md:w-2/3">
-            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="email" type="email" name="email" value={form.email} onChange={handleChange} />
+            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="email" type="email" name="email" value={formData.email} onChange={handleChange} />
           </div>
         </div>
         <div className="md:flex md:items-center mb-6">
@@ -59,16 +66,33 @@ export const ContForServices = () => {
             </label>
           </div>
           <div className="md:w-2/3">
-            <select className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="serviceType" name="serviceType" value={form.serviceType} onChange={handleChange}>
+            <select className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="serviceType" name="serviceType" value={formData.serviceType} onChange={handleChange}>
               <option value="">Select a service type...</option>
-              <option value="Programming">Programming</option>
-              <option value="Engineering">Engineering</option>
-              <option value="Consulting">Consulting</option>
-              <option value="Electronics">Electronics</option>
+              <option value="Programming">Engineering consulting</option>
+              <option value="Engineering">Management consulting</option>
+              <option value="Consulting">IT Consulting</option>
               <option value="Others">Others</option>
             </select>
           </div>
         </div>
+        <div className="md:flex md:items-center mb-6">
+          <div className="md:w-1/3">
+            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="description">
+              Service Description
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <textarea
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={4}
+            ></textarea>
+          </div>
+        </div>
+
         <div className="md:flex md:items-center">
           <div className="md:w-1/3"></div>
           <div className="md:w-2/3">
