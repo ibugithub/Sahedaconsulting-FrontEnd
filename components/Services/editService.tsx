@@ -83,7 +83,7 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
             value={editedService.title}
             placeholder="Service"
             onChange={handleChange}
-            className="border border-gray-300 rounded-md px-4 py-2 w-full"
+            className="border border-gray-300 rounded-md px-4 py-2 w-full text-xl font-bold text-gray-800"
           />
         </div>
         <div>
@@ -99,7 +99,7 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
             value={editedService.description}
             placeholder="Description"
             onChange={handleChange}
-            className="border border-gray-300 rounded-md px-4 py-2 w-full"
+            className="border border-gray-300 rounded-md px-4 py-2 w-full text-gray-600"
             rows={3}
           />
         </div>
@@ -117,7 +117,7 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
             value={editedService.price}
             placeholder="Price"
             onChange={handleChange}
-            className="border border-gray-300 rounded-md px-4 py-2 w-full"
+            className="border border-gray-300 rounded-md px-4 py-2 w-full text-gray-700 font-semibold"
           />
         </div>
         <div>
