@@ -42,14 +42,14 @@ const Navbar = () => {
           {/* desktop menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-            <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+              <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Contact For Services
               </Link>
               <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Find Work
               </Link>
               <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Upload
+                Post Service
               </Link>
               {isAuthenticated ? (
                 <Link href='/profile'>
@@ -81,7 +81,7 @@ const Navbar = () => {
                 Services
               </Link>
               <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Upload
+                Post Service
               </Link>
               <button
                 className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
