@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { Service } from "../interface";
 import { motion } from "framer-motion";
 import { BounceLoader, } from "react-spinners";
+import Link from "next/link";
 
 export const ShowServices = () => {
   const [services, setServices] = useState<Service[]>([]);
@@ -100,8 +101,9 @@ export const ShowServices = () => {
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">
                       {service.title}
                     </h2>
-                    <p className="text-gray-600 mb-4">{service.description}</p>
-                    <p className="text-gray-700 font-semibold">
+                    <p className="text-gray-600 ">{ service.description.length > 100 ?  service.description.substring(0, 200) + "..." : service.description}</p>
+                    {service.description.length > 100 && <Link href={`/services/${service._id}`} className="text-green-500"> Read More</Link>}
+                    <p className="text-gray-700 font-semibold mt-5">
                       Prize: {service.price}
                     </p>
                   </div>
