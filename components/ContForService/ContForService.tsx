@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { BounceLoader } from "react-spinners";
 
 export const ContForServices = () => {
   const [formData, setForm] = useState({
@@ -11,19 +12,41 @@ export const ContForServices = () => {
     serviceType: '',
     description: ''
   });
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/sendMail`
-    const response = await axios.post(url, formData)
-    if (response.status === 200) {
-      toast.success('An Email has been sent to the according administrator')
+    try {
+      const response = await axios.post(url, formData)
+      if (response.status === 200) {
+        toast.success('An Email has been sent to the according administrator')
+        setForm({
+          firstName: '',
+          lastName: '',
+          email: '',
+          serviceType: '',
+          description: ''
+        })
+      }
+    } catch (error) {
+      console.error("Error while sending email at ContForService.tsx file", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <BounceLoader color="#6366f1" size={60} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
