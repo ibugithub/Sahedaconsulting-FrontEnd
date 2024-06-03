@@ -34,7 +34,7 @@ export const UploadService = () => {
       console.error("Error While service uplaoding", error);
     }
   };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   }
@@ -83,15 +83,16 @@ export const UploadService = () => {
               >
                 Description
               </label>
-              <input
+              <textarea 
+                rows={5}
                 id="description"
-                type="text"
                 name="description"
                 placeholder="Description"
                 value={formData.description}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
-              />
+              >
+              </textarea>
             </div>
             <div>
               <label
