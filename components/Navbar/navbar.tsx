@@ -4,12 +4,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../../assets/logo.jpg'
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { login } from '@/lib/features/auth/authSlice';
+import { login, administratorLogin } from '@/lib/features/auth/authSlice';
+import { AxiosRequests } from '../utils/axiosRequests';
 
 const Navbar = () => {
+  const protectedRoute = AxiosRequests();
   const [showDropdown, setShowDropdown] = useState(false);
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
+  const isAdministrator = useAppSelector(state => state.auth.isAdministrator);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -17,8 +20,20 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
+    const url = '/users/isAdministrator'
     if (token) {
       dispatch(login());
+      const checkAdministrator = async () => {
+        try {
+          const response = await protectedRoute.post(url);
+          if (response.status === 200) {
+            dispatch(administratorLogin());
+          }
+        } catch (error) {
+          console.log("Error while checking administrator user at navbar.tsx", error);
+        }
+      }
+      checkAdministrator();
     }
   }, [])
 
@@ -48,9 +63,6 @@ const Navbar = () => {
               <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Find Work
               </Link>
-              <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Post Service
-              </Link>
               {isAuthenticated ? (
                 <Link href='/profile'>
                   <button
@@ -70,6 +82,13 @@ const Navbar = () => {
                   </button>
                 </Link>
               )}
+              
+              {isAdministrator && (
+                <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                  Admin
+                </Link>
+              )
+              }
 
             </div>
           </div>
@@ -80,15 +99,17 @@ const Navbar = () => {
               <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Services
               </Link>
-              <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Post Service
-              </Link>
               <button
                 className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
                 aria-haspopup="true"
               >
                 Account
               </button>
+              {isAdministrator && (
+                <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                  Admin
+                </Link>
+              )}
             </div>
             {/* Cancel button */}
             <button className={`${!showDropdown ? 'hidden' : 'flex'} mt-2 pr-3`} onClick={toggleDropdown}>

@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface AuthState {
-  isAuthenticated: boolean;
+  isAuthenticated : boolean;
+  isAdministrator : boolean;
 }
 
 const initialState: AuthState = {
   isAuthenticated: false,
+  isAdministrator: false,
 };
 
 const authSlice = createSlice({
@@ -15,11 +17,15 @@ const authSlice = createSlice({
     login: (state) => {
       state.isAuthenticated = true;
     },
+    administratorLogin: (state) => {
+      state.isAdministrator = true;
+    },
     logout: (state) => {
       state.isAuthenticated = false;
+      state.isAdministrator = false;
     },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, administratorLogin, logout } = authSlice.actions;
 export const authReducer = authSlice.reducer;
