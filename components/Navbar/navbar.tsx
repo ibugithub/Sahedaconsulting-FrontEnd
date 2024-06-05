@@ -69,12 +69,15 @@ const Navbar = () => {
           {/* desktop menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
+
               <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Contact For Services
               </Link>
+
               <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Find Work
               </Link>
+
               {isAuthenticated ? (
                 <Link href='/profile'>
                   <button
@@ -96,7 +99,7 @@ const Navbar = () => {
               )}
 
               {isAdministrator && (
-                <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                <Link href="/adminDashboard" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                   Admin
                 </Link>
               )
@@ -111,9 +114,11 @@ const Navbar = () => {
               <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Contact for Services
               </Link>
+
               <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Find Work
               </Link>
+
               {isAuthenticated ? (
                 <Link href='/profile'>
                   <button
@@ -136,10 +141,11 @@ const Navbar = () => {
 
 
               {isAdministrator && (
-                <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                <Link href="/adminDashboard" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                   Admin
                 </Link>
               )}
+
             </div>
             {/* Cancel button */}
             <button className={`${!showDropdown ? 'hidden' : 'flex'} mt-2 pr-3`} onClick={toggleDropdown}>
