@@ -74,7 +74,7 @@ const Navbar = () => {
                 Contact For Services
               </Link>
 
-              <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+              <Link href="/findWork" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Find Work
               </Link>
 
@@ -115,7 +115,7 @@ const Navbar = () => {
                 Contact for Services
               </Link>
 
-              <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+              <Link href="/findWork" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Find Work
               </Link>
 

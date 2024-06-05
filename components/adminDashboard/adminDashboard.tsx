@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const AdminDashboard = () => {
   return (
@@ -22,11 +23,12 @@ const AdminDashboard = () => {
 
 
           {/* Manage Services Section */}
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Manage Services</h2>
-            <p className="text-gray-600">View, manage, edit, and delete services. See who applied on which service.</p>
-          </div>
-
+          <Link href='/services'>
+            <div className="bg-white shadow-md rounded-lg p-6">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Manage Services</h2>
+              <p className="text-gray-600">View, manage, edit, and delete services. See who applied on which service.</p>
+            </div>
+          </Link>
           {/* Overview Section */}
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Overview</h2>

@@ -1,4 +1,4 @@
-import { UploadService } from "@/components/Services/uploadService";
+import { UploadService } from "@/components/adminDashboard/uploadService";
 
 const Page = () => {
     return (

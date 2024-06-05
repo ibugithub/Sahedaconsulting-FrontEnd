@@ -1,4 +1,4 @@
-import { ShowServices } from "@/components/Services/services";
+import { ShowServices } from "@/components/adminDashboard/services";
 
 const Page = () => {
   return <ShowServices />;
