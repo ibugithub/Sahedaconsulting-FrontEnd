@@ -22,7 +22,7 @@ const Navbar = () => {
     const token = localStorage.getItem('accessToken');
 
     if (token) {
-    const checkAuthenticated = async() => {
+      const checkAuthenticated = async () => {
         const url = '/users/isAuthenticated';
         try {
           const response = await protectedRoute.post(url);
@@ -85,7 +85,7 @@ const Navbar = () => {
                   </button>
                 </Link>
               ) : (
-                <Link href='signin'>
+                <Link href='/signin'>
                   <button
                     className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
                     aria-haspopup="true"
@@ -94,7 +94,7 @@ const Navbar = () => {
                   </button>
                 </Link>
               )}
-              
+
               {isAdministrator && (
                 <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                   Admin
@@ -108,15 +108,33 @@ const Navbar = () => {
           {/* mobile Nav */}
           <div className={`${showDropdown ? 'block' : 'hidden'} flex gap-3 absolute top-1 right-5 bg-black border-gray-100 rounded border-2`} >
             <div className="flex flex-col items-baseline space-x-4 ml-0">
-              <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Services
+              <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                Contact for Services
               </Link>
-              <button
-                className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
-                aria-haspopup="true"
-              >
-                Account
-              </button>
+              <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                Find Work
+              </Link>
+              {isAuthenticated ? (
+                <Link href='/profile'>
+                  <button
+                    className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
+                    aria-haspopup="true"
+                  >
+                    Profile
+                  </button>
+                </Link>
+              ) : (
+                <Link href='signin'>
+                  <button
+                    className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
+                    aria-haspopup="true"
+                  >
+                    Sign in
+                  </button>
+                </Link>
+              )}
+
+
               {isAdministrator && (
                 <Link href="/uploadService" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                   Admin
