@@ -41,7 +41,7 @@ export const AxiosRequests = (router? : CustomRouter) => {
             localStorage.setItem("accessToken", JSON.stringify(newToken));
             req.headers.Authorization = authorization;
             req.headers.AccessToken = JSON.stringify(newToken);
-            toast.success("Token regenereted successfully")
+            // toast.success("Token regenereted successfully")
           }
         } catch (error : any) {
           if (error.response.status === 401) {

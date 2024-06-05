@@ -20,12 +20,23 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    const url = '/users/isAdministrator'
+
     if (token) {
-      dispatch(login());
-      const checkAdministrator = async () => {
+    const checkAuthenticated = async() => {
+        const url = '/users/isAuthenticated';
         try {
           const response = await protectedRoute.post(url);
+          if (response.status === 200) {
+            dispatch(login());
+          }
+        } catch (error) {
+          console.log("Error while checking authenticated user at navbar.tsx", error);
+        }
+      }
+      const checkAdministrator = async () => {
+        const url2 = '/users/isAdministrator';
+        try {
+          const response = await protectedRoute.post(url2);
           if (response.status === 200) {
             dispatch(administratorLogin());
           }
@@ -33,6 +44,7 @@ const Navbar = () => {
           console.log("Error while checking administrator user at navbar.tsx", error);
         }
       }
+      checkAuthenticated();
       checkAdministrator();
     }
   }, [])
