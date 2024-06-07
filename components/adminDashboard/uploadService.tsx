@@ -1,11 +1,14 @@
 "use client"
 
 import React, { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { BounceLoader, } from "react-spinners";
+import { AxiosRequests } from "../utils/axiosRequests";
+import { useRouter } from "next/navigation";
 
 export const UploadService = () => {
+  const router = useRouter();
+  const protectedRoute = AxiosRequests();
   const [formData, setFormData] = useState({
     service: "",
     description: "",
@@ -18,8 +21,8 @@ export const UploadService = () => {
     e.preventDefault();
     setIsSetLoading(true)
     try {
-      const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/upload`
-      const response = await axios.post(url, formData, {
+      const url = `/service/upload`
+      const response = await protectedRoute.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -31,7 +34,10 @@ export const UploadService = () => {
       }
       
     } catch (error) {
+      setIsSetLoading(false);
       console.error("Error While service uplaoding", error);
+      toast.error("Unauthorized") 
+      router.push("/signin");
     }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

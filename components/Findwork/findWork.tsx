@@ -15,10 +15,17 @@ export const FindWork = () => {
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetch = async () => {
-    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/showServices`
-    const response = await axios.get(url);
-    setServices(response.data.services);
-    setIsLoading(false);
+    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/findWork/showWork`
+    try {
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setServices(response.data.services);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error while fetching services at findWork.tsx", error);
+    }
   };
   const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969"
 
@@ -29,10 +36,6 @@ export const FindWork = () => {
     fetchServices();
   }, []);
 
-  const handleEdit = (service: Service) => {
-    setEditingService(service);
-  };
-
   const handleSave = () => {
     fetch();
     setEditingService(null);
@@ -40,17 +43,6 @@ export const FindWork = () => {
 
   const handleCancel = () => {
     setEditingService(null);
-  };
-
-  const handleDelete = async (id: string) => {
-    try {
-      const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/del/${id}`
-      await axios.delete(url);
-      fetch();
-      toast.success("Service deleted successfully");
-    } catch (err) {
-      console.error("Error deleting service", err);
-    }
   };
 
   if (isLoading) {
@@ -98,7 +90,7 @@ export const FindWork = () => {
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">
                       {service.title}
                     </h2>
-                    <p className="text-gray-600 ">{ service.description.length > 100 ?  service.description.substring(0, 200) + "..." : service.description}</p>
+                    <p className="text-gray-600 ">{service.description.length > 100 ? service.description.substring(0, 200) + "..." : service.description}</p>
                     {service.description.length > 100 && <Link href={`/services/${service._id}`} className="text-green-500"> Read More</Link>}
                     <p className="text-gray-700 font-semibold mt-5">
                       Prize: {service.price}

@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Service } from "../interface";
 import { toast } from "react-toastify";
+import { AxiosRequests } from "../utils/axiosRequests";
 
 interface EditServiceProps {
   service: Service;
@@ -11,7 +12,7 @@ interface EditServiceProps {
 }
 
 export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => {
-
+  const protectedRoute = AxiosRequests();
   const [editedService, setEditedService] = useState({
     _id: service._id,
     title: service.title,
@@ -33,8 +34,8 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
       isImageChanged;
     if (isChanged) {
       try {
-        const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/edit/${editedService._id}`
-        const response = await axios.put(url, editedService, {
+        const url = `/service/edit/${editedService._id}`
+        const response = await protectedRoute.put(url, editedService, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

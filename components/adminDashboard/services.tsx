@@ -9,16 +9,31 @@ import { Service } from "../interface";
 import { motion } from "framer-motion";
 import { BounceLoader, } from "react-spinners";
 import Link from "next/link";
+import { AxiosRequests } from "../utils/axiosRequests";
+import { useRouter } from "next/navigation";
 
 export const ShowServices = () => {
+  const router = useRouter();
+  const protectedRoute = AxiosRequests();
   const [services, setServices] = useState<Service[]>([]);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetch = async () => {
-    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/showServices`
-    const response = await axios.get(url);
-    setServices(response.data.services);
-    setIsLoading(false);
+    const url = `/service/showServices`
+    try {
+      const response = await protectedRoute.get(url);
+      setServices(response.data.services);
+      setIsLoading(false);
+    } catch (error: any) { 
+      setIsLoading(false);
+      console.error("Error while fetching services at service.tsx" ,error);
+      if (error.response.status === 401) {
+        toast.error("Unauthorized");
+        router.push("/signin");
+        return;
+      }
+    }
+
   };
   const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969"
 
@@ -44,8 +59,8 @@ export const ShowServices = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/del/${id}`
-      await axios.delete(url);
+      const url = `/service/del/${id}`
+      await protectedRoute.delete(url);
       fetch();
       toast.success("Service deleted successfully");
     } catch (err) {
