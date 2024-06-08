@@ -16,10 +16,12 @@ const AdminDashboard = () => {
           </div>
 
           {/* Post Service Section */}
+          <Link href='/uploadService'>
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Post Service</h2>
             <p className="text-gray-600">Upload services so that freelancers can apply on them.</p>
           </div>
+          </Link>
 
 
           {/* Manage Services Section */}
@@ -29,6 +31,7 @@ const AdminDashboard = () => {
               <p className="text-gray-600">View, manage, edit, and delete services. See who applied on which service.</p>
             </div>
           </Link>
+
           {/* Overview Section */}
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Overview</h2>

@@ -52,9 +52,6 @@ export const UploadService = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">
-        Let's upload some services
-      </h1>
       {isLoading ? (
         <div className="flex justify-center items-center">
           <BounceLoader color="#3B82F6" size={60} />
