@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { EditService } from "../adminDashboard/editService";
-import { toast } from "react-toastify";
 import { Service } from "../interface";
 import { motion } from "framer-motion";
 import { BounceLoader, } from "react-spinners";
@@ -15,7 +14,7 @@ export const FindWork = () => {
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetch = async () => {
-    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/findWork/showWork`
+    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/findWork/showWorks`
     try {
       const response = await axios.get(url);
       if (response.status === 200) {
@@ -86,16 +85,18 @@ export const FindWork = () => {
                       </div>
                     )
                   }
-                  <div className="p-6">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                      {service.title}
-                    </h2>
-                    <p className="text-gray-600 ">{service.description.length > 100 ? service.description.substring(0, 200) + "..." : service.description}</p>
-                    {service.description.length > 100 && <Link href={`/services/${service._id}`} className="text-green-500"> Read More</Link>}
-                    <p className="text-gray-700 font-semibold mt-5">
-                      Prize: {service.price}
-                    </p>
-                  </div>
+                  <Link href={`/findWork/${service._id}`}>
+                    <div className="p-6">
+                      <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                        {service.title}
+                      </h2>
+                      <p className="text-gray-600 ">{service.description.length > 100 ? service.description.substring(0, 200) + "..." : service.description}</p>
+                      {service.description.length > 100 && <Link href={`/findWork/${service._id}`} className="text-green-500"> Read More</Link>}
+                      <p className="text-gray-700 font-semibold mt-5">
+                        Prize: {service.price}
+                      </p>
+                    </div>
+                  </Link>
                 </>
               )}
             </motion.div>

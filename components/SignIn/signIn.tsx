@@ -29,7 +29,7 @@ const SignIn = () => {
     const protectedRoute = AxiosRequests();
     const url2 = '/users/isAdministrator';
     try {
-      const response = await protectedRoute.post(url2);
+      const response = await protectedRoute.get(url2);
       if (response.status === 200) {
         dispatch(administratorLogin());
       }

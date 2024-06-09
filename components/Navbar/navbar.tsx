@@ -25,7 +25,7 @@ const Navbar = () => {
       const checkAuthenticated = async () => {
         const url = '/users/isAuthenticated';
         try {
-          const response = await protectedRoute.post(url);
+          const response = await protectedRoute.get(url);
           if (response.status === 200) {
             dispatch(login());
           }
@@ -36,7 +36,7 @@ const Navbar = () => {
       const checkAdministrator = async () => {
         const url2 = '/users/isAdministrator';
         try {
-          const response = await protectedRoute.post(url2);
+          const response = await protectedRoute.get(url2);
           if (response.status === 200) {
             dispatch(administratorLogin());
           }
