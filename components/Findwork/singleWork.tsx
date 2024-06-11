@@ -64,7 +64,7 @@ export const SingleWork = ({ id }: { id: string }) => {
     const checkIsApplied = async () => {
       try {
         setIsLoading(true);
-        const url = `/findWork/isApplied`;
+        const url = `/findWork/isApplied/`;
         const response = await protectedRoute.post(url, proposalData);
         if (response.status === 200) {
           setIsApplied(response.data.isApplied);
