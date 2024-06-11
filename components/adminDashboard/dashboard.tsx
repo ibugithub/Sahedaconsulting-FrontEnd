@@ -16,7 +16,7 @@ const AdminDashboard = () => {
           </div>
 
           {/* Post Service Section */}
-          <Link href='/uploadService'>
+          <Link href='adminDashboard/uploadService'>
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Post Service</h2>
             <p className="text-gray-600">Upload services so that freelancers can apply on them.</p>
@@ -25,7 +25,7 @@ const AdminDashboard = () => {
 
 
           {/* Manage Services Section */}
-          <Link href='/services'>
+          <Link href='adminDashboard/activeServices'>
             <div className="bg-white shadow-md rounded-lg p-6">
               <h2 className="text-xl font-bold text-gray-800 mb-4">Manage Services</h2>
               <p className="text-gray-600">View, manage, edit, and delete services. See who applied on which service.</p>
