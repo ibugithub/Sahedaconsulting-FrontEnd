@@ -19,6 +19,7 @@ export const SingleWork = ({ id }: { id: string }) => {
     coverLetter: '',
     price: 0,
   });
+  const [isApplied, setIsApplied] = useState(false);
 
   useEffect(() => {
     const fetchWork = async () => {
@@ -58,6 +59,24 @@ export const SingleWork = ({ id }: { id: string }) => {
     fetchUserId();
   }, []);
 
+  useEffect(() => {
+    if(!proposalData.userId) return;
+    const checkIsApplied = async () => {
+      try {
+        setIsLoading(true);
+        const url = `/findWork/isApplied`;
+        const response = await protectedRoute.post(url, proposalData);
+        if (response.status === 200) {
+          setIsApplied(response.data.isApplied);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('Error while checking if user is applied:', error);
+      }
+    }
+    checkIsApplied();
+  }, [proposalData.userId, proposalData.service]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // if no userId navigate to singin
@@ -94,7 +113,6 @@ export const SingleWork = ({ id }: { id: string }) => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg overflow-hidden">
-
         {work && (
           <>
             <div className="p-6 lg:p-8">
@@ -113,40 +131,45 @@ export const SingleWork = ({ id }: { id: string }) => {
               </div>
               <p className="text-gray-500 text-sm mb-8">Skills: {work.skills.join(', ')}</p>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-gray-700 font-semibold mb-2">Cover Letter</label>
-                  <textarea
-                    rows={4}
-                    placeholder='cover letter'
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700"
-                    value={proposalData.coverLetter}
-                    onChange={(e) => setProposalData((prev) => ({ ...prev, coverLetter: e.target.value }))}
-                    required
-                  />
+              {isApplied ? (
+                <div className="text-center text-green-600 font-semibold">
+                  You have already applied for this service.
                 </div>
-                <div>
-                  <label className="block text-gray-700 font-semibold mb-2">Price</label>
-                  <input
-                    placeholder='price'
-                    type="number"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700"
-                    value={proposalData.price}
-                    onChange={(e) => setProposalData((prev) => ({ ...prev, price: Number(e.target.value) }))}
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold p-3 rounded-lg hover:from-blue-600 hover:to-blue-700 transition"
-                >
-                  Submit Proposal
-                </button>
-              </form>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-gray-700 font-semibold mb-2">Cover Letter</label>
+                    <textarea
+                      rows={4}
+                      placeholder='cover letter'
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700"
+                      value={proposalData.coverLetter}
+                      onChange={(e) => setProposalData((prev) => ({ ...prev, coverLetter: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 font-semibold mb-2">Price</label>
+                    <input
+                      placeholder='price'
+                      type="number"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700"
+                      value={proposalData.price}
+                      onChange={(e) => setProposalData((prev) => ({ ...prev, price: Number(e.target.value) }))}
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold p-3 rounded-lg hover:from-blue-600 hover:to-blue-700 transition"
+                  >
+                    Submit Proposal
+                  </button>
+                </form>
+              )}
             </div>
           </>
         )}
-
       </div>
     </div>
   );
