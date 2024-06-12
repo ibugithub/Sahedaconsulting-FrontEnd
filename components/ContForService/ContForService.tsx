@@ -20,7 +20,7 @@ export const ContForServices = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/service/sendMail`
+    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/buyer/sendMail`
     try {
       const response = await axios.post(url, formData)
       if (response.status === 200) {
