@@ -25,7 +25,7 @@ export const SingleWork = ({ id }: { id: string }) => {
     const fetchWork = async () => {
       // Fetch Service info
       try {
-        const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/findWork/showsingleWork/${id}`;
+        const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/freelancer/showsingleWork/${id}`;
         const response = await axios.get(url);
         if (response.status === 200) {
           const service = response.data.service;
@@ -64,7 +64,7 @@ export const SingleWork = ({ id }: { id: string }) => {
     const checkIsApplied = async () => {
       try {
         setIsLoading(true);
-        const url = `/findWork/isApplied/`;
+        const url = `/freelancer/isApplied/`;
         const response = await protectedRoute.post(url, proposalData);
         if (response.status === 200) {
           setIsApplied(response.data.isApplied);
@@ -88,7 +88,7 @@ export const SingleWork = ({ id }: { id: string }) => {
 
     // send proposals data to add proposal
     try {
-      const url = `/findWork/addProposal`
+      const url = `/freelancer/addProposal`
       const response = await protectedRoute.post(url, proposalData);
       if (response.status === 200) {
         setProposalData((prev) => ({

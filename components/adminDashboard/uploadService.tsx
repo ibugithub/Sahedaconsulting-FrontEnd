@@ -21,7 +21,7 @@ export const UploadService = () => {
     e.preventDefault();
     setIsSetLoading(true)
     try {
-      const url = `/service/upload`
+      const url = `/admin/upload`
       const response = await protectedRoute.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'

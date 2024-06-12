@@ -19,7 +19,7 @@ export const ShowServices = () => {
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetch = async () => {
-    const url = `/service/hiredServices`
+    const url = `/admin/hiredServices`
     try {
       const response = await protectedRoute.get(url);
       setServices(response.data.services);
@@ -59,7 +59,7 @@ export const ShowServices = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const url = `/service/trash/${id}`
+      const url = `/admin/trash/${id}`
       await protectedRoute.get(url);
       fetch();
       toast.success("Service Trashed successfully");

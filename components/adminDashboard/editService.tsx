@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import axios from "axios";
 import { Service } from "../interface";
 import { toast } from "react-toastify";
 import { AxiosRequests } from "../utils/axiosRequests";
@@ -34,7 +33,7 @@ export const EditService = ({ service, onSave, onCancel }: EditServiceProps) => 
       isImageChanged;
     if (isChanged) {
       try {
-        const url = `/service/edit/${editedService._id}`
+        const url = `/admin/edit/${editedService._id}`
         const response = await protectedRoute.put(url, editedService, {
           headers: {
             'Content-Type': 'multipart/form-data'

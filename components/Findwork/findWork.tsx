@@ -14,7 +14,7 @@ export const FindWork = () => {
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetch = async () => {
-    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/findWork/showWorks`
+    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/freelancer/showWorks`
     try {
       const response = await axios.get(url);
       if (response.status === 200) {
