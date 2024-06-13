@@ -59,7 +59,7 @@ export const ShowServices = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const url = `/admin/trash/${id}`
+      const url = `/admin/unTrash/${id}`
       await protectedRoute.get(url);
       fetch();
       toast.success("Service Trashed successfully");
@@ -135,7 +135,7 @@ export const ShowServices = () => {
                       className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-300"
                       onClick={() => handleDelete(service._id)}
                     >
-                      Trash
+                      UnTrash
                     </button>
                   </div>
                 </>

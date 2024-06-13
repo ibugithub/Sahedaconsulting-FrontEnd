@@ -9,15 +9,20 @@ import { motion } from "framer-motion";
 import { BounceLoader, } from "react-spinners";
 import Link from "next/link";
 import { AxiosRequests } from "../utils/axiosRequests";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; 
 import { ServiceNav } from "./serviceNav";
+import { useAppDispatch } from "@/lib/hooks";
+import { logout } from "@/lib/features/auth/authSlice";
+
 
 export const ShowServices = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const protectedRoute = AxiosRequests();
   const [services, setServices] = useState<Service[]>([]);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   const fetch = async () => {
     const url = `/admin/showServices`
     try {
@@ -45,6 +50,7 @@ export const ShowServices = () => {
   }, []);
 
   const handleEdit = (service: Service) => {
+    setError("");
     setEditingService(service);
   };
 
@@ -59,12 +65,21 @@ export const ShowServices = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const url = `/admin/trash/${id}`
-      await protectedRoute.get(url);
+      const url = `/admin/del/${id}`
+      await protectedRoute.delete(url);
       fetch();
       toast.success("Service Trashed successfully");
-    } catch (err) {
-      console.error("Error Trashing service", err);
+      setError("");
+    } catch (err: any) {
+      console.error("Error Trashing service", err.response.data.customCode);
+      if (err.response.data.customCode === 17) {
+        setError(err.response.data.error);
+      } else if (err.response.status === 401){
+        toast.error("Unauthorized");
+        dispatch(logout());
+        router.push("/signin");
+        return;
+      }
     }
   };
 
@@ -79,6 +94,9 @@ export const ShowServices = () => {
     <div className="bg-gray-100 min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ServiceNav />
+        <div className="text-red-500 text-center pb-4">
+          {error}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => (
             <motion.div
@@ -135,7 +153,7 @@ export const ShowServices = () => {
                       className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-300"
                       onClick={() => handleDelete(service._id)}
                     >
-                      Trash
+                      Delete
                     </button>
                   </div>
                 </>

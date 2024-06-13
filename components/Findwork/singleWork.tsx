@@ -88,7 +88,7 @@ export const SingleWork = ({ id }: { id: string }) => {
 
     // send proposals data to add proposal
     try {
-      const url = `/freelancer/addProposal`
+      const url = `/freelancer/addProposal/`
       const response = await protectedRoute.post(url, proposalData);
       if (response.status === 200) {
         setProposalData((prev) => ({
