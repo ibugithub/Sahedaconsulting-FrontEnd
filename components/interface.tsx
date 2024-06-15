@@ -48,6 +48,7 @@ export interface ServiceInterface {
   isCompleted: boolean;
   hiredFreelancers: FreelancersInterface[];
   appliedFreelancers: FreelancersInterface[];
+  requiredFreelancers: number;
 }
 
 import { useRouter } from "next/navigation";

@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Service } from '../interface';
+import { ServiceInterface } from '../interface';
 import { BounceLoader, } from "react-spinners";
 import { AxiosRequests } from '../utils/axiosRequests';
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ export const SingleWork = ({ id }: { id: string }) => {
   const protectedRoute = AxiosRequests();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  const [work, setWork] = useState<Service | null>(null);
+  const [work, setWork] = useState<ServiceInterface | null>(null);
   const [proposalData, setProposalData] = useState({
     userId: '',
     service: id,
@@ -69,6 +69,7 @@ export const SingleWork = ({ id }: { id: string }) => {
         if (response.status === 200) {
           setIsApplied(response.data.isApplied);
           setIsLoading(false);
+          console.log('the isApplied is', isApplied, response.data.isApplied);
         }
       } catch (error) {
         console.error('Error while checking if user is applied:', error);
