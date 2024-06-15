@@ -1,12 +1,19 @@
-export interface Service {
+export interface UserInterface {
   _id: string;
-  title: string;
-  description: string;
-  price: number;
-  image: string;
-  skills: string[];
-  proposalsCount: number;
-  hiredCount: number;
+  firstName: string;
+  lastName: string;
+  name: string;
+  email: string;
+  password?: string;
+  image?: string;
+  role: 'buyer' | 'freelancer' | 'administrator';
+}
+
+export interface employmentHistory {
+  jobTitle: string,
+  company: string,
+  startDate: Date,
+  endDate: Date
 }
 
 export interface ProposalInterface {
@@ -15,6 +22,32 @@ export interface ProposalInterface {
   service: string;
   coverLetter: string;
   price: number;
+}
+export interface FreelancersInterface {
+  _id: string;
+  user : UserInterface;
+  skills? : string[],
+  address? : string[],
+  phone?: string[],
+  profileTitle?: string,
+  overview?: string[]
+  employmentHistory?: employmentHistory[],
+  proposals : ProposalInterface[] | string[],
+
+}
+export interface ServiceInterface {
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  skills: string[];
+  proposalsCount: number;
+  hiredCount: number;         
+  isHiringClosed: boolean;
+  isCompleted: boolean;
+  hiredFreelancers: FreelancersInterface[];
+  appliedFreelancers: FreelancersInterface[];
 }
 
 import { useRouter } from "next/navigation";

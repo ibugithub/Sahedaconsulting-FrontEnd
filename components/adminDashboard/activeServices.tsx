@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { BounceLoader, } from "react-spinners";
 import Link from "next/link";
 import { AxiosRequests } from "../utils/axiosRequests";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { ServiceNav } from "./serviceNav";
 import { useAppDispatch } from "@/lib/hooks";
 import { logout } from "@/lib/features/auth/authSlice";
@@ -74,7 +74,7 @@ export const ShowServices = () => {
       console.error("Error Trashing service", err.response.data.customCode);
       if (err.response.data.customCode === 17) {
         setError(err.response.data.error);
-      } else if (err.response.status === 401){
+      } else if (err.response.status === 401) {
         toast.error("Unauthorized");
         dispatch(logout());
         router.push("/signin");
@@ -115,33 +115,35 @@ export const ShowServices = () => {
                 />
               ) : (
                 <>
-                  {service.image !== 'noImage' && (
-                    <div className="relative h-48 w-full">
-                      <Image
-                        src={`${cloudinaryUrl}/${service.image}`}
-                        alt="Service Image"
-                        layout="fill"
-                        objectFit="cover"
-                        className="transition-transform duration-300 hover:scale-105"
-                      />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                      {service.title}
-                    </h2>
-                    <p className="text-gray-600 mb-4">
-                      {service.description.length > 100 ? `${service.description.substring(0, 100)}...` : service.description}
-                    </p>
-                    {service.description.length > 100 && (
-                      <Link className="text-blue-500 hover:text-blue-700 transition-colors duration-300" href={`/services/${service._id}`} passHref>
-                        Read More
-                      </Link>
+                  <Link className="text-blue-500 hover:text-blue-700 transition-colors duration-300" href={`/adminDashboard/serviceDetails/${service._id}`}>
+                    {service.image !== 'noImage' && (
+                      <div className="relative h-48 w-full">
+                        <Image
+                          src={`${cloudinaryUrl}/${service.image}`}
+                          alt="Service Image"
+                          layout="fill"
+                          objectFit="cover"
+                          className="transition-transform duration-300 hover:scale-105"
+                        />
+                      </div>
                     )}
-                    <p className="text-gray-700 font-semibold mt-5">
-                      Price: ${service.price}
-                    </p>
-                  </div>
+                    <div className="p-6">
+                      <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                        {service.title}
+                      </h2>
+                      <p className="text-gray-600 mb-4">
+                        {service.description.length > 100 ? `${service.description.substring(0, 100)}...` : service.description}
+                      </p>
+                      {service.description.length > 100 && (
+                        <Link className="text-blue-500 hover:text-blue-700 transition-colors duration-300" href={`/services/${service._id}`}>
+                          Read More
+                        </Link>
+                      )}
+                      <p className="text-gray-700 font-semibold mt-5">
+                        Price: ${service.price}
+                      </p>
+                    </div>
+                  </Link>
                   <div className="p-4 flex justify-end space-x-2">
                     <button
                       className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
