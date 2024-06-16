@@ -7,6 +7,7 @@ import { BounceLoader, BarLoader } from "react-spinners";
 import { AxiosRequests } from "../utils/axiosRequests";
 import { EditProfile } from "./editProfile";
 
+
 const Profile = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState("");
@@ -17,11 +18,19 @@ const Profile = () => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const [userInfo, setUserInfo] = useState({
+    id: "",
     first_name: "",
     last_name: "",
     email: "",
-    profileImage: null as File | unknown
+    profileImage: null as File | unknown,
+    profileTitle: "",
+    overview: "",
+    skills: [],
+    address: "",
+    phone: "",
+    hireCount: 0,
   });
+  const [fullView, setFullview] = useState(false);
   const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969"
   useEffect(() => {
     const fetchInfo = async () => {
@@ -33,10 +42,17 @@ const Profile = () => {
           setIsLoading(false);
           if (response.status === 200) {
             setUserInfo({
+              id: response.data.userInfo.id,
               first_name: response.data.userInfo.firstName,
               last_name: response.data.userInfo.lastName,
               email: response.data.userInfo.email,
-              profileImage: response.data.userInfo.image
+              profileImage: response.data.userInfo.image,
+              profileTitle: response.data.userInfo.profileTitle,
+              overview: response.data.userInfo.overview,
+              skills: response.data.userInfo.skills,
+              address: response.data.userInfo.address,
+              phone: response.data.userInfo.phone,
+              hireCount: response.data.userInfo.hirecount
             });
           } else {
             setIsAuthenticated('notAuthenticated');
@@ -87,20 +103,19 @@ const Profile = () => {
     setIsEditMode(!isEditMode);
   };
 
-  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserInfo({ ...userInfo, first_name: e.target.value });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
+    const {name, value} = e.target;
+    setUserInfo({ ...userInfo, [name]: name === 'skills' ? value.split(',').map(skill => skill.trim()) : value});
   };
 
-  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserInfo({ ...userInfo, last_name: e.target.value });
-  };
-
+  const HandleView = () => {
+    setFullview(!fullView);
+  }
   const handleSaveChanges = async () => {
     toggleEditMode();
     const url = "/users/saveUserData";
     const userData = userInfo;
     const response = await protectedRoute.post(url, userData);
-
   };
 
 
@@ -112,18 +127,18 @@ const Profile = () => {
     );
   }
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-100">
+      <div className="bg-white shadow-xl rounded-3xl p-8 max-w-lg w-full my-3">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Profile</h1>
+          <h1 className="text-4xl font-extrabold text-gray-900">Profile</h1>
           <button
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
+            className="text-gray-700 hover:text-gray-900 focus:outline-none"
             onClick={toggleEditMode}
           >
             <span className="sr-only">Edit Profile</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
+              className="h-8 w-8"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -148,7 +163,7 @@ const Profile = () => {
                 <img
                   src={`${cloudinaryUrl}/${userInfo.profileImage}`}
                   alt="Profile"
-                  className="w-32 h-32 rounded-full"
+                  className="w-32 h-32 rounded-full border-4 border-purple-500 shadow-lg"
                 />
               ) : (
                 <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center text-gray-500">
@@ -170,7 +185,7 @@ const Profile = () => {
               )}
               <label
                 htmlFor="profileImage"
-                className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 transition-colors duration-300 cursor-pointer"
+                className="absolute bottom-0 right-0 bg-gradient-to-br from-purple-500 to-blue-500 text-white rounded-full p-2 hover:from-purple-600 hover:to-blue-600 transition-colors duration-300 cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -202,60 +217,209 @@ const Profile = () => {
                 className="hidden"
               />
             </div>
+            <div className="mb-8 flex flex-col gap-4 w-full">
+              <div>
+                {isEditMode ? (
+                  <input
+                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    name="first_name"
+                    type="text"
+                    value={userInfo.first_name}
+                    placeholder="First Name"
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <p className="text-lg text-gray-700 mb-2">
+                    <span className="font-semibold">First Name:</span> {userInfo.first_name}
+                  </p>
+                )}
+              </div>
+              <div>
+                {isEditMode ? (
+                  <input
+                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    type="text"
+                    name="last_name"
+                    value={userInfo.last_name}
+                    placeholder="Last Name"
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <p className="text-lg text-gray-700 mb-2">
+                    <span className="font-semibold">Last Name:</span> {userInfo.last_name}
+                  </p>
+                )}
+              </div>
+              <div>
+                {isEditMode ? (
+                  <textarea
+                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    name="overview"
+                    value={userInfo.overview}
+                    placeholder="Overview"
+                    onChange={handleInputChange}
+                  />
+                ) : fullView ? (
+                  <p className="text-lg text-gray-700 mb-2">
+                    <span className="font-semibold">Overview:</span> {userInfo.overview}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show Less</span>
+                  </p>
+                ) : (
+                  <p className="text-lg text-gray-700 mb-2">
+                    <span className="font-semibold">Overview:</span> {userInfo.overview.slice(0, 200)}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show More</span>
+                  </p>
+                )}
+              </div>
 
 
-            <div className="mb-8 flex flex-col gap-3">
 
               <div>
                 {isEditMode ? (
-                  <div className="flex flex-col gap-3">
-                    <input className="text-gray-800" type="text" value={userInfo.first_name} placeholder="name" onChange={handleFirstNameChange} />
-                  </div>
+                  <input
+                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    type="text"
+                    name="profileTitle"
+                    value={userInfo.profileTitle}
+                    placeholder="Profile Title"
+                    onChange={handleInputChange}
+                  />
                 ) : (
-                  <div className="flex gap-3 items-start">
-                    <p className="text-lg text-gray-700 mb-2">
-                      <span className="font-semibold">First Name:</span> {userInfo.first_name}
-                    </p>
-                  </div>
+                  <p className="text-lg text-gray-700 mb-2">
+                    <span className="font-semibold">Profile Title:</span> {userInfo.profileTitle}
+                  </p>
                 )}
-
               </div>
 
               <div>
                 {isEditMode ? (
-                  <div className="flex flex-col gap-3">
-
-                    <input className="text-gray-800" type="text" value={userInfo.last_name} placeholder="name" onChange={handleLastNameChange} />
-                  </div>
+                  <input
+                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    type="text"
+                    name="skills"
+                    value={userInfo.skills}
+                    placeholder="Skills"
+                    onChange={handleInputChange}
+                  />
                 ) : (
-                  <div className="flex gap-3 items-start">
-                    <p className="text-lg text-gray-700 mb-2">
-                      <span className="font-semibold">Last Name:</span> {userInfo.last_name}
-                    </p>
-                  </div>
+                  <p className="text-lg text-gray-700 mb-2">
+                    <span className="font-semibold">Skills:</span> {userInfo.skills.join(', ')}
+                  </p>
                 )}
-
+              </div>
+              <div>
+                {isEditMode ? (
+                  <input
+                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    type="text"
+                    name="address"
+                    value={userInfo.address}
+                    placeholder="Address"
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <p className="text-lg text-gray-700 mb-2">
+                    <span className="font-semibold">Address:</span> {userInfo.address}
+                  </p>
+                )}
+              </div>
+              <div>
+                {isEditMode ? (
+                  <input
+                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                    type="text"
+                    name="phone"
+                    value={userInfo.phone}
+                    placeholder="Phone"
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <p className="text-lg text-gray-700 mb-2">
+                    <span className="font-semibold">Phone:</span> {userInfo.phone}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-lg text-gray-700 mb-2">
+                  <span className="font-semibold">Email:</span> {userInfo.email}
+                </p>
+              </div>
+              <div>
+                <p className="text-lg text-gray-700 mb-2">
+                  <span className="font-semibold">Hire Count:</span> {userInfo.hireCount}
+                </p>
               </div>
 
-              <p className="text-lg text-gray-700">
-                <span className="font-semibold">Email:</span> {userInfo.email}
-              </p>
+              {/* <div>
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">Employment History</h2>
+                {isEditMode ? (
+                  userInfo.employmentHistory.map((job, index) => (
+                    <div key={index} className="mb-2">
+                      <input
+                        className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                        type="text"
+                        value={job.jobTitle}
+                        placeholder="Job Title"
+                        onChange={(e) => handleEmploymentHistoryChange(e, index, 'jobTitle')}
+                      />
+                      <input
+                        className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                        type="text"
+                        value={job.company}
+                        placeholder="Company"
+                        onChange={(e) => handleEmploymentHistoryChange(e, index, 'company')}
+                      />
+                      <input
+                        className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                        type="date"
+                        value={job.startDate}
+                        placeholder="Start Date"
+                        onChange={(e) => handleEmploymentHistoryChange(e, index, 'startDate')}
+                      />
+                      <input
+                        className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                        type="date"
+                        value={job.endDate}
+                        placeholder="End Date"
+                        onChange={(e) => handleEmploymentHistoryChange(e, index, 'endDate')}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  userInfo.employmentHistory.map((job, index) => (
+                    <div key={index} className="mb-4">
+                      <p className="text-lg text-gray-700 mb-2">
+                        <span className="font-semibold">Job Title:</span> {job.jobTitle}
+                      </p>
+                      <p className="text-lg text-gray-700 mb-2">
+                        <span className="font-semibold">Company:</span> {job.company}
+                      </p>
+                      <p className="text-lg text-gray-700 mb-2">
+                        <span className="font-semibold">Start Date:</span> {new Date(job.startDate).toLocaleDateString()}
+                      </p>
+                      <p className="text-lg text-gray-700 mb-2">
+                        <span className="font-semibold">End Date:</span> {new Date(job.endDate).toLocaleDateString()}
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>  */}
 
             </div>
 
-            {isEditMode ? (<EditProfile handleSaveChanges={handleSaveChanges} toggleEditMode={toggleEditMode} />) : (
+            {isEditMode ? (
+              <EditProfile handleSaveChanges={handleSaveChanges} toggleEditMode={toggleEditMode} />
+            ) : (
               <button
                 type="button"
-                className="w-full bg-red-600 text-white font-semibold py-3 px-6 rounded-md hover:bg-red-700 transition-colors duration-300"
+                className="w-full bg-gradient-to-br from-red-500 to-red-700 text-white font-semibold py-3 px-6 rounded-lg hover:from-red-600 hover:to-red-800 transition-colors duration-300"
                 onClick={handleLogoutClick}
               >
                 Logout
               </button>
             )}
-          </div >
+          </div>
         )}
-      </div >
-    </div >
+      </div>
+    </div>
   );
 };
 

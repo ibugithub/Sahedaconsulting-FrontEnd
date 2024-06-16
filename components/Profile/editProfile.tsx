@@ -4,20 +4,19 @@ type EditProfileProps = {
 };
 
 
-export const EditProfile = ({handleSaveChanges, toggleEditMode} : EditProfileProps)  => {
+export const EditProfile = ({ handleSaveChanges, toggleEditMode }: EditProfileProps) => {
   return (
-      <div className="flex justify-start w-full">
+
+    <div className="w-full flex justify-between gap-4">
     <button
-      type="button"
-      className="bg-green-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-green-600 transition-colors duration-300 mr-2"
       onClick={handleSaveChanges}
+      className="w-full bg-gradient-to-br from-green-400 to-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-green-500 hover:to-green-700 transition-colors duration-300"
     >
-      Save
+      Save Changes
     </button>
     <button
-      type="button"
-      className="bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 transition-colors duration-300"
       onClick={toggleEditMode}
+      className="w-full bg-gradient-to-br from-gray-400 to-gray-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-gray-500 hover:to-gray-700 transition-colors duration-300"
     >
       Cancel
     </button>
