@@ -18,10 +18,11 @@ export interface employmentHistory {
 
 export interface ProposalInterface {
   _id: string;
-  user: string;
-  service: string;
+  freelancer: FreelancersInterface;
+  service: ServiceInterface;
   coverLetter: string;
   price: number;
+  status: 'pending' | 'accepted' | 'rejected';
 }
 export interface FreelancersInterface {
   _id: string;
@@ -42,6 +43,7 @@ export interface ServiceInterface {
   price: number;
   image: string;
   skills: string[];
+  proposals: ProposalInterface[];
   proposalsCount: number;
   hiredCount: number;         
   isHiringClosed: boolean;

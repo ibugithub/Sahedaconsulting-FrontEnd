@@ -18,24 +18,25 @@ export const ServiceDetails = ({ id }: { id: string }) => {
     coverLetter: '',
     price: 0,
   });
+  
+  const fetchDetails = async() => {
+    try {
+      const url = `/admin/serviceDetails/${id}`;
+      const response = await protectedRoute.get(url);
+      if (response.status === 200) {
+        const service = response.data.service;
+        setService(service);
+        setIsLoading(false);
+        console.log('the service is', service);
+        console.log('the proposal is', service.proposals);
+      }
+    } catch (error) {
+      console.log('Error while fetching work at singleWork.tsx', error);
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchWork = async () => {
-      // Fetch Service info
-      try {
-        const url = `/admin/serviceDetails/${id}`;
-        const response = await protectedRoute.get(url);
-        if (response.status === 200) {
-          const service = response.data.service;
-          setService(service);
-          setIsLoading(false);
-          console.log('the service is', service);
-        }
-      } catch (error) {
-        console.log('Error while fetching work at singleWork.tsx', error);
-        setIsLoading(false);
-      }
-    }
     const fetchUserId = async () => {
       //Check whether user is authenticated and Fetch User id
       setIsLoading(true);
@@ -45,7 +46,7 @@ export const ServiceDetails = ({ id }: { id: string }) => {
         const id = user.data.user._id
         setProposalData((prev) => ({
           ...prev,
-          userId: id, 
+          userId: id,
         }))
         setIsLoading(false);
       } catch (error) {
@@ -56,11 +57,11 @@ export const ServiceDetails = ({ id }: { id: string }) => {
         return;
       };
     }
-    fetchWork();
+    fetchDetails();
     fetchUserId();
   }, []);
 
-  const handleHire = async (e: React.FormEvent, freelancer: FreelancersInterface, service: ServiceInterface) => {
+  const handleHire = async (e: React.FormEvent, freelancer: string, service: string) => {
     e.preventDefault();
     // if no userId navigate to singin
     if (!proposalData.userId) {
@@ -72,14 +73,16 @@ export const ServiceDetails = ({ id }: { id: string }) => {
     // send proposals data to add proposal
     try {
       const url = `/admin/hireFreelancer/`
-      const data = {'freelancer' : freelancer, 'service': service}
+      const data = { 'freelancerId': freelancer, 'serviceId': service }
       const response = await protectedRoute.post(url, data);
-      if (response.status === 200) {
+      if (response.status === 201) {
         setProposalData((prev) => ({
           ...prev,
           coverLetter: '',
           price: 0,
         }))
+        toast.success('Hired successfully');
+        await fetchDetails();
       }
     } catch (error) {
       console.error('Error submitting proposal:', error);
@@ -119,19 +122,26 @@ export const ServiceDetails = ({ id }: { id: string }) => {
 
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Applied Freelancers</h2>
             <div className="space-y-4">
-              {service.appliedFreelancers.length > 0 ? (
-                service.appliedFreelancers.map((freelancer) => (
-                  <div key={freelancer._id} className="p-4 bg-gray-100 rounded-lg flex justify-between items-center">
+              {service.proposals.length > 0 ? (
+                service.proposals.map((proposal) => (
+                  <div key={proposal._id} className="p-4 bg-gray-100 rounded-lg flex justify-between items-center">
                     <div>
-                      <p className="text-gray-900 font-bold">{freelancer.user.firstName}</p>
-                      <p className="text-gray-600">{freelancer.user.email}</p>
+                      <p className="text-gray-900 font-bold">{proposal.freelancer.user.firstName}</p>
+                      <p className="text-gray-600">{proposal.freelancer.user.email}</p>
                     </div>
-                    <button
+                    {proposal.status === 'accepted' ? (
+                      <button
+                        className="bg-green-500 text-white px-4 py-2 rounded-md cursor-none"
+                      >
+                        Hired
+                      </button>
+                    ) : (<button
                       className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
-                      onClick={(e) => handleHire(e, freelancer, service)}
+                      onClick={(e) => handleHire(e, proposal.freelancer._id, service._id)}
                     >
                       Hire
-                    </button>
+                    </button>)}
+
                   </div>
                 ))
               ) : (

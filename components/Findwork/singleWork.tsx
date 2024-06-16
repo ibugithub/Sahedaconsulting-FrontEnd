@@ -97,6 +97,8 @@ export const SingleWork = ({ id }: { id: string }) => {
           coverLetter: '',
           price: 0,
         }))
+        router.push('/findWork');
+        toast.success('Proposal submitted successfully');
       }
     } catch (error) {
       console.error('Error submitting proposal:', error);
@@ -129,6 +131,9 @@ export const SingleWork = ({ id }: { id: string }) => {
                 <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
                   Hired: {work.hiredCount}
                 </span>
+                <span className="bg-yellow-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
+                Required Freelancers: {work.requiredFreelancers}
+              </span>
               </div>
               <p className="text-gray-500 text-sm mb-8">Skills: {work.skills.join(', ')}</p>
 

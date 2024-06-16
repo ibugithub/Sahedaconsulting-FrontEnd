@@ -13,6 +13,7 @@ export const UploadService = () => {
     service: "",
     description: "",
     price: "",
+    requiredFreelancer: 1,
     image: null as File | unknown
   })
   const [isLoading, setIsSetLoading] = useState(false)
@@ -32,11 +33,11 @@ export const UploadService = () => {
         setIsSetLoading(false);
         toast.success("service uploaded successfully")
       }
-      
+
     } catch (error) {
       setIsSetLoading(false);
       console.error("Error While service uplaoding", error);
-      toast.error("Unauthorized") 
+      toast.error("Unauthorized")
       router.push("/signin");
     }
   };
@@ -47,7 +48,7 @@ export const UploadService = () => {
   const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImage = e.target.files?.[0];
     setFormData({ ...formData, image: selectedImage });
-  } 
+  }
 
 
   return (
@@ -86,7 +87,7 @@ export const UploadService = () => {
               >
                 Description
               </label>
-              <textarea 
+              <textarea
                 rows={5}
                 id="description"
                 name="description"
@@ -110,6 +111,23 @@ export const UploadService = () => {
                 name="price"
                 placeholder="Price"
                 value={formData.price}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="price"
+                className="block text-gray-700 font-semibold mb-2"
+              >
+                Required Freelancers
+              </label>
+              <input
+                id="requiredFreelancer"
+                type="number"
+                name="requiredFreelancer"
+                placeholder="Required Freelancers"
+                value={formData.requiredFreelancer}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
               />
