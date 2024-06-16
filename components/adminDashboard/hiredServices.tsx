@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { EditService } from "./editService";
 import { toast } from "react-toastify";
-import { Service } from "../interface";
+import { ServiceInterface } from "../interface";
 import { motion } from "framer-motion";
 import { BounceLoader, } from "react-spinners";
 import Link from "next/link";
@@ -19,8 +19,8 @@ export const ShowServices = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const protectedRoute = AxiosRequests();
-  const [services, setServices] = useState<Service[]>([]);
-  const [editingService, setEditingService] = useState<Service | null>(null);
+  const [services, setServices] = useState<ServiceInterface[]>([]);
+  const [editingService, setEditingService] = useState<ServiceInterface | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const fetch = async () => {
@@ -49,7 +49,7 @@ export const ShowServices = () => {
     fetchServices();
   }, []);
 
-  const handleEdit = (service: Service) => {
+  const handleEdit = (service: ServiceInterface) => {
     setError("");
     setEditingService(service);
   };

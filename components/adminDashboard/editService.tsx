@@ -1,11 +1,11 @@
 
 import { useState } from "react";
-import { Service } from "../interface";
+import { ServiceInterface } from "../interface";
 import { toast } from "react-toastify";
 import { AxiosRequests } from "../utils/axiosRequests";
 
 interface EditServiceProps {
-  service: Service;
+  service: ServiceInterface;
   onSave: () => void;
   onCancel: () => void;
 }
