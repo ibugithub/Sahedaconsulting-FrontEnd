@@ -4,14 +4,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { EditService } from "../adminDashboard/editService";
-import { Service } from "../interface";
+import { ServiceInterface } from "../interface";
 import { motion } from "framer-motion";
 import { BounceLoader, } from "react-spinners";
 import Link from "next/link";
 
 export const FindWork = () => {
-  const [services, setServices] = useState<Service[]>([]);
-  const [editingService, setEditingService] = useState<Service | null>(null);
+  const [services, setServices] = useState<ServiceInterface[]>([]);
+  const [editingService, setEditingService] = useState<ServiceInterface | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetch = async () => {
     const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/freelancer/showWorks`
