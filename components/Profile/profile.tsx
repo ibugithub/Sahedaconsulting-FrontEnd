@@ -6,6 +6,7 @@ import { useAppDispatch } from "@/lib/hooks"
 import { BounceLoader, BarLoader } from "react-spinners";
 import { AxiosRequests } from "../utils/axiosRequests";
 import { EditProfile } from "./editProfile";
+import { FreelancUserInterface } from "../interface";
 
 
 const Profile = () => {
@@ -16,8 +17,15 @@ const Profile = () => {
   const protectedRoute = AxiosRequests(router);
   const [imageLoading, setImageLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-
-  const [userInfo, setUserInfo] = useState({
+  const [isAddEmploymentBtnClicked, setIsAddEmploymentBtnClicked] = useState(false);
+  const [fullView, setFullview] = useState(false);
+  const [employmentData, setEmploymentData] = useState({
+    jobTitle: "",
+    company: "",
+    startDate: "",
+    endDate: ""
+  })
+  const [userInfo, setUserInfo] = useState<FreelancUserInterface>({
     id: "",
     first_name: "",
     last_name: "",
@@ -29,8 +37,9 @@ const Profile = () => {
     address: "",
     phone: "",
     hireCount: 0,
+    employmentHistory: []
   });
-  const [fullView, setFullview] = useState(false);
+
   const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969"
   useEffect(() => {
     const fetchInfo = async () => {
@@ -41,6 +50,7 @@ const Profile = () => {
           const response = await protectedRoute.post(url)
           setIsLoading(false);
           if (response.status === 200) {
+            console.log('the employment history is', response.data.userInfo.employmentHistory)
             setUserInfo({
               id: response.data.userInfo.id,
               first_name: response.data.userInfo.firstName,
@@ -52,7 +62,8 @@ const Profile = () => {
               skills: response.data.userInfo.skills,
               address: response.data.userInfo.address,
               phone: response.data.userInfo.phone,
-              hireCount: response.data.userInfo.hirecount
+              hireCount: response.data.userInfo.hirecount,
+              employmentHistory: response.data.userInfo.employmentHistory
             });
           } else {
             setIsAuthenticated('notAuthenticated');
@@ -103,10 +114,14 @@ const Profile = () => {
     setIsEditMode(!isEditMode);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
-    const {name, value} = e.target;
-    setUserInfo({ ...userInfo, [name]: name === 'skills' ? value.split(',').map(skill => skill.trim()) : value});
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setUserInfo({ ...userInfo, [name]: name === 'skills' ? value.split(',').map(skill => skill.trim()) : value });
   };
+
+  const handleEmploymentHistoryChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, field: string) => {
+
+  }
 
   const HandleView = () => {
     setFullview(!fullView);
@@ -128,7 +143,7 @@ const Profile = () => {
   }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-100">
-      <div className="bg-white shadow-xl rounded-3xl p-8 max-w-lg w-full my-3">
+      <div className="bg-white shadow-xl rounded-3xl p-8 max-w-xl w-full my-3">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-4xl font-extrabold text-gray-900">Profile</h1>
           <button
@@ -265,12 +280,10 @@ const Profile = () => {
                   </p>
                 ) : (
                   <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">Overview:</span> {userInfo.overview.slice(0, 200)}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show More</span>
+                    <span className="font-semibold">Overview:</span> {userInfo.overview?.slice(0, 200)}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show More</span>
                   </p>
                 )}
               </div>
-
-
 
               <div>
                 {isEditMode ? (
@@ -301,7 +314,7 @@ const Profile = () => {
                   />
                 ) : (
                   <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">Skills:</span> {userInfo.skills.join(', ')}
+                    <span className="font-semibold">Skills:</span> {userInfo.skills?.join(', ')}
                   </p>
                 )}
               </div>
@@ -348,60 +361,108 @@ const Profile = () => {
                 </p>
               </div>
 
-              {/* <div>
+              <div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">Employment History</h2>
-                {isEditMode ? (
-                  userInfo.employmentHistory.map((job, index) => (
-                    <div key={index} className="mb-2">
-                      <input
-                        className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
-                        type="text"
-                        value={job.jobTitle}
-                        placeholder="Job Title"
-                        onChange={(e) => handleEmploymentHistoryChange(e, index, 'jobTitle')}
-                      />
-                      <input
-                        className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
-                        type="text"
-                        value={job.company}
-                        placeholder="Company"
-                        onChange={(e) => handleEmploymentHistoryChange(e, index, 'company')}
-                      />
-                      <input
-                        className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
-                        type="date"
-                        value={job.startDate}
-                        placeholder="Start Date"
-                        onChange={(e) => handleEmploymentHistoryChange(e, index, 'startDate')}
-                      />
-                      <input
-                        className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
-                        type="date"
-                        value={job.endDate}
-                        placeholder="End Date"
-                        onChange={(e) => handleEmploymentHistoryChange(e, index, 'endDate')}
-                      />
-                    </div>
-                  ))
+                {userInfo.employmentHistory?.length && userInfo.employmentHistory?.length > 0 ? (
+                  <>
+                    {isEditMode ? (
+                      userInfo.employmentHistory.map((job, index) => (
+                        <div key={index} className="mb-4">
+                          <input
+                            className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                            type="text"
+                            value={job.jobTitle}
+                            placeholder="Job Title"
+                            onChange={(e) => handleEmploymentHistoryChange(e, index, 'jobTitle')}
+                          />
+                          <input
+                            className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                            type="text"
+                            value={job.company}
+                            placeholder="Company"
+                            onChange={(e) => handleEmploymentHistoryChange(e, index, 'company')}
+                          />
+                          <input
+                            className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                            type="date"
+                            value={job.startDate ? new Date(job.startDate).toISOString().split('T')[0] : ''}
+                            placeholder="Start Date"
+                            onChange={(e) => handleEmploymentHistoryChange(e, index, 'startDate')}
+                          />
+                          <input
+                            className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                            type="date"
+                            value={job.endDate ? new Date(job.endDate).toISOString().split('T')[0] : ''}
+                            placeholder="End Date"
+                            onChange={(e) => handleEmploymentHistoryChange(e, index, 'endDate')}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      userInfo.employmentHistory.map((job, index) => (
+                        <div key={index} className="mb-4">
+                          <p className="text-lg text-gray-700 mb-2">
+                            <span className="font-semibold">Job Title:</span> {job.jobTitle}
+                          </p>
+                          <p className="text-lg text-gray-700 mb-2">
+                            <span className="font-semibold">Company:</span> {job.company}
+                          </p>
+                          <p className="text-lg text-gray-700 mb-2">
+                            <span className="font-semibold">Start Date:</span> {job.startDate ? new Date(job.startDate).toLocaleDateString() : ''}
+                          </p>
+                          <p className="text-lg text-gray-700 mb-2">
+                            <span className="font-semibold">End Date:</span> {job.endDate ? new Date(job.endDate).toLocaleDateString() : ''}
+                          </p>
+                        </div>
+                      ))
+                    )}
+                  </>
                 ) : (
-                  userInfo.employmentHistory.map((job, index) => (
-                    <div key={index} className="mb-4">
-                      <p className="text-lg text-gray-700 mb-2">
-                        <span className="font-semibold">Job Title:</span> {job.jobTitle}
-                      </p>
-                      <p className="text-lg text-gray-700 mb-2">
-                        <span className="font-semibold">Company:</span> {job.company}
-                      </p>
-                      <p className="text-lg text-gray-700 mb-2">
-                        <span className="font-semibold">Start Date:</span> {new Date(job.startDate).toLocaleDateString()}
-                      </p>
-                      <p className="text-lg text-gray-700 mb-2">
-                        <span className="font-semibold">End Date:</span> {new Date(job.endDate).toLocaleDateString()}
-                      </p>
-                    </div>
-                  ))
+                  <>
+                    <button className="bg-green-300 p-2 rounded text-md text-gray-700 mb-2" onClick={() => setIsAddEmploymentBtnClicked(true)}>
+                      Add Employment
+                    </button>
+                    {isAddEmploymentBtnClicked && (
+                      <div className="mb-4">
+                        <input
+                          className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                          type="text"
+                          value={}
+                          placeholder="Job Title"
+                          onChange={(e) => setNewJobTitle(e.target.value)}
+                        />
+                        <input
+                          className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                          type="text"
+                          value={newCompany}
+                          placeholder="Company"
+                          onChange={(e) => setNewCompany(e.target.value)}
+                        />
+                        <input
+                          className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                          type="date"
+                          value={newStartDate ? new Date(newStartDate).toISOString().split('T')[0] : ''}
+                          placeholder="Start Date"
+                          onChange={(e) => setNewStartDate(new Date(e.target.value))}
+                        />
+                        <input
+                          className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                          type="date"
+                          value={newEndDate ? new Date(newEndDate).toISOString().split('T')[0] : ''}
+                          placeholder="End Date"
+                          onChange={(e) => setNewEndDate(new Date(e.target.value))}
+                        />
+                        <button
+                          className="bg-purple-600 text-white p-2 rounded mt-2"
+                          onClick={handleAddEmployment}
+                        >
+                          Add
+                        </button>
+                      </div>
+                    )}
+                  </>
                 )}
-              </div>  */}
+              </div>
 
             </div>
 

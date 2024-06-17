@@ -9,7 +9,7 @@ export interface UserInterface {
   role: 'buyer' | 'freelancer' | 'administrator';
 }
 
-export interface employmentHistory {
+export interface employmentHistoryObj {
   jobTitle: string,
   company: string,
   startDate: Date,
@@ -28,14 +28,29 @@ export interface FreelancersInterface {
   _id: string;
   user : UserInterface;
   skills? : string[],
-  address? : string[],
-  phone?: string[],
+  address? : string,
+  phone?: string,
   profileTitle?: string,
-  overview?: string[]
-  employmentHistory?: employmentHistory[],
+  overview?: string
+  employmentHistory?: employmentHistoryObj[],
   proposals : ProposalInterface[] | string[],
-
 }
+
+export interface FreelancUserInterface {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profileImage: File | string | unknown;
+  profileTitle?: string,
+  overview?: string,
+  skills? : string[],
+  address? : string,
+  phone?: string,
+  hireCount?: number,
+  employmentHistory?: employmentHistoryObj[],
+}
+
 export interface ServiceInterface {
   _id: string;
   title: string;
