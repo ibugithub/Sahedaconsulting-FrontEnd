@@ -48,7 +48,7 @@ export interface FreelancUserInterface {
   address? : string,
   phone?: string,
   hireCount?: number,
-  employmentHistory?: employmentHistoryObj[],
+  employmentHistory: employmentHistoryObj[],
 }
 
 export interface ServiceInterface {

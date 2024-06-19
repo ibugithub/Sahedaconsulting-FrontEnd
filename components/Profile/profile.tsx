@@ -19,12 +19,6 @@ const Profile = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isAddEmploymentBtnClicked, setIsAddEmploymentBtnClicked] = useState(false);
   const [fullView, setFullview] = useState(false);
-  const [employmentData, setEmploymentData] = useState({
-    jobTitle: "",
-    company: "",
-    startDate: "",
-    endDate: ""
-  })
   const [userInfo, setUserInfo] = useState<FreelancUserInterface>({
     id: "",
     first_name: "",
@@ -39,6 +33,13 @@ const Profile = () => {
     hireCount: 0,
     employmentHistory: []
   });
+  const [employmentData, setEmploymentData] = useState({
+    jobTitle: "",
+    company: "",
+    startDate: new Date(),
+    endDate: new Date(),
+  })
+
 
   const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969"
   useEffect(() => {
@@ -50,7 +51,7 @@ const Profile = () => {
           const response = await protectedRoute.post(url)
           setIsLoading(false);
           if (response.status === 200) {
-            console.log('the employment history is', response.data.userInfo.employmentHistory)
+            console.log('the employment history is', response.data.userInfo)
             setUserInfo({
               id: response.data.userInfo.id,
               first_name: response.data.userInfo.firstName,
@@ -123,6 +124,26 @@ const Profile = () => {
 
   }
 
+  const handleAddEmploymentHistory = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEmploymentData({ ...employmentData, [name]: value });
+  }
+
+  const handleSaveEmployment = async () => {
+    setIsAddEmploymentBtnClicked(false)
+    console.log('I am in the handleSaveEmployment', employmentData)
+    if (userInfo.employmentHistory.length > 0) {
+      setUserInfo({ ...userInfo, employmentHistory: [...userInfo.employmentHistory, employmentData] });
+    } else {
+      setUserInfo({ ...userInfo, employmentHistory: [employmentData ]});
+    }
+    console.log('userInfo is', userInfo);
+    const url = "/users/saveUserData";
+    const userData = userInfo;
+    const response = await protectedRoute.post(url, userData);
+    console.log('userInfo at the end is', userInfo);
+  }
+
   const HandleView = () => {
     setFullview(!fullView);
   }
@@ -132,7 +153,6 @@ const Profile = () => {
     const userData = userInfo;
     const response = await protectedRoute.post(url, userData);
   };
-
 
   if (isLoading) {
     return (
@@ -363,7 +383,7 @@ const Profile = () => {
 
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">Employment History</h2>
-                {userInfo.employmentHistory?.length && userInfo.employmentHistory?.length > 0 ? (
+                {userInfo.employmentHistory?.length && userInfo.employmentHistory?.length > 0 && (
                   <>
                     {isEditMode ? (
                       userInfo.employmentHistory.map((job, index) => (
@@ -417,51 +437,60 @@ const Profile = () => {
                       ))
                     )}
                   </>
-                ) : (
-                  <>
-                    <button className="bg-green-300 p-2 rounded text-md text-gray-700 mb-2" onClick={() => setIsAddEmploymentBtnClicked(true)}>
-                      Add Employment
-                    </button>
-                    {isAddEmploymentBtnClicked && (
-                      <div className="mb-4">
-                        <input
-                          className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
-                          type="text"
-                          value={}
-                          placeholder="Job Title"
-                          onChange={(e) => setNewJobTitle(e.target.value)}
-                        />
-                        <input
-                          className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
-                          type="text"
-                          value={newCompany}
-                          placeholder="Company"
-                          onChange={(e) => setNewCompany(e.target.value)}
-                        />
-                        <input
-                          className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
-                          type="date"
-                          value={newStartDate ? new Date(newStartDate).toISOString().split('T')[0] : ''}
-                          placeholder="Start Date"
-                          onChange={(e) => setNewStartDate(new Date(e.target.value))}
-                        />
-                        <input
-                          className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
-                          type="date"
-                          value={newEndDate ? new Date(newEndDate).toISOString().split('T')[0] : ''}
-                          placeholder="End Date"
-                          onChange={(e) => setNewEndDate(new Date(e.target.value))}
-                        />
-                        <button
-                          className="bg-purple-600 text-white p-2 rounded mt-2"
-                          onClick={handleAddEmployment}
-                        >
-                          Add
-                        </button>
-                      </div>
-                    )}
-                  </>
                 )}
+
+                {isAddEmploymentBtnClicked && (
+                  <div className="mb-4">
+                    <input
+                      className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                      type="text"
+                      value={employmentData.jobTitle}
+                      name="jobTitle"
+                      placeholder="Job Title"
+                      onChange={(e) => handleAddEmploymentHistory(e)}
+                    />
+                    <input
+                      className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                      type="text"
+                      value={employmentData.company}
+                      name="company"
+                      placeholder="Company"
+                      onChange={(e) => handleAddEmploymentHistory(e)}
+                    />
+                    <input
+                      className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
+                      type="date"
+                      value={employmentData.startDate ? new Date(employmentData.startDate).toISOString().split('T')[0] : ''}
+                      name="startDate"
+                      placeholder="Start Date"
+                      onChange={(e) => handleAddEmploymentHistory(e)}
+                    />
+                    <input
+                      className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
+                      type="date"
+                      value={employmentData.endDate ? new Date(employmentData.endDate).toISOString().split('T')[0] : ''}
+                      name="endDate"
+                      placeholder="End Date"
+                      onChange={(e) => handleAddEmploymentHistory(e)}
+                    />
+                    <button
+                      className="bg-purple-600 text-white p-2 rounded mt-2"
+                      onClick={handleSaveEmployment}
+                    >
+                      Add
+                    </button>
+                    <button
+                      className="bg-purple-600 text-white p-2 rounded mt-2"
+                      onClick={() => { setIsAddEmploymentBtnClicked(false) }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
+                <button className="bg-green-300 p-2 rounded text-sm text-gray-700 mb-2" onClick={() => setIsAddEmploymentBtnClicked(true)}>
+                  Add Employment
+                </button>
+
               </div>
 
             </div>
