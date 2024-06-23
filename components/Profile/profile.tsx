@@ -19,6 +19,7 @@ const Profile = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isAddEmploymentBtnClicked, setIsAddEmploymentBtnClicked] = useState(false);
   const [fullView, setFullview] = useState(false);
+
   const [userInfo, setUserInfo] = useState<FreelancUserInterface>({
     id: "",
     first_name: "",
@@ -135,7 +136,7 @@ const Profile = () => {
     if (userInfo.employmentHistory.length > 0) {
       setUserInfo({ ...userInfo, employmentHistory: [...userInfo.employmentHistory, employmentData] });
     } else {
-      setUserInfo({ ...userInfo, employmentHistory: [employmentData ]});
+      setUserInfo({ ...userInfo, employmentHistory: [employmentData] });
     }
     console.log('userInfo is', userInfo);
     const url = "/users/saveUserData";
@@ -298,11 +299,15 @@ const Profile = () => {
                   <p className="text-lg text-gray-700 mb-2">
                     <span className="font-semibold">Overview:</span> {userInfo.overview}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show Less</span>
                   </p>
-                ) : (
+                ) : userInfo.overview?.length > 200 ? (
                   <p className="text-lg text-gray-700 mb-2">
                     <span className="font-semibold">Overview:</span> {userInfo.overview?.slice(0, 200)}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show More</span>
                   </p>
-                )}
+                ) : (
+                  <p className="text-lg text-gray-700 mb-2">
+                    <span className="font-semibold">Overview:</span> {userInfo.overview}
+                  </p>)
+                }
               </div>
 
               <div>
