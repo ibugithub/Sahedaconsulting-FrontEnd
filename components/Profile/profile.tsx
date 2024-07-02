@@ -299,7 +299,7 @@ const Profile = () => {
                   <p className="text-lg text-gray-700 mb-2">
                     <span className="font-semibold">Overview:</span> {userInfo.overview}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show Less</span>
                   </p>
-                ) : userInfo.overview?.length > 200 ? (
+                ) : userInfo.overview?.length && userInfo.overview?.length > 200 ? (
                   <p className="text-lg text-gray-700 mb-2">
                     <span className="font-semibold">Overview:</span> {userInfo.overview?.slice(0, 200)}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show More</span>
                   </p>
