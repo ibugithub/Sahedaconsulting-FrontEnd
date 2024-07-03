@@ -135,8 +135,10 @@ const Profile = () => {
     console.log('I am in the handleSaveEmployment', employmentData)
     if (userInfo.employmentHistory.length > 0) {
       setUserInfo({ ...userInfo, employmentHistory: [...userInfo.employmentHistory, employmentData] });
+      console.log('I am in the if statement')
     } else {
       setUserInfo({ ...userInfo, employmentHistory: [employmentData] });
+      console.log('I am in the else statement')
     }
     console.log('userInfo is', userInfo);
     const url = "/users/saveUserData";
@@ -485,7 +487,7 @@ const Profile = () => {
                       Add
                     </button>
                     <button
-                      className="bg-purple-600 text-white p-2 rounded mt-2"
+                      className="bg-purple-600 text-white p-2 rounded mt-2 ml-2"
                       onClick={() => { setIsAddEmploymentBtnClicked(false) }}
                     >
                       Cancel
