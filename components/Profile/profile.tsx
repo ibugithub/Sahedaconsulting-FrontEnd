@@ -121,9 +121,20 @@ const Profile = () => {
     setUserInfo({ ...userInfo, [name]: name === 'skills' ? value.split(',').map(skill => skill.trim()) : value });
   };
 
-  const handleEmploymentHistoryChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, field: string) => {
-
-  }
+const handleEmploymentHistoryChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, field: string) => {
+  const { name, value } = e.target;
+  setUserInfo(prevUserInfo => {
+    const updatedHistory = [...prevUserInfo.employmentHistory];
+    updatedHistory[index] = {
+      ...updatedHistory[index],
+      [name]: field === 'startDate' || field === 'endDate' ? new Date(value) : value
+    };
+    return {
+      ...prevUserInfo,
+      employmentHistory: updatedHistory
+    };
+  });
+}
 
   const handleAddEmploymentHistory = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -132,19 +143,13 @@ const Profile = () => {
 
   const handleSaveEmployment = async () => {
     setIsAddEmploymentBtnClicked(false)
-    console.log('I am in the handleSaveEmployment', employmentData)
-    if (userInfo.employmentHistory.length > 0) {
-      setUserInfo({ ...userInfo, employmentHistory: [...userInfo.employmentHistory, employmentData] });
-      console.log('I am in the if statement')
-    } else {
-      setUserInfo({ ...userInfo, employmentHistory: [employmentData] });
-      console.log('I am in the else statement')
-    }
-    console.log('userInfo is', userInfo);
+    const updatedUserInfo = {
+      ...userInfo,
+      employmentHistory: [...userInfo.employmentHistory, employmentData]
+    };
+    setUserInfo(updatedUserInfo);
     const url = "/users/saveUserData";
-    const userData = userInfo;
-    const response = await protectedRoute.post(url, userData);
-    console.log('userInfo at the end is', userInfo);
+    const response = await protectedRoute.post(url, updatedUserInfo);
   }
 
   const HandleView = () => {
@@ -387,7 +392,6 @@ const Profile = () => {
                   <span className="font-semibold">Hire Count:</span> {userInfo.hireCount}
                 </p>
               </div>
-
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">Employment History</h2>
                 {userInfo.employmentHistory?.length && userInfo.employmentHistory?.length > 0 && (
@@ -399,12 +403,14 @@ const Profile = () => {
                             className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
                             type="text"
                             value={job.jobTitle}
+                            name="jobTitle"
                             placeholder="Job Title"
                             onChange={(e) => handleEmploymentHistoryChange(e, index, 'jobTitle')}
                           />
                           <input
                             className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
                             type="text"
+                            name="company"
                             value={job.company}
                             placeholder="Company"
                             onChange={(e) => handleEmploymentHistoryChange(e, index, 'company')}
@@ -412,6 +418,7 @@ const Profile = () => {
                           <input
                             className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600 mb-2"
                             type="date"
+                            name="startDate"
                             value={job.startDate ? new Date(job.startDate).toISOString().split('T')[0] : ''}
                             placeholder="Start Date"
                             onChange={(e) => handleEmploymentHistoryChange(e, index, 'startDate')}
@@ -419,6 +426,7 @@ const Profile = () => {
                           <input
                             className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
                             type="date"
+                            name="endDate"
                             value={job.endDate ? new Date(job.endDate).toISOString().split('T')[0] : ''}
                             placeholder="End Date"
                             onChange={(e) => handleEmploymentHistoryChange(e, index, 'endDate')}
