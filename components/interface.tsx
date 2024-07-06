@@ -46,6 +46,7 @@ export interface FreelancUserInterface {
   overview?: string,
   skills? : string[],
   address? : string,
+  role: 'buyer' | 'freelancer' | 'administrator',
   phone?: string,
   hireCount?: number,
   employmentHistory: employmentHistoryObj[],
@@ -68,6 +69,12 @@ export interface ServiceInterface {
   requiredFreelancers: number;
 }
 
+export interface EmploymentHistoryProps {
+  userInfo : FreelancUserInterface,
+  setUserInfo: React.Dispatch<React.SetStateAction<FreelancUserInterface>>;
+  isEditMode : boolean,
+  protectedRoute : any;
+}
 import { useRouter } from "next/navigation";
 
 type NextNavigationRouter = ReturnType<typeof useRouter>;
