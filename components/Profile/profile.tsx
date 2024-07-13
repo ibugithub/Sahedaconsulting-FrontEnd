@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BounceLoader } from "react-spinners";
 import { AxiosRequests } from "../utils/axiosRequests";
-import { EmploymentHistory } from "./employmentHistory";
 import FreelancerProfile from "./freelancerProfile";
 import BuyerProfile from "./buyerProfile";
+import AdministratorProfile from "./adminstratorProfile";
 
 
 const Profile = () => {
@@ -13,7 +13,7 @@ const Profile = () => {
   const [isAuthenticated, setIsAuthenticated] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const protectedRoute = AxiosRequests(router);
-  const [userRole, setUserRole] = useState(''); 
+  const [userRole, setUserRole] = useState('');
 
 
   useEffect(() => {
@@ -57,7 +57,10 @@ const Profile = () => {
     <>
       {userRole === 'freelancer' ? (
         <FreelancerProfile />
-      ):(<BuyerProfile/>)}
+      ) : userRole === 'buyer' ?
+        (<BuyerProfile />) :
+        (<AdministratorProfile />)
+      }
     </>
   );
 };

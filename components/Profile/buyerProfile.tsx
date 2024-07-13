@@ -260,63 +260,7 @@ const BuyerProfile = () => {
                   </p>
                 )}
               </div>
-              <div>
-                {isEditMode ? (
-                  <textarea
-                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
-                    name="overview"
-                    value={userInfo.overview}
-                    placeholder="Overview"
-                    onChange={handleInputChange}
-                  />
-                ) : fullView ? (
-                  <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">Overview:</span> {userInfo.overview}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show Less</span>
-                  </p>
-                ) : userInfo.overview?.length && userInfo.overview?.length > 200 ? (
-                  <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">Overview:</span> {userInfo.overview?.slice(0, 200)}...<span className="text-green-500 text-sm cursor-pointer" onClick={HandleView}>Show More</span>
-                  </p>
-                ) : (
-                  <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">Overview:</span> {userInfo.overview}
-                  </p>)
-                }
-              </div>
 
-              <div>
-                {isEditMode ? (
-                  <input
-                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
-                    type="text"
-                    name="profileTitle"
-                    value={userInfo.profileTitle}
-                    placeholder="Profile Title"
-                    onChange={handleInputChange}
-                  />
-                ) : (
-                  <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">Profile Title:</span> {userInfo.profileTitle}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                {isEditMode ? (
-                  <input
-                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
-                    type="text"
-                    name="skills"
-                    value={userInfo.skills}
-                    placeholder="Skills"
-                    onChange={handleInputChange}
-                  />
-                ) : (
-                  <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">Skills:</span> {userInfo.skills?.join(', ')}
-                  </p>
-                )}
-              </div>
               <div>
                 {isEditMode ? (
                   <input
