@@ -6,6 +6,7 @@ import { BounceLoader, } from "react-spinners";
 import { AxiosRequests } from '../utils/axiosRequests';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 export const ServiceDetails = ({ id }: { id: string }) => {
   const protectedRoute = AxiosRequests();
@@ -18,8 +19,8 @@ export const ServiceDetails = ({ id }: { id: string }) => {
     coverLetter: '',
     price: 0,
   });
-  
-  const fetchDetails = async() => {
+
+  const fetchDetails = async () => {
     try {
       const url = `/admin/serviceDetails/${id}`;
       const response = await protectedRoute.get(url);
@@ -124,25 +125,27 @@ export const ServiceDetails = ({ id }: { id: string }) => {
             <div className="space-y-4">
               {service.proposals.length > 0 ? (
                 service.proposals.map((proposal) => (
-                  <div key={proposal._id} className="p-4 bg-gray-100 rounded-lg flex justify-between items-center">
-                    <div>
-                      <p className="text-gray-900 font-bold">{proposal.freelancer.user.firstName}</p>
-                      <p className="text-gray-600">{proposal.freelancer.user.email}</p>
-                    </div>
-                    {proposal.status === 'accepted' ? (
-                      <button
-                        className="bg-green-500 text-white px-4 py-2 rounded-md cursor-none"
+                  <Link href={`/adminDashboard/freelancerDetails/${proposal.freelancer._id}`}>
+                    <div key={proposal._id} className="p-4 bg-gray-100 rounded-lg flex justify-between items-center">
+                      <div> 
+                        <p className="text-gray-900 font-bold">{proposal.freelancer.user.firstName}</p>
+                        <p className="text-gray-600">{proposal.freelancer.user.email}</p>
+                      </div>
+                      {proposal.status === 'accepted' ? (
+                        <button
+                          className="bg-green-500 text-white px-4 py-2 rounded-md cursor-none"
+                        >
+                          Hired
+                        </button>
+                      ) : (<button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
+                        onClick={(e) => handleHire(e, proposal.freelancer._id, service._id)}
                       >
-                        Hired
-                      </button>
-                    ) : (<button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
-                      onClick={(e) => handleHire(e, proposal.freelancer._id, service._id)}
-                    >
-                      Hire
-                    </button>)}
+                        Hire
+                      </button>)}
 
-                  </div>
+                    </div>
+                  </Link>
                 ))
               ) : (
                 <p className="text-gray-600">No freelancers have applied for this service yet.</p>
