@@ -28,8 +28,6 @@ export const ServiceDetails = ({ id }: { id: string }) => {
         const service = response.data.service;
         setService(service);
         setIsLoading(false);
-        console.log('the service is', service);
-        console.log('the proposal is', service.proposals);
       }
     } catch (error) {
       console.log('Error while fetching work at singleWork.tsx', error);

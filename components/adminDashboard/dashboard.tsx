@@ -10,10 +10,12 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {/* Users Section */}
-          <div className="bg-white shadow-md rounded-lg p-6">
+          <Link href='adminDashboard/users'>
+          <div className="bg-white shadow-md rounded-lg p-6 md:h-[140px]">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Users</h2>
             <p className="text-gray-600">Manage users, view user statistics, and more.</p>
           </div>
+          </Link>
 
           {/* Post Service Section */}
           <Link href='adminDashboard/uploadService'>

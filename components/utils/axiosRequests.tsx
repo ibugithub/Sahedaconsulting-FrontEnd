@@ -2,8 +2,7 @@
 import Cookies from "js-cookie";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import dayjs from "dayjs";
-import { toast } from "react-toastify";
+import dayjs from "dayjs"; 
 import { CustomRouter } from "../interface";
 
 export const AxiosRequests = (router? : CustomRouter) => {
