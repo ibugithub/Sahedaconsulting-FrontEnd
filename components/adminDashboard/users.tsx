@@ -1,15 +1,18 @@
 "use client"
 import { useEffect, useState } from "react"
 import { AxiosRequests } from "../utils/axiosRequests"
+import { UserInterface } from "../interface"
+
 export const ShowUsers = () => {
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<UserInterface[]>([])
   const protectedRoute = AxiosRequests();
   const getUsers = async () => {
     const url = '/admin/showUsers/'
     try {
-      const users = await protectedRoute.get(url)
-      setUsers(users.data);
-      console.log('the users are', users.data)
+      const response = await protectedRoute.get(url)
+      if (response.status === 200) {
+        setUsers(response.data);
+      }
     } catch (error) {
       console.log("error happend while fetching the users at users.tsx", error);
     }

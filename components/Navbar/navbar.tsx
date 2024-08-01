@@ -53,29 +53,37 @@ const Navbar = () => {
     <nav className="bg-gray-900 text-white p-3">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Image
-              src={logo}
-              alt="Logo"
-              className="h-8 w-8"
-              width={20}
-              height={20}
-            />
-            <Link href="/" className="text-xl font-bold ml-2">
-              Saheda Consultancy
-            </Link>
-          </div>
+
+          {<Link href="/" className="text-xl font-bold ml-2">
+            <div className="flex items-center">
+              <Image
+                src={logo}
+                alt="Logo"
+                // className="h-8 w-8"
+                width={200}
+                height={200}
+              />
+            </div>
+          </Link>}
 
           {/* desktop menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
 
               <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Contact For Services
+                Services
+              </Link>
+
+              <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                Connect
               </Link>
 
               <Link href="/findWork" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Find Work
+                Jobs
+              </Link>
+
+              <Link href="/" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                News
               </Link>
 
               {isAuthenticated ? (
@@ -112,11 +120,15 @@ const Navbar = () => {
           <div className={`${showDropdown ? 'block' : 'hidden'} flex gap-3 absolute top-1 right-5 bg-black border-gray-100 rounded border-2`} >
             <div className="flex flex-col items-baseline space-x-4 ml-0">
               <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Contact for Services
+                Connect
               </Link>
 
               <Link href="/findWork" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Find Work
+                Jobs
+              </Link>
+
+              <Link href="/findWork" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                News
               </Link>
 
               {isAuthenticated ? (
