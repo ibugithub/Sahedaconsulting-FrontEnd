@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import logo from '../../assets/logo.jpg'
+import logo from '../../assets/logo.jpg';
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { login, administratorLogin } from '@/lib/features/auth/authSlice';
 import { AxiosRequests } from '../utils/axiosRequests';
@@ -70,7 +70,7 @@ const Navbar = () => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
 
-              <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+              <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Services
               </Link>
 
