@@ -50,7 +50,7 @@ const Navbar = () => {
   }, [])
 
   return (
-    <nav className="bg-gray-900 text-white p-3">
+    <nav className="bg-white text-gray-700 sticky top-0 p-3 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
@@ -82,9 +82,9 @@ const Navbar = () => {
                 Jobs
               </Link>
 
-              <Link href="/" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+              {/* <Link href="/" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 News
-              </Link>
+              </Link> */}
 
               {isAuthenticated ? (
                 <Link href='/profile'>

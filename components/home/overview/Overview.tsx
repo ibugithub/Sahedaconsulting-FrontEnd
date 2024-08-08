@@ -3,7 +3,7 @@
 import "./overview.css";
 import { useRef } from "react";
 import { useInView, motion } from "framer-motion";
-import peopleImg from "../../assets/people.webp";
+import peopleImg from "../../../assets/people.webp";
 import Image from "next/image";
 
 const variants = {

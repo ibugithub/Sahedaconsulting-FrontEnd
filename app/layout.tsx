@@ -23,7 +23,7 @@ export default function RootLayout({
         <body className="bg-slate-400">
           <Navbar />
           <ToastContainer />
-          <div className=" min-h-screen text-black dark:text-white bg-gradient-to-b from-gray-200 to-white dark:from-black dark:to-black ">{children}</div>
+          <div className=" min-h-screen bg-white">{children}</div>
           <Footer />
         </body>
       </html>
