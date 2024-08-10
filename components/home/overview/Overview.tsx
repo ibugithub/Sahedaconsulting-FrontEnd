@@ -34,39 +34,48 @@ const Overview = () => {
       ref={ref}
       animate={isInView && "animate"}
     >
-      <motion.div className="flex-1 flex items-center justify-end mt-24 pr-5 space-x-5 animate-fadeIn" variants={variants}>
-        <div className="flex flex-col items-end space-y-5">
-          <p className="text-[#aaa] text-xl font-light text-right">
+      <motion.div 
+        className="flex-1 flex flex-col md:flex-row items-center justify-end mt-10 md:mt-24 md:pr-5 space-y-5 md:space-y-0 md:space-x-5 animate-fadeIn" 
+        variants={variants}
+      >
+        <div className="flex flex-col items-center md:items-end space-y-5">
+          <p className="text-[#aaa] text-lg md:text-xl font-light text-center md:text-right">
             We focus on helping your brand grow
-            <br /> and move forward
+            <br className="hidden md:block" /> and move forward
           </p>
-          <hr className="w-[400px] border-t border-[#555] animate-grow" />
+          <hr className="w-full md:w-[400px] border-t border-[#555] animate-grow" />
         </div>
       </motion.div>
 
-      <motion.div className="flex-2 flex flex-col items-center justify-center space-y-5 text-center" variants={variants}>
-        <div className="flex items-center justify-center space-x-5">
+      <motion.div 
+        className="flex-2 flex flex-col items-center justify-center space-y-5 text-center" 
+        variants={variants}
+      >
+        <div className="flex flex-col md:flex-row items-center justify-center space-y-5 md:space-y-0 md:space-x-5">
           <Image
             src={peopleImg}
             alt=""
-            className="w-[200px] h-[200px] rounded-full object-cover shadow-lg transition-transform duration-300 ease-in-out hover:scale-110"
+            className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] rounded-full object-cover shadow-lg transition-transform duration-300 ease-in-out hover:scale-110"
           />
-          <h1 className="text-4xl md:text-6xl font-light text-white animate-slideIn">
+          <h1 className="text-3xl md:text-6xl font-light text-white animate-slideIn">
             <motion.b whileHover={{ color: "#ff00fe" }}>Unique</motion.b> Solutions
           </h1>
         </div>
-        <div className="flex items-center justify-center space-x-5">
-          <h1 className="text-4xl md:text-6xl font-light text-white animate-slideIn">
+        <div className="flex flex-col md:flex-row items-center justify-center space-y-5 md:space-y-0 md:space-x-5">
+          <h1 className="text-3xl md:text-6xl font-light text-white animate-slideIn">
             <motion.b whileHover={{ color: "#119A46" }}>For your</motion.b> Business.
           </h1>
-          <button className="w-[200px] h-[50px] rounded-full bg-[#ff6600] text-white text-lg font-medium shadow-lg transition duration-300 ease-in-out hover:bg-[#e65c00] hover:scale-105">
+          <button className="w-full md:w-[200px] h-[50px] rounded-full bg-[#ff6600] text-white text-lg font-medium shadow-lg transition duration-300 ease-in-out hover:bg-[#e65c00] hover:scale-105">
             WHAT WE DO?
           </button>
         </div>
       </motion.div>
 
-      <motion.div className="flex-2 flex max-w-[1366px] mx-auto p-5 animate-fadeIn" variants={variants}>
-        <p className="text-[#ccc] text-lg md:text-xl font-light leading-relaxed">
+      <motion.div 
+        className="flex-2 flex max-w-[1366px] mx-auto p-5 animate-fadeIn text-center md:text-left" 
+        variants={variants}
+      >
+        <p className="text-[#ccc] text-base md:text-lg font-light leading-relaxed">
           Saheda Consulting LLC is established in the Emirate of Dubai in 2023. The vision of Saheda Consulting is to provide ghost
           consultancy/support consulting services for major consulting organizations in the field of engineering, management and information technology.
           <br />

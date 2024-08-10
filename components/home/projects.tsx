@@ -22,18 +22,19 @@ export const Projects = () => {
         <h1 className="text-3xl font-bold mb-4">FEATURED PROJECTS</h1>
         <h2 className="text-2xl text-gray-600">Our Case Studies</h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {projects.map((project, index) => (
           <div
             key={index}
-            className={`group relative overflow-hidden rounded-lg shadow-lg 
-              ${index % 2 === 0 ? 'col-span-2 row-span-1' : 'col-span-1 row-span-2'}
-              sm:col-span-1 sm:row-span-1`}
+            className="relative overflow-hidden rounded-lg shadow-lg group"
           >
             <Image
               src={project.src}
               alt={project.alt}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 ease-in-out"
+              layout="responsive"
+              width={500}
+              height={500}
             />
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4 text-white text-lg font-semibold transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100">
               {project.title}
