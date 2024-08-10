@@ -49,7 +49,7 @@ export const ContForServices = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className="flex flex-col items-center  min-h-screen pt-12">
       <h2 className="text-2xl font-bold mb-5">Contact For Services</h2>
       <form onSubmit={handleSubmit} className="w-full max-w-sm">
         <div className="md:flex md:items-center mb-6">

@@ -117,18 +117,19 @@ const Navbar = () => {
           </div>
 
           {/* mobile Nav */}
-          <div className={`${showDropdown ? 'block' : 'hidden'} flex gap-3 absolute top-1 right-5 bg-black border-gray-100 rounded border-2`} >
+          <div className={`${showDropdown ? 'block' : 'hidden'} flex gap-3 absolute top-1 right-5 bg-black border-gray-100 rounded border-2 text-white p-1`} >
             <div className="flex flex-col items-baseline space-x-4 ml-0">
+
+              <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
+                Services
+              </Link>
+
               <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Connect
               </Link>
 
               <Link href="/findWork" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 Jobs
-              </Link>
-
-              <Link href="/findWork" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                News
               </Link>
 
               {isAuthenticated ? (
