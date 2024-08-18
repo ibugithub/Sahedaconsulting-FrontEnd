@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className="bg-slate-400">
+        <body className="bg-white">
           <Navbar />
           <ToastContainer />
           <div className=" min-h-screen bg-white">{children}</div>

@@ -20,7 +20,7 @@ export const ShowUsers = () => {
   }
   useEffect(() => { getUsers(); }, []);
   return <>
-    <div className="flex flex-col items-center pt-7">
+    <div className="flex flex-col items-center pt-7 text-gray-800">
       <div>
         {users && (users.map((user) => (
           <div className="flex flex-col mb-6">
