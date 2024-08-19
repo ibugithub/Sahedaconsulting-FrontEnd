@@ -123,7 +123,8 @@ export const ServiceDetails = ({ id }: { id: string }) => {
             <div className="space-y-4">
               {service.proposals.length > 0 ? (
                 service.proposals.map((proposal) => (
-                  <Link href={`/adminDashboard/freelancerDetails/${proposal.freelancer._id}`}>
+                  // <Link href={`/adminDashboard/freelancerDetails/${proposal.freelancer._id}`}>
+                    <Link href={`/adminDashboard/proposals/${proposal._id}`}>
                     <div key={proposal._id} className="p-4 mb-3 bg-gray-100 rounded-lg flex justify-between items-center">
                       <div> 
                         <p className="text-gray-900 font-bold">{proposal.freelancer.user.firstName}</p>
