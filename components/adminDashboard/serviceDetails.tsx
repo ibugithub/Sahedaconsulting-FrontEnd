@@ -13,12 +13,7 @@ export const ServiceDetails = ({ id }: { id: string }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [service, setService] = useState<ServiceInterface | null>(null);
-  const [proposalData, setProposalData] = useState({
-    userId: '',
-    service: id,
-    coverLetter: '',
-    price: 0,
-  });
+
 
   const fetchDetails = async () => {
     try {
@@ -43,10 +38,6 @@ export const ServiceDetails = ({ id }: { id: string }) => {
         const url = `/users/isAdministrator`;
         const user = await protectedRoute.get(url);
         const id = user.data.user._id
-        setProposalData((prev) => ({
-          ...prev,
-          userId: id,
-        }))
         setIsLoading(false);
       } catch (error) {
         console.log('Error while checking admin user at serviceDetails.tsx', error);
@@ -59,34 +50,6 @@ export const ServiceDetails = ({ id }: { id: string }) => {
     fetchDetails();
     fetchUserId();
   }, []);
-
-  const handleHire = async (e: React.FormEvent, freelancer: string, service: string) => {
-    e.preventDefault();
-    // if no userId navigate to singin
-    if (!proposalData.userId) {
-      router.push('/signin');
-      toast.info('Unauthorised');
-      return;
-    }
-
-    // send proposals data to add proposal
-    try {
-      const url = `/admin/hireFreelancer/`
-      const data = { 'freelancerId': freelancer, 'serviceId': service }
-      const response = await protectedRoute.post(url, data);
-      if (response.status === 201) {
-        setProposalData((prev) => ({
-          ...prev,
-          coverLetter: '',
-          price: 0,
-        }))
-        toast.success('Hired successfully');
-        await fetchDetails();
-      }
-    } catch (error) {
-      console.error('Error submitting proposal:', error);
-    }
-  };
 
   if (isLoading) {
     return (
@@ -123,26 +86,12 @@ export const ServiceDetails = ({ id }: { id: string }) => {
             <div className="space-y-4">
               {service.proposals.length > 0 ? (
                 service.proposals.map((proposal) => (
-                  // <Link href={`/adminDashboard/freelancerDetails/${proposal.freelancer._id}`}>
                     <Link href={`/adminDashboard/proposals/${proposal._id}`}>
                     <div key={proposal._id} className="p-4 mb-3 bg-gray-100 rounded-lg flex justify-between items-center">
                       <div> 
                         <p className="text-gray-900 font-bold">{proposal.freelancer.user.firstName}</p>
                         <p className="text-gray-600">{proposal.freelancer.user.email}</p>
                       </div>
-                      {proposal.status === 'accepted' ? (
-                        <button
-                          className="bg-green-500 text-white px-4 py-2 rounded-md cursor-none"
-                        >
-                          Hired
-                        </button>
-                      ) : (<button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
-                        onClick={(e) => handleHire(e, proposal.freelancer._id, service._id)}
-                      >
-                        Hire
-                      </button>)}
-
                     </div>
                   </Link>
                 ))

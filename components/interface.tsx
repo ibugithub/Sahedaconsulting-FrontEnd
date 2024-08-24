@@ -80,3 +80,10 @@ import { useRouter } from "next/navigation";
 type NextNavigationRouter = ReturnType<typeof useRouter>;
 export interface CustomRouter extends NextNavigationRouter {
 }
+
+export interface UserInfoInterface {
+  user : UserInterface,
+  freelancer : FreelancersInterface,
+  proposal : ProposalInterface,
+  service : ServiceInterface
+}
