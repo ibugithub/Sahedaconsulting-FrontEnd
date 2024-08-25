@@ -1,3 +1,9 @@
+export enum UserRole {
+  Buyer = 'buyer',
+  Freelancer = 'freelancer',
+  Administrator = 'administrator',
+}
+
 export interface UserInterface {
   _id: string;
   firstName: string;
@@ -6,7 +12,7 @@ export interface UserInterface {
   email: string;
   password?: string;
   image?: string;
-  role: 'buyer' | 'freelancer' | 'administrator';
+  role: UserRole;
 }
 
 export interface employmentHistoryObj {

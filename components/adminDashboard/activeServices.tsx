@@ -71,7 +71,7 @@ export const ShowServices = () => {
       toast.success("Service Trashed successfully");
       setError("");
     } catch (err: any) {
-      console.error("Error Trashing service", err.response.data.customCode);
+      console.error("Error Trashing service", err);
       if (err.response.data.customCode === 17) {
         setError(err.response.data.error);
       } else if (err.response.status === 401) {

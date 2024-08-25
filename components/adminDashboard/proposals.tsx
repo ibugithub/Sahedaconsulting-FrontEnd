@@ -4,6 +4,7 @@ import { AxiosRequests } from "../utils/axiosRequests";
 import { UserInfoInterface } from "../interface";
 import Link from "next/link";
 import { handleHire } from "./handleHire";
+import { BounceLoader, } from "react-spinners";
 
 export const FreelancerProposals = ({ id }: { id: string }) => {
   const [userInfo, setUserInfo] = useState<UserInfoInterface | null>(null);
@@ -31,7 +32,14 @@ export const FreelancerProposals = ({ id }: { id: string }) => {
    await handleHire(e, freelancer._id, service._id);
     getUserInfo();
   }
-  if (!userInfo) return <div className="text-gray-800">Loading...</div>;
+
+  if (!userInfo) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <BounceLoader color="#6366f1" size={60} />
+      </div>
+    );
+  }
 
   const { user, freelancer, proposal, service } = userInfo;
 
