@@ -38,7 +38,7 @@ const FreelancerProfile = () => {
   });
 
 
-  const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969"
+  const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
   useEffect(() => {
     const fetchInfo = async () => {
       const accessToken = localStorage.getItem("accessToken") ?? "";

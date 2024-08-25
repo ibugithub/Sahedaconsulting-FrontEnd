@@ -7,7 +7,7 @@ import Image from "next/image";
 
 
 export const ShowUsers = () => {
-  const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969";
+  const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
   const [users, setUsers] = useState<UserInterface[]>([]);
   const protectedRoute = AxiosRequests();
 
@@ -37,6 +37,7 @@ export const ShowUsers = () => {
             user._id === userId ? { ...user, role: newRole } : user
           )
         );
+        getUsers();
       }
     } catch (error) {
       console.log("Error occurred while changing user role", error);

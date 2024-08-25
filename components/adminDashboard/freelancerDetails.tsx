@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export const FreelancerDetails = ({ id }: { id: string }) => {
   const [details, setDetails] = useState<any>({});
   const protectedRoute = AxiosRequests();
-  const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969";
+  const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
 
   const getDetails = async () => {
     const url = 'admin/sendFreelancerDetails/';

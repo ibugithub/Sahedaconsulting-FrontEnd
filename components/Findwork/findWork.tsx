@@ -26,7 +26,7 @@ export const FindWork = () => {
       console.error("Error while fetching services at findWork.tsx", error);
     }
   };
-  const cloudinaryUrl = "https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969"
+  const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
 
   useEffect(() => {
     const fetchServices = async () => {
