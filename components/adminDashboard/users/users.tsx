@@ -1,15 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
-import { AxiosRequests } from "../utils/axiosRequests";
-import { UserInterface, UserRole } from "../interface";
-import defaultAvatar from "../../assets/defaultAvatar.png";
+import { AxiosRequests } from "../../utils/axiosRequests";
+import { UserInterface, UserRole } from "../../interface";
+import defaultAvatar from "../../../assets/defaultAvatar.png";
 import Image from "next/image";
-
+import { toast } from "react-toastify";
+import { AddUserForm } from "./addUserForm";
 
 export const ShowUsers = () => {
   const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
   const [users, setUsers] = useState<UserInterface[]>([]);
   const protectedRoute = AxiosRequests();
+  const [showForm, setShowForm] = useState(false);
 
   const getUsers = async () => {
     const url = '/admin/showUsers/';
@@ -28,19 +30,27 @@ export const ShowUsers = () => {
   };
 
   const changeUserRole = async (userId: string, newRole: UserRole) => {
-    const url = `/admin/changeUserRole/${userId}`;
+    const url = `/admin/changeUserRole`;
     try {
-      const response = await protectedRoute.put(url, { role: newRole });
+      const response = await protectedRoute.put(url, { role: newRole, user: userId });
       if (response.status === 200) {
         setUsers(prevUsers =>
           prevUsers.map(user =>
             user._id === userId ? { ...user, role: newRole } : user
           )
         );
-        getUsers();
       }
     } catch (error) {
       console.log("Error occurred while changing user role", error);
+    }
+  };
+
+  const deleteUser = async (id: string) => {
+    const url = `/admin/deleteUser/${id}`;
+    const response = await protectedRoute.delete(url);
+    if (response.status === 201) {
+      toast.success("User deleted successfully");
+      getUsers();
     }
   };
 
@@ -51,6 +61,26 @@ export const ShowUsers = () => {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">User Management</h1>
+
+      {/* Button to toggle Add User Form visibility */}
+      <div className="text-center mb-6">
+        <button
+          onClick={() => setShowForm((prev) => !prev)} // Toggle form visibility
+          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          {showForm ? "Hide Add User Form" : "Show Add User Form"}
+        </button>
+      </div>
+
+      {/* Conditionally render the Add User Form based on showForm state */}
+      {showForm && (
+        <div className="mb-6 bg-white shadow-md rounded-lg p-6">
+          <AddUserForm getUsers={getUsers} />
+        </div>
+      )}
+
+
+      {/* Display Users */}
       <div className="flex flex-col items-center space-y-4">
         {users && users.map((user) => (
           <div key={user._id} className="flex flex-col md:flex-row items-center bg-white shadow-md rounded-lg p-4 w-full max-w-3xl">
@@ -68,9 +98,9 @@ export const ShowUsers = () => {
               <div className="text-sm text-gray-500">{user.email}</div>
               <div className="text-sm text-gray-600 mt-1">Role: {user.role}</div>
             </div>
-            <div className="mt-4 md:mt-0 md:ml-4">
-              <label htmlFor={`role-select-${user._id}`} className="sr-only">Change Role for {user.firstName} {user.lastName}</label>
+            <div className="mt-4 md:mt-0 md:ml-4 flex space-x-2">
               <select
+                title="Role"
                 id={`role-select-${user._id}`}
                 className="bg-gray-200 border border-gray-300 text-gray-800 py-2 px-4 rounded-md"
                 value={user.role}
@@ -79,7 +109,16 @@ export const ShowUsers = () => {
                 <option value="buyer">Buyer</option>
                 <option value="freelancer">Freelancer</option>
                 <option value="administrator">Administrator</option>
+                <option value="engineeringAdmin">Engineering Admin</option>
+                <option value="managementAdmin">Management Admin</option>
+                <option value="itAdmin">IT Admin</option>
               </select>
+              <button
+                onClick={() => deleteUser(user._id)}
+                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}
