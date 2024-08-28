@@ -141,28 +141,6 @@ export const ShowUsers = () => {
               <div className="text-sm text-gray-500">{user.email}</div>
               <div className="text-sm text-gray-600 mt-1">Role: {user.role}</div>
             </div>
-            {/* <div className="mt-4 md:mt-0 md:ml-4 flex space-x-2"> */}
-              {/* <select
-                title="Role"
-                id={`role-select-${user._id}`}
-                className="bg-gray-200 border border-gray-300 text-gray-800 py-2 px-4 rounded-md"
-                value={user.role}
-                onChange={(e) => changeUserRole(user._id, e.target.value as UserRole)}
-              >
-                <option value="buyer">Buyer</option>
-                <option value="freelancer">Freelancer</option>
-                <option value="administrator">Administrator</option>
-                <option value="engineeringAdmin">Engineering Admin</option>
-                <option value="managementAdmin">Management Admin</option>
-                <option value="itAdmin">IT Admin</option>
-              </select> */}
-              {/* <button
-                onClick={() => deleteUser(user._id)}
-                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-              >
-                Delete
-              </button> */}
-            {/* </div> */}
           </div>
         ))}
       </div>
