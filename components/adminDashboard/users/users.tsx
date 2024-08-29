@@ -81,7 +81,7 @@ export const ShowUsers = () => {
 
       {/* Display Admin Users */}
       <div className="flex flex-col items-center space-y-4">
-        <h1 className="text-white mt-10 text-md bg-yellow-600 p-2">Admin Users</h1>
+        <h1 className="text-white mt-10 text-md bg-yellow-600 p-2 rounded">Admin Users</h1>
         {users && users.filter(user => user.role !== 'freelancer' && user.role !== 'buyer').map((user) => (
           <div key={user._id} className="flex flex-col md:flex-row items-center bg-white shadow-md rounded-lg p-4 w-full max-w-3xl">
             <div className="flex-shrink-0">
@@ -124,7 +124,7 @@ export const ShowUsers = () => {
 
       {/* Display Normal Users */}
       <div className="flex flex-col items-center space-y-4">
-        <h1 className="text-white mt-10 text-md bg-green-600 p-2">Normal Users</h1>
+        <h1 className="text-white mt-10 text-md bg-green-600 p-2 rounded">Normal Users</h1>
         {users && users.filter(user => user.role === 'freelancer' || user.role === 'buyer').map((user) => (
           <div key={user._id} className="flex flex-col md:flex-row items-center bg-white shadow-md rounded-lg p-4 w-full max-w-3xl">
             <div className="flex-shrink-0">

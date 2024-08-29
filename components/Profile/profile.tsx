@@ -5,8 +5,7 @@ import { BounceLoader } from "react-spinners";
 import { AxiosRequests } from "../utils/axiosRequests";
 import FreelancerProfile from "./freelancerProfile";
 import BuyerProfile from "./buyerProfile";
-import AdministratorProfile from "./adminstratorProfile";
-
+import { AdministratorProfile } from "./adminstratorProfile";
 
 const Profile = () => {
   const router = useRouter();
@@ -25,7 +24,6 @@ const Profile = () => {
           const response = await protectedRoute.post(url)
           setIsLoading(false);
           if (response.status === 200) {
-            console.log('the employment history is', response.data.userInfo)
             setUserRole(response.data.userInfo.role)
           } else {
             setIsAuthenticated('notAuthenticated');

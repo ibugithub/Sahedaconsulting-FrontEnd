@@ -8,10 +8,10 @@ import { BounceLoader, BarLoader } from "react-spinners";
 import { AxiosRequests } from "../utils/axiosRequests";
 import { EditProfile } from "./editProfile";
 import { FreelancUserInterface } from "../interface";
-import { EmploymentHistory } from "./employmentHistory";
+import { ChangePassword } from "./changePass";
 
 
-const AdministratorProfile = () => {
+export const AdministratorProfile = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +48,6 @@ const AdministratorProfile = () => {
           const response = await protectedRoute.post(url)
           setIsLoading(false);
           if (response.status === 200) {
-            console.log('the employment history is', response.data.userInfo)
             setUserInfo({
               id: response.data.userInfo.id,
               first_name: response.data.userInfo.firstName,
@@ -266,24 +265,29 @@ const AdministratorProfile = () => {
                   <span className="font-semibold">Email:</span> {userInfo.email}
                 </p>
               </div>
-
-              { userInfo.role === 'freelancer' && (
-                <EmploymentHistory userInfo= {userInfo} setUserInfo={setUserInfo} isEditMode={isEditMode} protectedRoute={protectedRoute} />
-              )}
-
             </div>
 
-            {isEditMode ? (
-              <EditProfile handleSaveChanges={handleSaveChanges} toggleEditMode={toggleEditMode} />
-            ) : (
-              <button
-                type="button"
-                className="w-full bg-gradient-to-br from-red-500 to-red-700 text-white font-semibold py-3 px-6 rounded-lg hover:from-red-600 hover:to-red-800 transition-colors duration-300"
-                onClick={handleLogoutClick}
-              >
-                Logout
-              </button>
-            )}
+            <div className="flex w-full justify-between">
+              <div className="w-[40%]">
+                <ChangePassword />
+              </div>
+              
+              <div className="w-[30%]">
+                {isEditMode ? (
+                  <EditProfile handleSaveChanges={handleSaveChanges} toggleEditMode={toggleEditMode} />
+                ) : (
+                  <button
+                    type="button"
+                    className="w-full bg-gradient-to-br from-red-500 to-red-700 text-white font-semibold py-2 px-2 rounded-lg hover:from-red-600 hover:to-red-800 transition-colors duration-300"
+                    onClick={handleLogoutClick}
+                  >
+                    Logout
+                  </button>
+                )}
+              </div>
+            </div>
+
+
           </div>
         )}
       </div>
@@ -291,4 +295,3 @@ const AdministratorProfile = () => {
   );
 };
 
-export default AdministratorProfile;
