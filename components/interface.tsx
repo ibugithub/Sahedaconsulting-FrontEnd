@@ -1,17 +1,19 @@
 export enum UserRole {
-  Buyer = 'buyer',
-  Freelancer = 'freelancer',
-  Administrator = 'administrator',
+  buyer = 'buyer',
+  freelancer = 'freelancer',
+  administrator = 'administrator',
+  itAdmin = 'itAdmin',
+  engineeringAdmin = 'engineeringAdmin',
+  managementAdmin = 'managementAdmin'
 }
 
 export interface UserInterface {
   _id: string;
   firstName: string;
   lastName: string;
-  name: string;
   email: string;
   password?: string;
-  image?: string;
+  image?: string | null;
   role: UserRole;
 }
 
@@ -43,7 +45,7 @@ export interface FreelancersInterface {
 }
 
 export interface FreelancUserInterface {
-  id: string;
+  _id: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -52,11 +54,25 @@ export interface FreelancUserInterface {
   overview?: string,
   skills? : string[],
   address? : string,
-  role: 'buyer' | 'freelancer' | 'administrator',
+  role: "freelancer",
   phone?: string,
   hireCount?: number,
   employmentHistory: employmentHistoryObj[],
 }
+
+export interface BuyerUserInterface {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  image: File | string | unknown;
+  address? : string,
+  role: "buyer",
+  phone?: string,
+  companyName?: string,
+  companyDescription?: string
+}
+
 
 export interface ServiceInterface {
   _id: string;

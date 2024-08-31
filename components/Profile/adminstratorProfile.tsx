@@ -1,86 +1,65 @@
-
-"use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Logout } from "../Logout/logout";
-import { useAppDispatch } from "@/lib/hooks"
-import { BounceLoader, BarLoader } from "react-spinners";
+import { useAppDispatch } from "@/lib/hooks";
+import { BounceLoader } from "react-spinners";
 import { AxiosRequests } from "../utils/axiosRequests";
-import { EditProfile } from "./editProfile";
-import { FreelancUserInterface } from "../interface";
+import { UserInterface } from "../interface";
 import { ChangePassword } from "./changePass";
+import { PencilIcon, CameraIcon, LogOutIcon } from "lucide-react";
+import { toast } from "react-toastify";
+import { UserRole } from "../interface";
 
 
 export const AdministratorProfile = () => {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
   const protectedRoute = AxiosRequests(router);
+  const [isLoading, setIsLoading] = useState(true);
   const [imageLoading, setImageLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [fullView, setFullview] = useState(false);
-
-  const [userInfo, setUserInfo] = useState<FreelancUserInterface>({
-    id: "",
-    first_name: "",
-    last_name: "",
+  const [userInfo, setUserInfo] = useState<UserInterface>({
+    _id: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    role: "freelancer" || "buyer" || "administrator",
-    profileImage: null as File | unknown,
-    profileTitle: "",
-    overview: "",
-    skills: [],
-    address: "",
-    phone: "",
-    hireCount: 0,
-    employmentHistory: []
+    role: UserRole.administrator,
+    image: null,
+    password: "",
   });
 
-
   const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
-  useEffect(() => {
-    const fetchInfo = async () => {
-      const accessToken = localStorage.getItem("accessToken") ?? "";
-      if (accessToken) {
-        const url = '/users/profile'
-        try {
-          const response = await protectedRoute.post(url)
-          setIsLoading(false);
-          if (response.status === 200) {
-            setUserInfo({
-              id: response.data.userInfo.id,
-              first_name: response.data.userInfo.firstName,
-              last_name: response.data.userInfo.lastName,
-              email: response.data.userInfo.email,
-              role: response.data.userInfo.role,
-              profileImage: response.data.userInfo.image,
-              profileTitle: response.data.userInfo.profileTitle,
-              overview: response.data.userInfo.overview,
-              skills: response.data.userInfo.skills,
-              address: response.data.userInfo.address,
-              phone: response.data.userInfo.phone,
-              hireCount: response.data.userInfo.hirecount,
-              employmentHistory: response.data.userInfo.employmentHistory
-            });
-          } else {
-            setIsAuthenticated('notAuthenticated');
-          }
-        } catch (err) {
-          setIsAuthenticated('notAuthenticated');
-          console.error("Error while fetching profile data at profile.tsx", err)
+
+  const fetchInfo = async () => {
+    const accessToken = localStorage.getItem("accessToken") ?? "";
+    if (accessToken) {
+      try {
+        const response = await protectedRoute.post('/users/profile');
+        if (response.status === 200) {
+          setUserInfo({
+            ...response.data.userInfo,
+            firstName: response.data.userInfo.firstName,
+            lastName: response.data.userInfo.lastName,
+            profileImage: response.data.userInfo.image,
+            role: response.data.userInfo.role
+          });
+        } else {
+          router.push('/signin');
         }
+      } catch (err) {
+        console.error("Error while fetching profile data", err);
+        router.push('/signin');
+      } finally {
+        setIsLoading(false);
       }
-      else {
-        setIsAuthenticated('notAuthenticated');
-      }
+    } else {
+      router.push('/signin');
     }
+  };
+
+  useEffect(() => {
     fetchInfo();
   }, []);
-
-  if (isAuthenticated == "notAuthenticated") {
-    router.push('/signin')
-  }
 
   const handleLogoutClick = () => {
     Logout(router, dispatch);
@@ -88,44 +67,48 @@ export const AdministratorProfile = () => {
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setImageLoading(true);
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      const url = '/users/setImage'
-      const formData = { "image": file, "oldImage": userInfo.profileImage }
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("oldImage", userInfo.image as string);
       try {
-        const response = await protectedRoute.post(url, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
+        const response = await protectedRoute.post('/users/setImage', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
         if (response.status === 200) {
-          setUserInfo({ ...userInfo, profileImage: response.data.imgPath });
-          setImageLoading(false)
+          setUserInfo({ ...userInfo, image: response.data.imgPath });
         }
       } catch (error) {
-        console.log('Error while uploading user image', error)
+        console.log('Error while uploading user image', error);
+      } finally {
+        setImageLoading(false);
       }
     }
-  }
+  };
 
   const toggleEditMode = () => {
-    setIsEditMode(!isEditMode);
+    fetchInfo();
+    setIsEditMode(!isEditMode)
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setUserInfo({ ...userInfo, [name]: name === 'skills' ? value.split(',').map(skill => skill.trim()) : value });
+    setUserInfo({ ...userInfo, [name]: value });
   };
 
-
-  const HandleView = () => {
-    setFullview(!fullView);
-  }
   const handleSaveChanges = async () => {
     toggleEditMode();
-    const url = "/users/saveUserData";
-    const userData = userInfo;
-    const response = await protectedRoute.post(url, userData);
+    try {
+      const response = await protectedRoute.post("/users/saveUserData", {userInfo});
+      if(response.status === 201) {
+        toast.success("User data saved successfully");
+        fetchInfo();
+      }
+    } catch (error) {
+      console.error("Error saving user data", error);
+      toast.error("Error saving user data");
+    }
   };
 
   if (isLoading) {
@@ -135,163 +118,113 @@ export const AdministratorProfile = () => {
       </div>
     );
   }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-100">
-      <div className="bg-white shadow-xl rounded-3xl p-8 max-w-xl w-full my-3">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-4xl font-extrabold text-gray-900">Profile</h1>
-          <button
-            className="text-gray-700 hover:text-gray-900 focus:outline-none"
-            onClick={toggleEditMode}
-          >
-            <span className="sr-only">Edit Profile</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-              />
-            </svg>
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-4 sm:p-8 md:pt-[5rem] lg:pt-[7rem]">
+      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-white flex justify-between pr-10">
+          <h1 className="text-3xl font-bold">Profile</h1>
+          <PencilIcon className="h-6 w-6 text-white cursor-pointer" onClick={toggleEditMode} />
         </div>
-        {imageLoading ? (
-          <div className="flex justify-center items-center h-20">
-            <BarLoader color="#6366f1" />
-          </div>
-        ) : (
-          <div className="flex flex-col items-center mb-8">
-            <div className="relative mb-4">
-              {userInfo.profileImage ? (
-                <img
-                  src={`${cloudinaryUrl}/${userInfo.profileImage}`}
-                  alt="Profile"
-                  className="w-32 h-32 rounded-full border-4 border-purple-500 shadow-lg"
-                />
-              ) : (
-                <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center text-gray-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-16 h-16"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+        <div className="p-6 space-y-6">
+          <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="relative group">
+                <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-indigo-500 ring-opacity-50">
+                  {userInfo.image ? (
+                    <img
+                      src={`${cloudinaryUrl}/${userInfo.image}`}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
                     />
-                  </svg>
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">
+                      {userInfo.firstName[0]}{userInfo.lastName[0]}
+                    </div>
+                  )}
                 </div>
-              )}
-              <label
-                htmlFor="profileImage"
-                className="absolute bottom-0 right-0 bg-gradient-to-br from-purple-500 to-blue-500 text-white rounded-full p-2 hover:from-purple-600 hover:to-blue-600 transition-colors duration-300 cursor-pointer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                <label
+                  htmlFor="profileImage"
+                  className="absolute bottom-0 right-0 bg-white text-indigo-600 rounded-full p-2 cursor-pointer hover:bg-indigo-100 transition-colors duration-300 shadow-md"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-              </label>
-              <input
-                placeholder="image"
-                id="profileImage"
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
+                  <CameraIcon className="h-5 w-5" />
+                </label>
+                <input
+                  title="image upload"
+                  id="profileImage"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </div>
+              {imageLoading && <p className="text-sm text-gray-500">Uploading...</p>}
             </div>
-            <div className="mb-8 flex flex-col gap-4 w-full">
-              <div>
-                {isEditMode ? (
-                  <input
-                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
-                    name="first_name"
-                    type="text"
-                    value={userInfo.first_name}
-                    placeholder="First Name"
-                    onChange={handleInputChange}
-                  />
-                ) : (
-                  <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">First Name:</span> {userInfo.first_name}
-                  </p>
-                )}
+            <div className="flex-1 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-600">First Name</label>
+                  {isEditMode ? (
+                    <input
+                      name="firstName"
+                      value={userInfo.firstName}
+                      onChange={handleInputChange}
+                      placeholder="First Name"
+                      className="text-gray-800 p-1 mt-1 block w-full rounded-md ring-1 focus:ring-1 ring-red-200 focus:ring-red-700  outline-none"
+                    />
+                  ) : (
+                    <p className="mt-1 text-lg text-gray-800">{userInfo.firstName}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Last Name</label>
+                  {isEditMode ? (
+                    <input
+                      name="lastName"
+                      value={userInfo.lastName}
+                      onChange={handleInputChange}
+                      placeholder="Last Name"
+                      className="text-gray-800 p-1 mt-1 block w-full rounded-md ring-1 focus:ring-1 ring-red-200 focus:ring-red-700  outline-none"
+                    />
+                  ) : (
+                    <p className="mt-1 text-lg text-gray-800">{userInfo.lastName}</p>
+                  )}
+                </div>
               </div>
               <div>
-                {isEditMode ? (
-                  <input
-                    className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
-                    type="text"
-                    name="last_name"
-                    value={userInfo.last_name}
-                    placeholder="Last Name"
-                    onChange={handleInputChange}
-                  />
-                ) : (
-                  <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">Last Name:</span> {userInfo.last_name}
-                  </p>
-                )}
+                <label className="text-sm font-medium text-gray-600">Email</label>
+                <p className="mt-1 text-lg text-gray-800">{userInfo.email}</p>
               </div>
-
               <div>
-                <p className="text-lg text-gray-700 mb-2">
-                  <span className="font-semibold">Email:</span> {userInfo.email}
-                </p>
+                <label className="text-sm font-medium text-gray-600">Role</label>
+                <p className="mt-1 text-lg text-gray-800 capitalize">{userInfo.role}</p>
               </div>
             </div>
-
-            <div className="flex w-full justify-between">
-              <div className="w-[40%]">
-                <ChangePassword />
-              </div>
-              
-              <div className="w-[30%]">
-                {isEditMode ? (
-                  <EditProfile handleSaveChanges={handleSaveChanges} toggleEditMode={toggleEditMode} />
-                ) : (
-                  <button
-                    type="button"
-                    className="w-full bg-gradient-to-br from-red-500 to-red-700 text-white font-semibold py-2 px-2 rounded-lg hover:from-red-600 hover:to-red-800 transition-colors duration-300"
-                    onClick={handleLogoutClick}
-                  >
-                    Logout
-                  </button>
-                )}
-              </div>
-            </div>
-
-
           </div>
-        )}
+          <div className="flex flex-col sm:flex-row justify-end items-center gap-4 pt-6 border-t border-gray-200">
+            <div className="w-full sm:w-auto">
+              <ChangePassword />
+            </div>
+            {isEditMode ? (
+              <button
+                onClick={handleSaveChanges}
+                className="w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold py-2 px-6 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md"
+              >
+                Save Changes
+              </button>
+            ) : (
+              <button
+                onClick={handleLogoutClick}
+                className="w-full sm:w-auto bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-6 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md flex items-center justify-center"
+              >
+                <LogOutIcon className="mr-2 h-4 w-4" /> Logout
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
+export default AdministratorProfile;

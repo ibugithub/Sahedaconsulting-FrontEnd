@@ -22,7 +22,7 @@ const FreelancerProfile = () => {
   const [fullView, setFullview] = useState(false);
 
   const [userInfo, setUserInfo] = useState<FreelancUserInterface>({
-    id: "",
+    _id: "",
     first_name: "",
     last_name: "",
     email: "",
@@ -50,7 +50,7 @@ const FreelancerProfile = () => {
           if (response.status === 200) {
             console.log('the employment history is', response.data.userInfo)
             setUserInfo({
-              id: response.data.userInfo.id,
+              _id: response.data.userInfo.id,
               first_name: response.data.userInfo.firstName,
               last_name: response.data.userInfo.lastName,
               email: response.data.userInfo.email,
