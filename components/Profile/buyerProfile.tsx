@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Logout } from "../Logout/logout";
@@ -18,7 +19,8 @@ export const BuyerProfile = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [userInfo, setUserInfo] = useState<BuyerUserInterface>({
-    _id: "",
+    userId: "",
+    buyerId: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -36,9 +38,12 @@ export const BuyerProfile = () => {
     if (accessToken) {
       try {
         const response = await protectedRoute.post('/users/profile');
+        console.log('the response is', response)
         if (response.status === 200) {
           setUserInfo({
             ...response.data.userInfo,
+            userId: response.data.userInfo.userId,
+            buyerId: response.data.userInfo.buyerId,
             firstName: response.data.userInfo.firstName,
             lastName: response.data.userInfo.lastName,
             image: response.data.userInfo.image,
@@ -105,8 +110,8 @@ export const BuyerProfile = () => {
   const handleSaveChanges = async () => {
     toggleEditMode();
     try {
-      const response = await protectedRoute.post("/users/saveUserData", {userInfo});
-      if(response.status === 201) {
+      const response = await protectedRoute.post("/users/saveUserData", { userInfo });
+      if (response.status === 201) {
         toast.success("User data saved successfully");
         fetchInfo();
       }
@@ -167,6 +172,8 @@ export const BuyerProfile = () => {
             </div>
             <div className="flex-1 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
                 <div>
                   <label className="text-sm font-medium text-gray-600">First Name</label>
                   {isEditMode ? (
@@ -195,6 +202,82 @@ export const BuyerProfile = () => {
                     <p className="mt-1 text-lg text-gray-800">{userInfo.lastName}</p>
                   )}
                 </div>
+
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Address</label>
+                  {isEditMode ? (
+                    <input
+                      name="address"
+                      value={userInfo.address}
+                      onChange={handleInputChange}
+                      placeholder="First Name"
+                      className="text-gray-800 p-1 mt-1 block w-full rounded-md ring-1 focus:ring-1 ring-red-200 focus:ring-red-700  outline-none"
+                    />
+                  ) : (
+                    <div className="text-gray-800">
+                      <p className="mt-1 text-lg text-gray-800">{userInfo.address}</p>
+                      {userInfo.address == "" && <p>  --- ---</p>}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Phone</label>
+                  {isEditMode ? (
+                    <input
+                      name="phone"
+                      value={userInfo.phone}
+                      onChange={handleInputChange}
+                      placeholder="Last Name"
+                      className="text-gray-800 p-1 mt-1 block w-full rounded-md ring-1 focus:ring-1 ring-red-200 focus:ring-red-700  outline-none"
+                    />
+                  ) : (
+
+                    <div className="text-gray-800">
+                      <p className="mt-1 text-lg text-gray-800">{userInfo.phone}</p>
+                      {userInfo.phone == "" && <p>  --- ---</p>} 
+                    </div>
+                  )}
+                </div>
+
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Company Name</label>
+                  {isEditMode ? (
+                    <input
+                      name="companyName"
+                      value={userInfo.companyName}
+                      onChange={handleInputChange}
+                      placeholder="First Name"
+                      className="text-gray-800 p-1 mt-1 block w-full rounded-md ring-1 focus:ring-1 ring-red-200 focus:ring-red-700  outline-none"
+                    />
+                  ) : (
+                    <div className="text-gray-800">
+                      <p className="mt-1 text-lg text-gray-800">{userInfo.companyName}</p>
+                      {userInfo.companyName == "" && <p>  --- ---</p> }
+                    </div>
+
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Company Description</label>
+                  {isEditMode ? (
+                    <input
+                      name="companyDescription"
+                      value={userInfo.companyDescription}
+                      onChange={handleInputChange}
+                      placeholder="Last Name"
+                      className="text-gray-800 p-1 mt-1 block w-full rounded-md ring-1 focus:ring-1 ring-red-200 focus:ring-red-700  outline-none"
+                    />
+                  ) : (
+                    <div className="text-gray-800">
+                      <p className="mt-1 text-lg ">{userInfo.companyDescription}</p>
+                      {userInfo.companyDescription == "" && <p>  --- ---</p>}
+                    </div>
+                  )}
+                </div>
+
+
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-600">Email</label>

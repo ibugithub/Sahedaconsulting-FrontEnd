@@ -3,11 +3,11 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BounceLoader } from "react-spinners";
 import { AxiosRequests } from "../utils/axiosRequests";
-import FreelancerProfile from "./freelancerProfile";
-import BuyerProfile from "./buyerProfile";
+import { FreelancerProfile } from "./freelancerProfile";
+import { BuyerProfile } from "./buyerProfile";
 import { AdministratorProfile } from "./adminstratorProfile";
 
-const Profile = () => {
+export const Profile = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -63,4 +63,3 @@ const Profile = () => {
   );
 };
 
-export default Profile;

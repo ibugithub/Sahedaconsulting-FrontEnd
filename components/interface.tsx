@@ -61,7 +61,8 @@ export interface FreelancUserInterface {
 }
 
 export interface BuyerUserInterface {
-  _id: string;
+  userId: string;
+  buyerId: string;
   firstName: string;
   lastName: string;
   email: string;

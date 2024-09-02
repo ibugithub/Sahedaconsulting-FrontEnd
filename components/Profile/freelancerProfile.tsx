@@ -11,7 +11,7 @@ import { FreelancUserInterface } from "../interface";
 import { EmploymentHistory } from "./employmentHistory";
 
 
-const FreelancerProfile = () => {
+export const FreelancerProfile = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -382,5 +382,3 @@ const FreelancerProfile = () => {
     </div>
   );
 };
-
-export default FreelancerProfile;
