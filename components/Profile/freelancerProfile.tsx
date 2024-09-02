@@ -6,9 +6,10 @@ import { Logout } from "../Logout/logout";
 import { useAppDispatch } from "@/lib/hooks"
 import { BounceLoader, BarLoader } from "react-spinners";
 import { AxiosRequests } from "../utils/axiosRequests";
-import { EditProfile } from "./editProfile";
 import { FreelancUserInterface } from "../interface";
 import { EmploymentHistory } from "./employmentHistory";
+import { ChangePassword } from "./changePass";
+import {  LogOutIcon } from "lucide-react";
 
 
 export const FreelancerProfile = () => {
@@ -359,23 +360,33 @@ export const FreelancerProfile = () => {
                   <span className="font-semibold">Hire Count:</span> {userInfo.hireCount}
                 </p>
               </div>
-              { userInfo.role === 'freelancer' && (
-                <EmploymentHistory userInfo= {userInfo} setUserInfo={setUserInfo} isEditMode={isEditMode} protectedRoute={protectedRoute} />
+              {userInfo.role === 'freelancer' && (
+                <EmploymentHistory userInfo={userInfo} setUserInfo={setUserInfo} isEditMode={isEditMode} protectedRoute={protectedRoute} />
               )}
 
             </div>
 
-            {isEditMode ? (
-              <EditProfile handleSaveChanges={handleSaveChanges} toggleEditMode={toggleEditMode} />
-            ) : (
-              <button
-                type="button"
-                className="w-full bg-gradient-to-br from-red-500 to-red-700 text-white font-semibold py-3 px-6 rounded-lg hover:from-red-600 hover:to-red-800 transition-colors duration-300"
-                onClick={handleLogoutClick}
-              >
-                Logout
-              </button>
-            )}
+            <div className="flex flex-col sm:flex-row justify-end items-center gap-4 pt-6 border-t border-gray-200">
+              <div className="w-full sm:w-auto">
+                <ChangePassword />
+              </div>
+              {isEditMode ? (
+                <button
+                  onClick={handleSaveChanges}
+                  className="w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold py-2 px-6 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md"
+                >
+                  Save Changes
+                </button>
+              ) : (
+                <button
+                  onClick={handleLogoutClick}
+                  className="w-full sm:w-auto bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-6 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md flex items-center justify-center"
+                >
+                  <LogOutIcon className="mr-2 h-4 w-4" /> Logout
+                </button>
+              )}
+            </div>
+
           </div>
         )}
       </div>
