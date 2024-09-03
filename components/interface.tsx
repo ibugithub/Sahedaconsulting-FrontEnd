@@ -46,8 +46,8 @@ export interface FreelancersInterface {
 
 export interface FreelancUserInterface {
   _id: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   profileImage: File | string | unknown;
   profileTitle?: string,

@@ -9,7 +9,8 @@ import { AxiosRequests } from "../utils/axiosRequests";
 import { FreelancUserInterface } from "../interface";
 import { EmploymentHistory } from "./employmentHistory";
 import { ChangePassword } from "./changePass";
-import {  LogOutIcon } from "lucide-react";
+import { toast } from "react-toastify";
+import { LogOutIcon } from "lucide-react";
 
 
 export const FreelancerProfile = () => {
@@ -24,8 +25,8 @@ export const FreelancerProfile = () => {
 
   const [userInfo, setUserInfo] = useState<FreelancUserInterface>({
     _id: "",
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     role: "freelancer" || "buyer" || "administrator",
     profileImage: null as File | unknown,
@@ -38,45 +39,45 @@ export const FreelancerProfile = () => {
     employmentHistory: []
   });
 
+  const fetchInfo = async () => {
+    const accessToken = localStorage.getItem("accessToken") ?? "";
+    if (accessToken) {
+      const url = '/users/profile'
+      try {
+        const response = await protectedRoute.post(url)
+        setIsLoading(false);
+        if (response.status === 200) {
+
+          setUserInfo({
+            _id: response.data.userInfo.id,
+            firstName: response.data.userInfo.firstName,
+            lastName: response.data.userInfo.lastName,
+            email: response.data.userInfo.email,
+            role: response.data.userInfo.role,
+            profileImage: response.data.userInfo.image,
+            profileTitle: response.data.userInfo.profileTitle,
+            overview: response.data.userInfo.overview,
+            skills: response.data.userInfo.skills,
+            address: response.data.userInfo.address,
+            phone: response.data.userInfo.phone,
+            hireCount: response.data.userInfo.hirecount,
+            employmentHistory: response.data.userInfo.employmentHistory
+          });
+        } else {
+          setIsAuthenticated('notAuthenticated');
+        }
+      } catch (err) {
+        setIsAuthenticated('notAuthenticated');
+        console.error("Error while fetching profile data at profile.tsx", err)
+      }
+    }
+    else {
+      setIsAuthenticated('notAuthenticated');
+    }
+  }
 
   const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
   useEffect(() => {
-    const fetchInfo = async () => {
-      const accessToken = localStorage.getItem("accessToken") ?? "";
-      if (accessToken) {
-        const url = '/users/profile'
-        try {
-          const response = await protectedRoute.post(url)
-          setIsLoading(false);
-          if (response.status === 200) {
-            console.log('the employment history is', response.data.userInfo)
-            setUserInfo({
-              _id: response.data.userInfo.id,
-              first_name: response.data.userInfo.firstName,
-              last_name: response.data.userInfo.lastName,
-              email: response.data.userInfo.email,
-              role: response.data.userInfo.role,
-              profileImage: response.data.userInfo.image,
-              profileTitle: response.data.userInfo.profileTitle,
-              overview: response.data.userInfo.overview,
-              skills: response.data.userInfo.skills,
-              address: response.data.userInfo.address,
-              phone: response.data.userInfo.phone,
-              hireCount: response.data.userInfo.hirecount,
-              employmentHistory: response.data.userInfo.employmentHistory
-            });
-          } else {
-            setIsAuthenticated('notAuthenticated');
-          }
-        } catch (err) {
-          setIsAuthenticated('notAuthenticated');
-          console.error("Error while fetching profile data at profile.tsx", err)
-        }
-      }
-      else {
-        setIsAuthenticated('notAuthenticated');
-      }
-    }
     fetchInfo();
   }, []);
 
@@ -126,8 +127,11 @@ export const FreelancerProfile = () => {
   const handleSaveChanges = async () => {
     toggleEditMode();
     const url = "/users/saveUserData";
-    const userData = userInfo;
-    const response = await protectedRoute.post(url, userData);
+    const response = await protectedRoute.post(url, { userInfo });
+    if (response.status === 201) {
+      toast.success("User data saved successfully");
+      fetchInfo();
+    }
   };
 
   if (isLoading) {
@@ -233,15 +237,15 @@ export const FreelancerProfile = () => {
                 {isEditMode ? (
                   <input
                     className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
-                    name="first_name"
+                    name="firstName"
                     type="text"
-                    value={userInfo.first_name}
+                    value={userInfo.firstName}
                     placeholder="First Name"
                     onChange={handleInputChange}
                   />
                 ) : (
                   <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">First Name:</span> {userInfo.first_name}
+                    <span className="font-semibold">First Name:</span> {userInfo.firstName}
                   </p>
                 )}
               </div>
@@ -251,13 +255,13 @@ export const FreelancerProfile = () => {
                     className="text-gray-800 border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-600"
                     type="text"
                     name="last_name"
-                    value={userInfo.last_name}
+                    value={userInfo.lastName}
                     placeholder="Last Name"
                     onChange={handleInputChange}
                   />
                 ) : (
                   <p className="text-lg text-gray-700 mb-2">
-                    <span className="font-semibold">Last Name:</span> {userInfo.last_name}
+                    <span className="font-semibold">Last Name:</span> {userInfo.lastName}
                   </p>
                 )}
               </div>

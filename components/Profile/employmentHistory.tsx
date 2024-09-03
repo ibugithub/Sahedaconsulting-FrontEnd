@@ -37,7 +37,7 @@ export const EmploymentHistory: React.FC<EmploymentHistoryProps> = ({userInfo, s
     };
     setUserInfo(updatedUserInfo);
     const url = "/users/saveUserData";
-    const response = await protectedRoute.post(url, updatedUserInfo);
+    const response = await protectedRoute.post(url, {userInfo : updatedUserInfo});
   };
   return (
     <div>
