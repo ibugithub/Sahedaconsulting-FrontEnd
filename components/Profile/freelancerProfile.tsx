@@ -143,7 +143,7 @@ export const FreelancerProfile = () => {
   }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-100">
-      <div className="bg-white shadow-xl rounded-3xl p-8 max-w-xl w-full my-3">
+      <div className="bg-white shadow-xl rounded-3xl p-8 max-w-[900px] w-full my-3">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-4xl font-extrabold text-gray-900">Profile</h1>
           <button
