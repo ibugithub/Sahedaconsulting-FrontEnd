@@ -55,7 +55,7 @@ export const ContForServices = () => {
       return;
     }
     try {
-      const response = await axios.post(url, formData)
+      const response = await axios.post(url, {formData, type: 'contactForService'});
       if (response.status === 200) {
         toast.success('An Email has been sent to the according administrator')
         setForm({

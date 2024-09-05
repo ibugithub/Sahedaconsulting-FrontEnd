@@ -15,6 +15,7 @@ export interface UserInterface {
   password?: string;
   image?: string | null;
   role: UserRole;
+  isVerified?: boolean;
 }
 
 export interface employmentHistoryObj {
@@ -55,6 +56,7 @@ export interface FreelancUserInterface {
   skills? : string[],
   address? : string,
   role: "freelancer",
+  isVerified?: boolean,
   phone?: string,
   hireCount?: number,
   employmentHistory: employmentHistoryObj[],
@@ -69,6 +71,7 @@ export interface BuyerUserInterface {
   image: File | string | unknown;
   address? : string,
   role: "buyer",
+  isVerified?: boolean,
   phone?: string,
   companyName?: string,
   companyDescription?: string

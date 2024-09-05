@@ -9,6 +9,7 @@ import { BuyerUserInterface } from "../interface";
 import { ChangePassword } from "./changePass";
 import { PencilIcon, CameraIcon, LogOutIcon } from "lucide-react";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 
 export const BuyerProfile = () => {
@@ -30,6 +31,7 @@ export const BuyerProfile = () => {
     phone: "",
     companyName: "",
     companyDescription: "",
+    isVerified: false
   });
 
   const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
@@ -51,7 +53,8 @@ export const BuyerProfile = () => {
             phone: response.data.userInfo.phone,
             companyName: response.data.userInfo.companyName,
             companyDescription: response.data.userInfo.companyDescription,
-            role: response.data.userInfo.role
+            role: response.data.userInfo.role, 
+            isVerified: response.data.userInfo.isVerified
           });
         } else {
           router.push('/signin');
@@ -120,6 +123,14 @@ export const BuyerProfile = () => {
       toast.error("Error saving user data");
     }
   };
+
+  const handleEmailVerification = async () => {
+    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/buyer/sendMail`
+    const response = await axios.post(url,{formData: userInfo, type: 'emailVerification'});
+    if (response.status === 200) {
+      toast.success('A confirmation email has been sent to your email address');
+    }
+  }
 
   if (isLoading) {
     return (
@@ -280,8 +291,20 @@ export const BuyerProfile = () => {
 
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-600">Email</label>
-                <p className="mt-1 text-lg text-gray-800">{userInfo.email}</p>
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Email</label>
+                  <p className="mt-1 text-lg text-gray-800">{userInfo.email}</p>
+                </div>
+                <div>
+                  {userInfo.isVerified ? (
+                    <p className="mt-1 text-sm text-green-600 bor">verified</p>
+                  ): (
+                    <div className="flex gap-2">
+                      <p className="mt-1 text-sm text-white bg-red-500 rounded-lg p-2">unverified email</p>
+                      <p className="mt-1 text-sm text-blue-600 cursor-pointer border border-sky-500 p-2 rounded-lg" onClick={handleEmailVerification}>verify</p>
+                    </div>
+                  )}
+                </div>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-600">Role</label>

@@ -11,6 +11,7 @@ import { EmploymentHistory } from "./employmentHistory";
 import { ChangePassword } from "./changePass";
 import { toast } from "react-toastify";
 import { LogOutIcon } from "lucide-react";
+import axios from "axios";
 
 
 export const FreelancerProfile = () => {
@@ -36,7 +37,8 @@ export const FreelancerProfile = () => {
     address: "",
     phone: "",
     hireCount: 0,
-    employmentHistory: []
+    employmentHistory: [],
+    isVerified: false
   });
 
   const fetchInfo = async () => {
@@ -61,7 +63,8 @@ export const FreelancerProfile = () => {
             address: response.data.userInfo.address,
             phone: response.data.userInfo.phone,
             hireCount: response.data.userInfo.hirecount,
-            employmentHistory: response.data.userInfo.employmentHistory
+            employmentHistory: response.data.userInfo.employmentHistory,
+            isVerified: response.data.userInfo.isVerified
           });
         } else {
           setIsAuthenticated('notAuthenticated');
@@ -133,6 +136,15 @@ export const FreelancerProfile = () => {
       fetchInfo();
     }
   };
+
+  const handleEmailVerification = async () => {
+    const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/buyer/sendMail`
+    const response = await axios.post(url,{formData: userInfo, type: 'emailVerification'});
+    if (response.status === 200) {
+      toast.success('A confirmation email has been sent to your email address');
+    }
+  }
+
 
   if (isLoading) {
     return (
@@ -355,9 +367,20 @@ export const FreelancerProfile = () => {
                 )}
               </div>
               <div>
-                <p className="text-lg text-gray-700 mb-2">
-                  <span className="font-semibold">Email:</span> {userInfo.email}
-                </p>
+                <div>
+                  <label className="text-sm font-medium text-gray-600">Email</label>
+                  <p className="mt-1 text-lg text-gray-800">{userInfo.email}</p>
+                </div>
+                <div>
+                  {userInfo.isVerified ? (
+                    <p className="mt-1 text-sm text-green-600 bor">verified</p>
+                  ): (
+                    <div className="flex gap-2">
+                      <p className="mt-1 text-sm text-white bg-red-500 rounded-lg p-2">unverified email</p>
+                      <p className="mt-1 text-sm text-blue-600 cursor-pointer border border-sky-500 p-2 rounded-lg" onClick={handleEmailVerification}>verify</p>
+                    </div>
+                  )}
+                </div>
               </div>
               <div>
                 <p className="text-lg text-gray-700 mb-2">

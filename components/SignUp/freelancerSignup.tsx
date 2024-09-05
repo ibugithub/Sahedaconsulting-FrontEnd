@@ -42,14 +42,21 @@ export const FreelancerSignUp = () => {
     setError("");
 
     try {
+      const domain = window.location.origin 
+      if (!domain) {
+        toast.error("frontend Domain not found");
+        console.error('frontend domain not found at administrator.tsx file');
+        return
+      }
       const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/users/register`
-      const req: AxiosResponse<any> = await axios.post(
+      const response = await axios.post(
         url,
-        formData
+        {formData, frontEndDomain: domain},
       );
-      if (req.status === 201) {
+      if (response.status === 201) {
         router.push("/signin");
         toast.success("Registration successful");
+        toast.success('A verification link has been sent to the email address');
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
