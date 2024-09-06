@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Logout } from "../Logout/logout";
 import { useAppDispatch } from "@/lib/hooks";
-import { BounceLoader } from "react-spinners";
+import { BounceLoader, HashLoader} from "react-spinners";
 import { AxiosRequests } from "../utils/axiosRequests";
 import { BuyerUserInterface } from "../interface";
 import { ChangePassword } from "./changePass";
@@ -17,6 +17,7 @@ export const BuyerProfile = () => {
   const dispatch = useAppDispatch();
   const protectedRoute = AxiosRequests(router);
   const [isLoading, setIsLoading] = useState(true);
+  const [isVerificationLoading, setIsVerificationLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [userInfo, setUserInfo] = useState<BuyerUserInterface>({
@@ -53,7 +54,7 @@ export const BuyerProfile = () => {
             phone: response.data.userInfo.phone,
             companyName: response.data.userInfo.companyName,
             companyDescription: response.data.userInfo.companyDescription,
-            role: response.data.userInfo.role, 
+            role: response.data.userInfo.role,
             isVerified: response.data.userInfo.isVerified
           });
         } else {
@@ -125,10 +126,18 @@ export const BuyerProfile = () => {
   };
 
   const handleEmailVerification = async () => {
+    setIsVerificationLoading(true);
     const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/buyer/sendMail`
-    const response = await axios.post(url,{formData: userInfo, type: 'emailVerification'});
+    const domain = window.location.origin 
+    if (!domain) {
+      toast.error("frontend Domain not found");
+      console.error('frontend domain not found at administrator.tsx file');
+      return
+    }
+    const response = await axios.post(url,{formData: userInfo, type: 'emailVerification', frontEndDomain: domain});
     if (response.status === 200) {
       toast.success('A confirmation email has been sent to your email address');
+      setIsVerificationLoading(false);
     }
   }
 
@@ -246,7 +255,7 @@ export const BuyerProfile = () => {
 
                     <div className="text-gray-800">
                       <p className="mt-1 text-lg text-gray-800">{userInfo.phone}</p>
-                      {userInfo.phone == "" && <p>  --- ---</p>} 
+                      {userInfo.phone == "" && <p>  --- ---</p>}
                     </div>
                   )}
                 </div>
@@ -265,7 +274,7 @@ export const BuyerProfile = () => {
                   ) : (
                     <div className="text-gray-800">
                       <p className="mt-1 text-lg text-gray-800">{userInfo.companyName}</p>
-                      {userInfo.companyName == "" && <p>  --- ---</p> }
+                      {userInfo.companyName == "" && <p>  --- ---</p>}
                     </div>
 
                   )}
@@ -295,13 +304,15 @@ export const BuyerProfile = () => {
                   <label className="text-sm font-medium text-gray-600">Email</label>
                   <p className="mt-1 text-lg text-gray-800">{userInfo.email}</p>
                 </div>
-                <div>
+                <div className="mt-1">
                   {userInfo.isVerified ? (
-                    <p className="mt-1 text-sm text-green-600 bor">verified</p>
-                  ): (
+                    <span className="text-sm bg-green-500 text-white cursor-pointer border border-gray-300 p-1 rounded-lg">verified</span>
+                  ) : (
                     <div className="flex gap-2">
-                      <p className="mt-1 text-sm text-white bg-red-500 rounded-lg p-2">unverified email</p>
-                      <p className="mt-1 text-sm text-blue-600 cursor-pointer border border-sky-500 p-2 rounded-lg" onClick={handleEmailVerification}>verify</p>
+                      <p className="mt-1 text-sm text-white bg-red-500  border-gray-300 rounded-lg p-1">unverified email</p>
+                      {isVerificationLoading ? <HashLoader size={20}  className="mt-2" color="#f43f5e"/> : (
+                        <p className="mt-1 text-sm text-blue-600 cursor-pointer border border-sky-500 p-1 rounded-lg" onClick={handleEmailVerification}>verify</p>
+                      )}
                     </div>
                   )}
                 </div>
