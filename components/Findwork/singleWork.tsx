@@ -37,30 +37,10 @@ export const SingleWork = ({ id }: { id: string }) => {
         setIsLoading(false);
       }
     }
-    const fetchUserId = async () => {
-      //Check whether user is authenticated and Fetch User id
-      setIsLoading(true);
-      try {
-        const url = `/users/isAuthenticated`;
-        const user = await protectedRoute.get(url);
-        const id = user.data.user._id
-        setProposalData((prev) => ({
-          ...prev,
-          userId: id,
-        }))
-        setIsLoading(false);
-      } catch (error) {
-        console.log('Error while checking authenticated user at singleWork.tsx', error);
-        setIsLoading(false);
-        return;
-      };
-    }
     fetchWork();
-    fetchUserId();
   }, []);
 
   useEffect(() => {
-    if(!proposalData.userId) return;
     const checkIsApplied = async () => {
       try {
         setIsLoading(true);
@@ -80,14 +60,6 @@ export const SingleWork = ({ id }: { id: string }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // if no userId navigate to singin
-    if (!proposalData.userId) {
-      router.push('/signin');
-      toast.info('Login to submit proposal');
-      return;
-    }
-
-    // send proposals data to add proposal
     try {
       const url = `/freelancer/addProposal/`
       const response = await protectedRoute.post(url, proposalData);
@@ -100,8 +72,16 @@ export const SingleWork = ({ id }: { id: string }) => {
         router.push('/findWork');
         toast.success('Proposal submitted successfully');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting proposal:', error);
+      if(error.response.data.message === 'User not authenticated') {
+        toast.error('Login to submit proposal');
+        router.push('/signin');
+      }
+      if(error.response.data.message === 'User not verified') {
+        toast.info('Verify your email account to submit proposal');
+        router.push('/profile')
+      }
     }
   };
 
