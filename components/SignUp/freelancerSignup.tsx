@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FormEvent, useState } from "react";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import logoImage from "../../assets/logo.jpg";
@@ -17,6 +17,7 @@ export const FreelancerSignUp = () => {
     lastName: "",
     password: "",
     cPassword: "",
+    Code: "",
     role: "freelancer"
   });
   const [error, setError] = useState("");
@@ -24,12 +25,12 @@ export const FreelancerSignUp = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const { email, firstName, lastName, password, cPassword } = formData;
+  const { email, firstName, lastName, password, cPassword, Code } = formData;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!email || !firstName || !lastName || !password || !cPassword) {
+    if (!email || !firstName || !lastName || !password || !cPassword || !Code) {
       setError("All fields are required");
       return;
     }
@@ -42,7 +43,7 @@ export const FreelancerSignUp = () => {
     setError("");
 
     try {
-      const domain = window.location.origin 
+      const domain = window.location.origin
       if (!domain) {
         toast.error("frontend Domain not found");
         console.error('frontend domain not found at administrator.tsx file');
@@ -51,7 +52,7 @@ export const FreelancerSignUp = () => {
       const url = `${process.env.NEXT_PUBLIC_baseApiUrl}/api/users/register`
       const response = await axios.post(
         url,
-        {formData, frontEndDomain: domain},
+        { formData, frontEndDomain: domain },
       );
       if (response.status === 201) {
         router.push("/signin");
@@ -68,7 +69,13 @@ export const FreelancerSignUp = () => {
             responseData.error === "User already exists"
           ) {
             setError("User already exists");
-          } else {
+          } else if (
+            axiosError.response.status === 400 &&
+            responseData.error === "Invalid secret code"
+          ) {
+            setError("Invalid secret code");
+          }
+          else {
             setError("An error occurred");
           }
         } else {
@@ -136,6 +143,21 @@ export const FreelancerSignUp = () => {
                 onChange={handleChange}
               />
             </div>
+
+            <div>
+              <label htmlFor="last-name" className="sr-only">secret code</label>
+              <input
+                id="secret-code"
+                name="Code"
+                type="text"
+                required
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Secret Code"
+                value={Code}
+                onChange={handleChange}
+              />
+            </div>
+
             <div>
               <label htmlFor="password" className="sr-only">Password</label>
               <input

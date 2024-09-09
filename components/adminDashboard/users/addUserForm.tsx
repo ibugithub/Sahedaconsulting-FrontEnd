@@ -2,11 +2,11 @@ import { AxiosRequests } from "@/components/utils/axiosRequests";
 import { UserInterface, UserRole } from "../../interface"; 
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { fetchUsers } from "@/lib/features/users/userSlice";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 
-interface getUserProps{
-  getUsers: () => void;
-}
-export const AddUserForm = ({getUsers} : getUserProps) => {
+export const AddUserForm = () => {
+  const dispatch = useAppDispatch();
   const protectedRoute = AxiosRequests();
   const [error, setError] = useState("");
   const [newUser, setNewUser] = useState<Partial<UserInterface>>({
@@ -51,7 +51,7 @@ export const AddUserForm = ({getUsers} : getUserProps) => {
       const response = await protectedRoute.post(url, newUser);
       if (response.status === 201) {
         toast.success("User added successfully");
-        getUsers();
+        dispatch(fetchUsers());
         resetNewUser();
       }
     } catch (error:any) {

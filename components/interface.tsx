@@ -113,3 +113,8 @@ export interface UserInfoInterface {
   proposal : ProposalInterface,
   service : ServiceInterface
 }
+
+export interface secretCodeInterface {
+  _id : string,
+  code : string
+}
