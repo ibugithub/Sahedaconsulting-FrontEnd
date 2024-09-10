@@ -1,7 +1,7 @@
-import { FindWork } from "@/components/Findwork/findWork";
+import { Jobs } from "@/components/Findwork/jobs";
 
 const Page = () => {
-  return <FindWork />
+  return <Jobs />
 };
 
 export default Page;

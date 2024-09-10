@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosRequests } from "@/components/utils/axiosRequests";
-import {UserInterface, UserRole } from "@/components/interface";
+import {UserInterface} from "@/components/interface";
 
 interface UserState {
   users : UserInterface[],
@@ -25,7 +25,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async() => {
   } catch (error) {
   console.error("Error occurred while fetching the users at userSlice.ts", error);
   }
-})
+});
 
 
 const UsersSlice = createSlice({

@@ -18,37 +18,6 @@ const Navbar = () => {
     setShowDropdown(!showDropdown);
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-
-    if (token) {
-      const checkAuthenticated = async () => {
-        const url = '/users/isAuthenticated';
-        try {
-          const response = await protectedRoute.get(url);
-          if (response.status === 200) {
-            dispatch(login());
-          }
-        } catch (error) {
-          console.log("Error while checking authenticated user at navbar.tsx", error);
-        }
-      }
-      const checkAdministrator = async () => {
-        const url2 = '/users/isAdministrator';
-        try {
-          const response = await protectedRoute.get(url2);
-          if (response.status === 200) {
-            dispatch(administratorLogin());
-          }
-        } catch (error) {
-          console.log("Error while checking administrator user at navbar.tsx", error);
-        }
-      }
-      checkAuthenticated();
-      checkAdministrator();
-    }
-  }, [])
-
   return (
     <nav className="bg-white text-gray-700 sticky top-0 p-3 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
