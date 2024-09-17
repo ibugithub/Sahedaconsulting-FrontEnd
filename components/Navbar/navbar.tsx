@@ -1,19 +1,13 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../../assets/logo.jpg';
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { login, administratorLogin } from '@/lib/features/auth/authSlice';
-import { AxiosRequests } from '../utils/axiosRequests';
+import { NavItems } from './navItems';
+
 
 const Navbar = () => {
-  const protectedRoute = AxiosRequests();
   const [showDropdown, setShowDropdown] = useState(false);
-  const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
-  const isAdministrator = useAppSelector(state => state.auth.isAdministrator);
-
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -28,7 +22,6 @@ const Navbar = () => {
               <Image
                 src={logo}
                 alt="Logo"
-                // className="h-8 w-8"
                 width={200}
                 height={200}
               />
@@ -38,96 +31,14 @@ const Navbar = () => {
           {/* desktop menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-
-              <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Services
-              </Link>
-
-              <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Connect
-              </Link>
-
-              <Link href="/findWork" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Jobs
-              </Link>
-
-              {/* <Link href="/" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                News
-              </Link> */}
-
-              {isAuthenticated ? (
-                <Link href='/profile'>
-                  <button
-                    className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
-                    aria-haspopup="true"
-                  >
-                    Profile
-                  </button>
-                </Link>
-              ) : (
-                <Link href='/signin'>
-                  <button
-                    className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
-                    aria-haspopup="true"
-                  >
-                    Sign In
-                  </button>
-                </Link>
-              )}
-
-              {isAdministrator && (
-                <Link href="/adminDashboard" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                  Admin
-                </Link>
-              )
-              }
-
+              <NavItems />
             </div>
           </div>
 
           {/* mobile Nav */}
           <div className={`${showDropdown ? 'block' : 'hidden'} flex gap-3 absolute top-1 right-5 bg-black border-gray-100 rounded border-2 text-white p-1`} >
             <div className="flex flex-col items-baseline space-x-4 ml-0">
-
-              <Link href="/services" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Services
-              </Link>
-
-              <Link href="/contForServices" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Connect
-              </Link>
-
-              <Link href="/findWork" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                Jobs
-              </Link>
-
-              {isAuthenticated ? (
-                <Link href='/profile'>
-                  <button
-                    className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
-                    aria-haspopup="true"
-                  >
-                    Profile
-                  </button>
-                </Link>
-              ) : (
-                <Link href='signin'>
-                  <button
-                    className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium"
-                    aria-haspopup="true"
-                  >
-                    Sign in
-                  </button>
-                </Link>
-              )}
-
-
-              {isAdministrator && (
-                <Link href="/adminDashboard" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                  Admin
-                </Link>
-              )}
-
+              <NavItems />
             </div>
             {/* Cancel button */}
             <button className={`${!showDropdown ? 'hidden' : 'flex'} mt-2 pr-3`} onClick={toggleDropdown}>
@@ -162,7 +73,7 @@ const Navbar = () => {
 
         </div>
       </div>
-    </nav>
+    </nav >
   );
 };
 
