@@ -1,4 +1,3 @@
-import { Bell } from 'lucide-react';
 import { useAppSelector } from "@/lib/hooks";
 import Link from 'next/link';
 
@@ -12,7 +11,6 @@ export const NavItems = () => {
     { type: 'authLink', name: 'Profile', link: '/profile' },
     { type: 'notAuthLink', name: 'Signin', link: '/signin' },
     { type: 'adminLink', name: 'Admin', link: '/adminDashboard' },
-    { type: 'component', name: 'Bell', link: '/', component: <Bell size={20} /> },
   ];
   return (
     <>
@@ -44,13 +42,6 @@ export const NavItems = () => {
             return (
               <Link key={item.name} href={item.link} className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
                 {item.name}
-              </Link>
-            );
-          }
-          if (item.type === 'component') {
-            return (
-              <Link key={item.name} href={item.link} className="hover:text-gray-400 px-3 rounded-md text-sm font-medium">
-                {item.component}
               </Link>
             );
           }
