@@ -118,3 +118,11 @@ export interface secretCodeInterface {
   _id : string,
   code : string
 }
+
+export interface NotificationInterface {
+  _id : string,
+  user : UserInterface,
+  isRead: boolean,
+  message : string, 
+  createdAt : string
+}

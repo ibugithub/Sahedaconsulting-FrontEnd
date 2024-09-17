@@ -5,6 +5,7 @@ import Image from 'next/image';
 import logo from '../../assets/logo.jpg';
 import { NavItems } from './navItems';
 import { Bell } from 'lucide-react';
+import { Notification } from './notification';
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -32,9 +33,7 @@ const Navbar = () => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               <NavItems />
-              <Link href="" className="hover:text-gray-400 px-3 py-2 rounded-md text-sm font-medium">
-                <Bell size={20}/>
-              </Link>
+              <Notification />
             </div>
           </div>
 
@@ -42,6 +41,8 @@ const Navbar = () => {
           <div className={`${showDropdown ? 'block' : 'hidden'} flex gap-3 absolute top-1 right-5 bg-black border-gray-100 rounded border-2 text-white p-1`} >
             <div className="flex flex-col items-baseline space-x-4 ml-0">
               <NavItems />
+              <Notification />
+
             </div>
             {/* Cancel button */}
             <button className={`${!showDropdown ? 'hidden' : 'flex'} mt-2 pr-3`} onClick={toggleDropdown}>
