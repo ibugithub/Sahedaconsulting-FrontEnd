@@ -6,6 +6,7 @@ import { AxiosRequests } from "../utils/axiosRequests";
 import { logout } from "@/lib/features/auth/authSlice"
 import { CustomRouter } from "../interface";
 import { AppDispatch } from "@/lib/store";
+import { fetchNotifications } from "@/lib/features/notifications/notificationSlice";
 
 
 export const Logout = async(router: CustomRouter, dispatch:AppDispatch) => {
@@ -21,6 +22,7 @@ export const Logout = async(router: CustomRouter, dispatch:AppDispatch) => {
       Cookies.remove('refreshToken')
       toast.success("Logout successful");
       router.push("/");
+      dispatch(fetchNotifications())
       return;
     }
   } catch (error: any) {

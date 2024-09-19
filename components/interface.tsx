@@ -124,5 +124,7 @@ export interface NotificationInterface {
   user : UserInterface,
   isRead: boolean,
   message : string, 
+  type : string,
+  typeId : string,
   createdAt : string
 }

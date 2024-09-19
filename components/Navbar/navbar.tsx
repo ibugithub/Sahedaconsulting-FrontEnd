@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../../assets/logo.jpg';
 import { NavItems } from './navItems';
-import { Bell } from 'lucide-react';
 import { Notification } from './notification';
 
 const Navbar = () => {

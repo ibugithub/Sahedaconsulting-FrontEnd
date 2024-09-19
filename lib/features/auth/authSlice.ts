@@ -48,7 +48,6 @@ const authSlice = createSlice({
       if (user) {
         state.loogedInUser = action.payload;
         state.isAuthenticated = true;
-        console.log("the action payload is", action.payload);
         const role = action.payload.user.role;
         if (role === "administrator") {
           state.isAdministrator = true;

@@ -1,32 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, X } from 'lucide-react';
-import { AxiosRequests } from '../utils/axiosRequests';
 import { NotificationInterface } from '../interface';
-
-
+import Link from 'next/link';
+import { markAsRead } from './markAsRead';
+import io from 'socket.io-client';
+import { fetchNotifications } from '@/lib/features/notifications/notificationSlice';
+import { useAppSelector } from '@/lib/hooks';
+import { useAppDispatch } from '@/lib/hooks';
 
 export const Notification: React.FC = () => {
-  const protectedRoute = AxiosRequests();
-  const [notifications, setNotifications] = useState<NotificationInterface[]>([]);
+  const dispatch = useAppDispatch();
+  const notifications = useAppSelector((state) => state.notifications.notifications);
+  const unReadNotifications = notifications.filter((notification: NotificationInterface) => !notification.isRead);
   const [isOpen, setIsOpen] = useState(false);
 
-  const fetchNotifications = async () => {
-    const url = '/users/showNotifications';
-    try {
-      const response = await protectedRoute.get<{ notifications: NotificationInterface[] }>(url);
-      if (response.status === 200) {
-        setNotifications(response.data.notifications);
-      }
-    } catch (error) {
-      console.error("Error while fetching notifications", error);
-    }
-  };
-
+  const saySomething = () => {
+    console.log('I am here saing I love you')
+  }
+  const refresh = () => {
+    dispatch(fetchNotifications());
+  }
   useEffect(() => {
-    fetchNotifications();
+    const socket = io(process.env.NEXT_PUBLIC_baseApiUrl as string, {
+      withCredentials: true,
+    });
+
+    socket.on('notification', (message) => {
+      refresh();
+      saySomething();
+      console.log('the socket message is', message);
+    })
+
+    return () => {
+      socket.disconnect();
+    };
+
   }, []);
 
   const toggleNotifications = () => setIsOpen(!isOpen);
+
+  const handleLinkClick = async(notificationId: string) => {
+    await markAsRead(notificationId);
+    dispatch(fetchNotifications());
+  }
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -40,9 +56,9 @@ export const Notification: React.FC = () => {
         className="p-2 text-gray-600 hover:text-gray-800 focus:outline-none"
       >
         <Bell size={24} />
-        {notifications.length > 0 && (
+        {unReadNotifications && unReadNotifications.length > 0 && (
           <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-            {notifications.length}
+            {unReadNotifications.length}
           </span>
         )}
       </button>
@@ -56,24 +72,27 @@ export const Notification: React.FC = () => {
             </button>
           </div>
           <div className="divide-y divide-gray-200 max-h-96 overflow-y-auto">
-            {notifications.length > 0 ? (
-              notifications.map((notification: NotificationInterface) => (
-                <div key={notification._id} className="p-4 hover:bg-gray-50">
-                  <p className="text-sm text-gray-800">{notification.message}</p>
-                  <p className="text-xs text-gray-500 mt-1">{formatDate(notification.createdAt)}</p>
-                </div>
+            {unReadNotifications && unReadNotifications.length > 0 ? (
+              unReadNotifications.map((notification: NotificationInterface) => (
+                <Link href={`/adminDashboard/proposals/${notification.typeId}`} key={notification._id} className="p-4 hover:bg-gray-50" onClick={() => handleLinkClick(notification._id)}>
+                  <div className="px-5 hover:bg-gray-50">
+                    <p className="text-sm text-gray-800">{notification.message}</p>
+                    <p className="text-xs text-gray-500 mt-1">{formatDate(notification.createdAt)}</p>
+                  </div>
+                </Link>
               ))
             ) : (
               <p className="p-4 text-sm text-gray-500">No new notifications</p>
             )}
           </div>
-          {notifications.length > 0 && (
-            <div className="py-2 px-3 bg-gray-100 text-right">
+
+          <div className="py-2 px-3 bg-gray-100 text-right">
+            <Link href="/allNotifications">
               <button className="text-sm text-blue-600 hover:text-blue-800">
-                Mark all as read
+                See all notifications
               </button>
-            </div>
-          )}
+            </Link>
+          </div>
         </div>
       )}
     </div>

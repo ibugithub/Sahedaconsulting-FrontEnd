@@ -5,7 +5,7 @@ import {UserInterface} from "@/components/interface";
 interface UserState {
   users : UserInterface[],
   status : "idle" | "loading" | "succeeded" | "failed",
-  error : string | null;
+  error : string | null
 }
 
 const initialState: UserState = {

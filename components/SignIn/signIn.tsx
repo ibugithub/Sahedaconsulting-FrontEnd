@@ -10,6 +10,7 @@ import Image from "next/image";
 import { login, administratorLogin, logout } from "@/lib/features/auth/authSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { AxiosRequests } from '../utils/axiosRequests';
+import { fetchNotifications } from "@/lib/features/notifications/notificationSlice";
 
 
 const SignIn = () => {
@@ -59,6 +60,7 @@ const SignIn = () => {
         document.cookie = `${cookieName}=${cookieValue}; expires=${expirationDate.toUTCString()}; path=/; SameSite=strict`;
         router.push("/profile");
         toast.success("Login successful");
+        dispatch(fetchNotifications())
         dispatch(login())
         checkAdministrator();
       }

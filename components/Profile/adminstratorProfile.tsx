@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 import { UserRole } from "../interface";
 import axios from "axios";
 
-
 export const AdministratorProfile = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -38,7 +37,6 @@ export const AdministratorProfile = () => {
     if (accessToken) {
       try {
         const response = await protectedRoute.post('/users/profile');
-        console.log('the response is', response)
         if (response.status === 200) {
           setUserInfo({
             ...response.data.userInfo,
