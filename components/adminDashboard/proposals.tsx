@@ -15,9 +15,7 @@ export const FreelancerProposals = ({ id }: { id: string }) => {
     try {
       const response = await protectedRoute.post(url, { id });
       if (response.status === 200) {
-        console.log('the response is', response.data);
         setUserInfo(response.data);
-        console.log('the userInfo is ', userInfo);
       }
     } catch (error) {
       console.error("Error while getting proposals at proposals.tsx:", error);

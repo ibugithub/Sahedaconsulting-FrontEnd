@@ -22,8 +22,12 @@ export const Notification: React.FC = () => {
   useEffect(() => {
     const socket = getSocket();
     if (user._id) {
-      socket.on(`${user._id}notification`, (message) => {
-        console.log('Emitted notification from server received at notifications.tsx', message);
+      socket.on(`${user._id}addProposalNotification`, (message) => {
+        console.log('Emitted addProposalNotification notification from freelancerFeatures.ts received at notifications.tsx', message);
+        refresh();
+      })
+      socket.on(`${user._id}freelancerHiredNotification`, (message) => {
+        console.log('Emitted freelancerHiredNotification notification from adminFeatures.ts received at notifications.tsx', message);
         refresh();
       })
     }
