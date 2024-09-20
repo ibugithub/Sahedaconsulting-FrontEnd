@@ -3,43 +3,38 @@ import { Bell, X } from 'lucide-react';
 import { NotificationInterface } from '../interface';
 import Link from 'next/link';
 import { markAsRead } from './markAsRead';
-import io from 'socket.io-client';
 import { fetchNotifications } from '@/lib/features/notifications/notificationSlice';
 import { useAppSelector } from '@/lib/hooks';
 import { useAppDispatch } from '@/lib/hooks';
+import { getSocket } from '@/lib/socket';
 
 export const Notification: React.FC = () => {
   const dispatch = useAppDispatch();
   const notifications = useAppSelector((state) => state.notifications.notifications);
   const unReadNotifications = notifications.filter((notification: NotificationInterface) => !notification.isRead);
+  const user = useAppSelector((state) => state.auth.loogedInUser);
   const [isOpen, setIsOpen] = useState(false);
 
-  const saySomething = () => {
-    console.log('I am here saing I love you')
-  }
+
   const refresh = () => {
     dispatch(fetchNotifications());
   }
   useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_baseApiUrl as string, {
-      withCredentials: true,
-    });
-
-    socket.on('notification', (message) => {
-      refresh();
-      saySomething();
-      console.log('the socket message is', message);
-    })
-
+    const socket = getSocket();
+    if (user._id) {
+      socket.on(`${user._id}notification`, (message) => {
+        console.log('Emitted notification from server received at notifications.tsx', message);
+        refresh();
+      })
+    }
     return () => {
       socket.disconnect();
     };
-
-  }, []);
+  }, [user]);
 
   const toggleNotifications = () => setIsOpen(!isOpen);
 
-  const handleLinkClick = async(notificationId: string) => {
+  const handleLinkClick = async (notificationId: string) => {
     await markAsRead(notificationId);
     dispatch(fetchNotifications());
   }
@@ -48,7 +43,6 @@ export const Notification: React.FC = () => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
-
   return (
     <div className="relative">
       <button

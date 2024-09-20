@@ -28,8 +28,6 @@ const NotificationsSlice = createSlice({
     builder.addCase(fetchNotifications.fulfilled, (state, action) => {
       state.status = 'successed'
       const notifications  = action.payload.notifications
-      console.log('the notification from slice is ', notifications )
-      console.log('the prev notification is ', state.notifications)
       if (notifications && notifications.length > 0) {
         const sortedNotifications = notifications.sort((a: NotificationInterface, b: NotificationInterface) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         state.notifications = sortedNotifications;

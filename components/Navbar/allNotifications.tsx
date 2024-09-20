@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import { AxiosRequests } from '../utils/axiosRequests';
 import { Bell, Trash2, RefreshCw, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -96,7 +95,7 @@ export const ShowAllNotifications = () => {
               <div className="flex-shrink-0 ml-4">
                 {!notification.isRead && (
                   <button
-                    onClick={() => markAsRead(notification._id)}
+                    onClick={() => handleLinkClick(notification._id)}
                     className="text-blue-500 hover:text-blue-600 mr-2"
                     title="Mark as read"
                   >

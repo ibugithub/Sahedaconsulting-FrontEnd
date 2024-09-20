@@ -8,6 +8,7 @@ import { AxiosRequests } from '../utils/axiosRequests';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
+
 export const SingleWork = ({ id }: { id: string }) => {
   const protectedRoute = AxiosRequests();
   const router = useRouter();
@@ -74,11 +75,11 @@ export const SingleWork = ({ id }: { id: string }) => {
       }
     } catch (error: any) {
       console.error('Error submitting proposal:', error);
-      if(error.response.data.message === 'User not authenticated') {
+      if (error.response.data.message === 'User not authenticated') {
         toast.error('Login to submit proposal');
         router.push('/signin');
       }
-      if(error.response.data.message === 'User not verified') {
+      if (error.response.data.message === 'User not verified') {
         toast.info('Verify your email account to submit proposal');
         router.push('/profile')
       }
@@ -112,8 +113,8 @@ export const SingleWork = ({ id }: { id: string }) => {
                   Hired: {work.hiredCount}
                 </span>
                 <span className="bg-yellow-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
-                Required Freelancers: {work.requiredFreelancers}
-              </span>
+                  Required Freelancers: {work.requiredFreelancers}
+                </span>
               </div>
               <p className="text-gray-500 text-sm mb-8">Skills: {work.skills.join(', ')}</p>
 
