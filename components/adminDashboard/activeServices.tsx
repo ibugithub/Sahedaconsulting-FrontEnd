@@ -27,6 +27,7 @@ export const ShowServices = () => {
     const url = `/admin/showServices`
     try {
       const response = await protectedRoute.get(url);
+      console.log('the response is', response)
       setServices(response.data.services);
       setIsLoading(false);
     } catch (error: any) {

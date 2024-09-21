@@ -4,6 +4,7 @@ import Link from 'next/link';
 export const NavItems = () => {
   const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
   const isAdministrator = useAppSelector(state => state.auth.isAdministrator);
+  console.log('the isAdministrator is', isAdministrator)
   const NavMenu = [
     { type: 'link', name: 'Services', link: '/services' },
     { type: 'link', name: 'Connect', link: '/contForServices' },
