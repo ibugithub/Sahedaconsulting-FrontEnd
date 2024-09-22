@@ -3,9 +3,9 @@
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { AxiosRequests } from "../utils/axiosRequests";
-import { logout } from "@/lib/features/auth/authSlice"
 import { CustomRouter } from "../interface";
 import { AppDispatch } from "@/lib/store";
+import { fetchLoggedInUser } from "@/lib/features/auth/authSlice";
 import { fetchNotifications } from "@/lib/features/notifications/notificationSlice";
 
 
@@ -16,12 +16,12 @@ export const Logout = async(router: CustomRouter, dispatch:AppDispatch) => {
   const url = '/users/logout'
   try {
     const res = await reqInstance.post(url, formData);
-    dispatch(logout())
     if (res.status === 200) {
       localStorage.clear();
       Cookies.remove('refreshToken')
       toast.success("Logout successful");
       router.push("/");
+      dispatch(fetchLoggedInUser())
       dispatch(fetchNotifications())
       return;
     }

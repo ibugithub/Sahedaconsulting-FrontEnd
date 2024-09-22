@@ -7,10 +7,9 @@ import { toast } from "react-toastify";
 import logoImage from "../../assets/logo.jpg";
 import "../../styles/login-register.css";
 import Image from "next/image";
-import { login, administratorLogin, logout } from "@/lib/features/auth/authSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import { AxiosRequests } from '../utils/axiosRequests';
 import { fetchNotifications } from "@/lib/features/notifications/notificationSlice";
+import { fetchLoggedInUser } from "@/lib/features/auth/authSlice";
 
 
 const SignIn = () => {
@@ -25,19 +24,6 @@ const SignIn = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const checkAdministrator = async () => {
-    const protectedRoute = AxiosRequests();
-    const url2 = '/users/isAdministrator';
-    try {
-      const response = await protectedRoute.get(url2);
-      if (response.status === 200) {
-        dispatch(administratorLogin());
-      }
-    } catch (error) {
-      console.log("Error while checking administrator user at navbar.tsx", error);
-    }
-  }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,12 +46,10 @@ const SignIn = () => {
         document.cookie = `${cookieName}=${cookieValue}; expires=${expirationDate.toUTCString()}; path=/; SameSite=strict`;
         router.push("/profile");
         toast.success("Login successful");
-        dispatch(fetchNotifications())
-        dispatch(login())
-        checkAdministrator();
+        dispatch(fetchNotifications());
+        dispatch(fetchLoggedInUser());
       }
     } catch (error: unknown) {
-      dispatch(logout())
       if (axios.isAxiosError(error) && error.response) {
         if (
           error.response.data.error === 'Invalid Credintails'

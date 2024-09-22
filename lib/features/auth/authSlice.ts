@@ -5,10 +5,12 @@ import { UserInterface } from "@/components/interface";
 interface AuthState {
   isAuthenticated: boolean;
   isAdministrator: boolean;
+  isFreelancer: boolean;
   loogedInUser: UserInterface;
 }
 
 const initialState: AuthState = {
+  isFreelancer: false,
   isAuthenticated: false,
   isAdministrator: false,
   loogedInUser: {} as UserInterface,
@@ -26,18 +28,7 @@ export const fetchLoggedInUser = createAsyncThunk('auth/fetchLoggedInUser', asyn
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    login: (state) => {
-      state.isAuthenticated = true;
-    },
-    administratorLogin: (state) => {
-      state.isAdministrator = true;
-    },
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.isAdministrator = false;
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder.addCase(fetchLoggedInUser.pending, (state) => {
       state.isAuthenticated = false;
@@ -52,11 +43,16 @@ const authSlice = createSlice({
         if (role === "administrator") {
           state.isAdministrator = true;
         }
+        console.log('the role is ', role)
+        if (role === "freelancer") {
+          state.isFreelancer = true;
+        }
       }
     })
     builder.addCase(fetchLoggedInUser.rejected, (state) => {
       state.isAuthenticated = false;
       state.isAdministrator = false;
+      state.isFreelancer = false;
     })
   },
 });
