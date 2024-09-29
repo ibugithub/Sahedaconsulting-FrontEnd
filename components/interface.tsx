@@ -32,6 +32,7 @@ export interface ProposalInterface {
   coverLetter: string;
   price: number;
   status: 'pending' | 'accepted' | 'rejected';
+  createdAt: Date;
 }
 export interface FreelancersInterface {
   _id: string;

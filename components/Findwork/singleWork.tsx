@@ -64,6 +64,7 @@ export const SingleWork = ({ id }: { id: string }) => {
     try {
       const url = `/freelancer/addProposal/`
       const response = await protectedRoute.post(url, proposalData);
+      console.log('the response is', response);
       if (response.status === 200) {
         setProposalData((prev) => ({
           ...prev,
