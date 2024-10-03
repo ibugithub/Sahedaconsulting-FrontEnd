@@ -36,14 +36,12 @@ const authSlice = createSlice({
     })
     builder.addCase(fetchLoggedInUser.fulfilled, (state, action) => {
       if (action.payload) {
-        console.log('the action payload is', action.payload)
         state.loogedInUser = action.payload.user;
         state.isAuthenticated = true;
         const role = action.payload.user.role;
         if (role === "administrator") {
           state.isAdministrator = true;
         }
-        console.log('the role is ', role)
         if (role === "freelancer") {
           state.isFreelancer = true;
         }
@@ -56,6 +54,4 @@ const authSlice = createSlice({
     })
   },
 });
-
-export const { login, administratorLogin, logout } = authSlice.actions;
 export const authReducer = authSlice.reducer;
