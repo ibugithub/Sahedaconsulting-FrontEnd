@@ -12,8 +12,6 @@ import { AxiosRequests } from "../utils/axiosRequests";
 import { useRouter } from "next/navigation"; 
 import { ServiceNav } from "./serviceNav";
 import { useAppDispatch } from "@/lib/hooks";
-import { logout } from "@/lib/features/auth/authSlice";
-
 
 export const ShowServices = () => {
   const router = useRouter();
@@ -76,7 +74,6 @@ export const ShowServices = () => {
         setError(err.response.data.error);
       } else if (err.response.status === 401){
         toast.error("Unauthorized");
-        dispatch(logout());
         router.push("/signin");
         return;
       }

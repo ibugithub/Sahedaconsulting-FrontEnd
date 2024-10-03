@@ -1,5 +1,4 @@
 import { AxiosRequests } from '../utils/axiosRequests';
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 export const handleHire = async (e: React.FormEvent, freelancer: string, service: string) => {
