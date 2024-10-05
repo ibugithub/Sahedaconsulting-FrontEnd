@@ -157,8 +157,8 @@ export const AdministratorProfile = () => {
                       src={`${cloudinaryUrl}/${userInfo.image}`}
                       alt="Profile"
                       className="w-full h-full object-cover"
-                      height={32}
-                      width={32}
+                      height={100}
+                      width={100}
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">

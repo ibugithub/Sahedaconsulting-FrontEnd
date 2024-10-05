@@ -201,7 +201,9 @@ export const FreelancerProfile = () => {
                 <Image
                   src={`${cloudinaryUrl}/${userInfo.profileImage}`}
                   alt="Profile"
-                  className="w-32 h-32 rounded-full border-4 border-purple-500 shadow-lg"
+                  className=" rounded-full border-4 border-purple-500 shadow-lg"
+                  width={100}
+                  height={100}
                 />
               ) : (
                 <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center text-gray-500">
