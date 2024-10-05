@@ -10,6 +10,7 @@ import { PencilIcon, CameraIcon, LogOutIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import { UserRole } from "../interface";
 import axios from "axios";
+import Image from "next/image";
 
 export const AdministratorProfile = () => {
   const router = useRouter();
@@ -62,6 +63,7 @@ export const AdministratorProfile = () => {
 
   useEffect(() => {
     fetchInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogoutClick = () => {
@@ -151,10 +153,12 @@ export const AdministratorProfile = () => {
               <div className="relative group">
                 <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-indigo-500 ring-opacity-50">
                   {userInfo.image ? (
-                    <img
+                    <Image
                       src={`${cloudinaryUrl}/${userInfo.image}`}
                       alt="Profile"
                       className="w-full h-full object-cover"
+                      height={32}
+                      width={32}
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">

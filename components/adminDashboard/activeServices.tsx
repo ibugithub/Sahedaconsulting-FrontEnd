@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, {useCallback, useState, useEffect } from "react";
 import Image from "next/image";
 import { EditService } from "./editService";
 import { toast } from "react-toastify";
@@ -11,17 +11,17 @@ import Link from "next/link";
 import { AxiosRequests } from "../utils/axiosRequests";
 import { useRouter } from "next/navigation";
 import { ServiceNav } from "./serviceNav";
-import { useAppDispatch } from "@/lib/hooks";
 
 
 export const ShowServices = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const protectedRoute = AxiosRequests();
   const [services, setServices] = useState<ServiceInterface[]>([]);
   const [editingService, setEditingService] = useState<ServiceInterface | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
+
   const fetch = async () => {
     const url = `/admin/showServices`
     try {
@@ -38,15 +38,10 @@ export const ShowServices = () => {
         return;
       }
     }
-
   };
-  const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
-
   useEffect(() => {
-    const fetchServices = async () => {
-      fetch();
-    };
-    fetchServices();
+    fetch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleEdit = (service: ServiceInterface) => {

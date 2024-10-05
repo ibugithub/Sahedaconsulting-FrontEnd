@@ -37,7 +37,7 @@ export const ServiceDetails = ({ id }: { id: string }) => {
       try {
         const url = `/users/isAdministrator`;
         const user = await protectedRoute.get(url);
-        const id = user.data.user._id
+        console.log('the user info is ', user)
         setIsLoading(false);
       } catch (error) {
         console.log('Error while checking admin user at serviceDetails.tsx', error);
@@ -49,6 +49,7 @@ export const ServiceDetails = ({ id }: { id: string }) => {
     }
     fetchDetails();
     fetchUserId();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {
@@ -86,8 +87,8 @@ export const ServiceDetails = ({ id }: { id: string }) => {
             <div className="space-y-4">
               {service.proposals.length > 0 ? (
                 service.proposals.map((proposal) => (
-                    <Link href={`/adminDashboard/proposals/${proposal._id}`}>
-                    <div key={proposal._id} className="p-4 mb-3 bg-gray-100 rounded-lg flex justify-between items-center">
+                    <Link href={`/adminDashboard/proposals/${proposal._id}`} key={proposal._id}>
+                    <div className="p-4 mb-3 bg-gray-100 rounded-lg flex justify-between items-center">
                       <div> 
                         <p className="text-gray-900 font-bold">{proposal.freelancer.user.firstName}</p>
                         <p className="text-gray-600">{proposal.freelancer.user.email}</p>

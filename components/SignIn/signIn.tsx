@@ -122,7 +122,7 @@ const SignIn = () => {
         <div className="flex items-center justify-center">
           <div className="text-sm">
             <a href="/signup/buyerSignup" className="font-medium text-indigo-600 hover:text-indigo-500">
-              Don't have an account? Sign Up
+              Don&apost have an account? Sign Up
             </a>
           </div>
         </div>

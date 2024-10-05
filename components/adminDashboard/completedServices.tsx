@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { BounceLoader, } from "react-spinners";
 import Link from "next/link";
 import { AxiosRequests } from "../utils/axiosRequests";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { ServiceNav } from "./serviceNav";
 import { useAppDispatch } from "@/lib/hooks";
 
@@ -37,15 +37,12 @@ export const ShowServices = () => {
         return;
       }
     }
-
   };
   const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
 
   useEffect(() => {
-    const fetchServices = async () => {
-      fetch();
-    };
-    fetchServices();
+    fetch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleEdit = (service: ServiceInterface) => {
@@ -73,7 +70,7 @@ export const ShowServices = () => {
       console.error("Error Trashing service", err.response.data.customCode);
       if (err.response.data.customCode === 17) {
         setError(err.response.data.error);
-      } else if (err.response.status === 401){
+      } else if (err.response.status === 401) {
         toast.error("Unauthorized");
         router.push("/signin");
         return;

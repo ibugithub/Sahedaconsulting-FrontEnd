@@ -23,18 +23,17 @@ export const Notification: React.FC = () => {
     const socket = getSocket();
     if (user._id) {
       socket.on(`${user._id}addProposalNotification`, (message) => {
-        console.log('Emitted addProposalNotification notification from freelancerFeatures.ts received at notifications.tsx', message);
         refresh();
       })
       socket.on(`${user._id}freelancerHiredNotification`, (message) => {
-        console.log('Emitted freelancerHiredNotification notification from adminFeatures.ts received at notifications.tsx', message);
         refresh();
       })
     }
     return () => {
       socket.disconnect();
     };
-  }, [user]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user,]);
 
   const toggleNotifications = () => setIsOpen(!isOpen);
 

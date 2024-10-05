@@ -14,12 +14,12 @@ const Proposals = () => {
     const res = await protectedRoute.get(url);
     if (res.status === 200) {
       setProposals(res.data.proposals);
-      console.log('the proposals are', res.data.proposals);
     }
 
   }
   useEffect(() => {
     fetchOffers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

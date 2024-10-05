@@ -15,11 +15,11 @@ const Offers = () => {
     const res = await protectedRoute.get(url);
     if (res.status === 200) {
       setOffers(res.data.offers);
-      console.log('the offers are', res.data);
     }
   }
   useEffect(() => {
     fetchOffers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -10,6 +10,7 @@ import { ChangePassword } from "./changePass";
 import { PencilIcon, CameraIcon, LogOutIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Image from "next/image";
 
 
 export const BuyerProfile = () => {
@@ -73,6 +74,7 @@ export const BuyerProfile = () => {
 
   useEffect(() => {
     fetchInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogoutClick = () => {
@@ -162,7 +164,7 @@ export const BuyerProfile = () => {
               <div className="relative group">
                 <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-indigo-500 ring-opacity-50">
                   {userInfo.image ? (
-                    <img
+                    <Image
                       src={`${cloudinaryUrl}/${userInfo.image}`}
                       alt="Profile"
                       className="w-full h-full object-cover"

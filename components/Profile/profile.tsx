@@ -11,12 +11,12 @@ export const Profile = () => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const protectedRoute = AxiosRequests(router);
   const [userRole, setUserRole] = useState('');
 
 
   useEffect(() => {
     const fetchInfo = async () => {
+      const protectedRoute = AxiosRequests(router);
       const accessToken = localStorage.getItem("accessToken") ?? "";
       if (accessToken) {
         const url = '/users/profile'
@@ -38,6 +38,7 @@ export const Profile = () => {
       }
     }
     fetchInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isAuthenticated == "notAuthenticated") {

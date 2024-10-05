@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import { AxiosRequests } from "../../utils/axiosRequests";
-import { UserInterface, UserRole } from "../../interface";
+import { UserRole } from "../../interface";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import defaultAvatar from "../../../assets/defaultAvatar.png";
@@ -18,6 +17,7 @@ export const UserSection: React.FC<UserSectionProps> = ({
   title,
   isAdmin,
 }) => {
+  console.log('I am in the user section...')
   const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
   const protectedRoute = AxiosRequests();
   const users = useAppSelector((state) => state.users.users)
@@ -45,10 +45,6 @@ export const UserSection: React.FC<UserSectionProps> = ({
     }
   };
   
-  useEffect(() => {
-    dispatch(fetchUsers());
-  }, []);
-
   return (
     <div>
       <h2 className="text-xl font-bold mb-4 text-gray-800">{title}</h2>

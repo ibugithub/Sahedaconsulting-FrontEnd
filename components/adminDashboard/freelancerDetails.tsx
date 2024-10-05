@@ -1,6 +1,7 @@
 "use client";
 import { AxiosRequests } from "../utils/axiosRequests";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export const FreelancerDetails = ({ id }: { id: string }) => {
   const [details, setDetails] = useState<any>({});
@@ -21,6 +22,7 @@ export const FreelancerDetails = ({ id }: { id: string }) => {
 
   useEffect(() => {
     getDetails();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (!details.freelancer || !details.user) return <div className="flex items-center justify-center h-screen"><div className="text-gray-500 text-lg">Loading...</div></div>;
@@ -40,7 +42,7 @@ export const FreelancerDetails = ({ id }: { id: string }) => {
     <div className="max-w-5xl mx-auto p-8 bg-white shadow-xl rounded-lg  space-y-10">
       {/* Freelancer Header */}
       <div className="flex items-center space-x-6">
-        <img
+        <Image
           src={`${cloudinaryUrl}/${image}`}
           alt={`${firstName} ${lastName}`}
           className="w-28 h-28 rounded-full object-cover border-2 border-gray-300 shadow-lg"

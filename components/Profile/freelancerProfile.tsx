@@ -12,6 +12,7 @@ import { ChangePassword } from "./changePass";
 import { toast } from "react-toastify";
 import { LogOutIcon } from "lucide-react";
 import axios from "axios";
+import Image from "next/image";
 
 
 export const FreelancerProfile = () => {
@@ -83,6 +84,7 @@ export const FreelancerProfile = () => {
   const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
   useEffect(() => {
     fetchInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isAuthenticated == "notAuthenticated") {
@@ -196,7 +198,7 @@ export const FreelancerProfile = () => {
           <div className="flex flex-col items-center mb-8">
             <div className="relative mb-4">
               {userInfo.profileImage ? (
-                <img
+                <Image
                   src={`${cloudinaryUrl}/${userInfo.profileImage}`}
                   alt="Profile"
                   className="w-32 h-32 rounded-full border-4 border-purple-500 shadow-lg"

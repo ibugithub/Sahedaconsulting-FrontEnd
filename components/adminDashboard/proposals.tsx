@@ -5,6 +5,7 @@ import { UserInfoInterface } from "../interface";
 import Link from "next/link";
 import { handleHire } from "./handleHire";
 import { BounceLoader, } from "react-spinners";
+import Image from "next/image";
 
 export const FreelancerProposals = ({ id }: { id: string }) => {
   const [userInfo, setUserInfo] = useState<UserInfoInterface | null>(null);
@@ -24,6 +25,7 @@ export const FreelancerProposals = ({ id }: { id: string }) => {
 
   useEffect(() => {
     getUserInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   
   const Hire = async (e: React.FormEvent) => {
@@ -45,10 +47,12 @@ export const FreelancerProposals = ({ id }: { id: string }) => {
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg text-gray-800">
       {/* Freelancer Info */}
       <div className="flex items-center mb-6">
-        <img
+        <Image
           src={`https://res.cloudinary.com/dqxxwptju/image/upload/v1714319969/${user.image}`}
           alt={`${user.firstName} ${user.lastName}`}
           className="w-20 h-20 rounded-full object-cover mr-4"
+          height={20}
+          width={20}
         />
         <div>
           <h2 className="text-xl font-semibold text-gray-800">{user.firstName} {user.lastName}</h2>

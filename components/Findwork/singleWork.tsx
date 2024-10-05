@@ -39,7 +39,7 @@ export const SingleWork = ({ id }: { id: string }) => {
       }
     }
     fetchWork();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     const checkIsApplied = async () => {
@@ -57,6 +57,7 @@ export const SingleWork = ({ id }: { id: string }) => {
       }
     }
     checkIsApplied();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [proposalData.userId, proposalData.service]);
 
   const handleSubmit = async (e: React.FormEvent) => {

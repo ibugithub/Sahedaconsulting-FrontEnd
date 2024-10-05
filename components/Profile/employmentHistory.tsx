@@ -102,7 +102,7 @@ export const EmploymentHistory: React.FC<EmploymentHistoryProps> = ({ userInfo, 
             ))
           ) : (
             userInfo.employmentHistory.map((job, index) => (
-              <div className="mb-10">
+              <div className="mb-10" key={index}>
                 <p className="text-lg text-gray-700 mb-2">
                   <span className="font-semibold">Job Title:</span> {job.jobTitle}
                 </p>

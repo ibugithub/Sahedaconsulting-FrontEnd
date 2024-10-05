@@ -45,6 +45,7 @@ export const ShowServices = () => {
       fetch();
     };
     fetchServices();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleEdit = (service: ServiceInterface) => {

@@ -7,7 +7,6 @@ export const NavItems = () => {
   const isAdministrator = useAppSelector(state => state.auth.isAdministrator);
   const isFreelancer = useAppSelector(state => state.auth.isFreelancer);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  console.log('the isFreelancer in frontend is ', isFreelancer);
 
   const NavMenu = [
     { type: 'link', name: 'Services', link: '/services' },
