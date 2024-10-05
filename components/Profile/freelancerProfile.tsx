@@ -31,7 +31,7 @@ export const FreelancerProfile = () => {
     firstName: "",
     lastName: "",
     email: "",
-    role: "freelancer" || "buyer" || "administrator",
+    role: "freelancer",
     profileImage: null as File | unknown,
     profileTitle: "",
     overview: "",
