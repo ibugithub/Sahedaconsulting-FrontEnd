@@ -84,7 +84,7 @@ export const ShowAllNotifications = () => {
                 {getNotificationIcon(notification.type)}
               </div>
                 <div className="flex-grow">
-                <Link href={`/freelancer/proposals/${notification.typeId}`} key={notification._id} className="" onClick={() => handleLinkClick(notification._id)}>
+                <Link href={ notification.type === 'addProposal' ? `/adminDashboard/proposals/${notification.typeId}` : `/freelancer/proposals/${notification.typeId} `} key={notification._id} className="" onClick={() => handleLinkClick(notification._id)}>
                   <p className={`text-sm ${notification.isRead ? 'text-gray-600' : 'text-gray-800 font-semibold'}`}>
                     {notification.message}
                   </p>
