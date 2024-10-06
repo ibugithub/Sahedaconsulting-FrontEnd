@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from 'react';
+import React from 'react';
 import { AxiosRequests } from '../utils/axiosRequests';
 import { Bell, Trash2, RefreshCw, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -84,7 +84,7 @@ export const ShowAllNotifications = () => {
                 {getNotificationIcon(notification.type)}
               </div>
                 <div className="flex-grow">
-                <Link href={`/adminDashboard/proposals/${notification.typeId}`} key={notification._id} className="" onClick={() => handleLinkClick(notification._id)}>
+                <Link href={`/freelancer/proposals/${notification.typeId}`} key={notification._id} className="" onClick={() => handleLinkClick(notification._id)}>
                   <p className={`text-sm ${notification.isRead ? 'text-gray-600' : 'text-gray-800 font-semibold'}`}>
                     {notification.message}
                   </p>

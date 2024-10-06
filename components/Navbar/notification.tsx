@@ -15,11 +15,11 @@ export const Notification: React.FC = () => {
   const user = useAppSelector((state) => state.auth.loogedInUser);
   const [isOpen, setIsOpen] = useState(false);
 
-
   const refresh = () => {
     dispatch(fetchNotifications());
   }
   useEffect(() => {
+    console.log('I am in the useEffect...')
     const socket = getSocket();
     if (user._id) {
       socket.on(`${user._id}addProposalNotification`, (message) => {
@@ -33,7 +33,7 @@ export const Notification: React.FC = () => {
       socket.disconnect();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user,]);
+  }, [user]);
 
   const toggleNotifications = () => setIsOpen(!isOpen);
 
@@ -71,7 +71,7 @@ export const Notification: React.FC = () => {
           <div className="divide-y divide-gray-200 max-h-96 overflow-y-auto">
             {unReadNotifications && unReadNotifications.length > 0 ? (
               unReadNotifications.map((notification: NotificationInterface) => (
-                <Link href={`/adminDashboard/proposals/${notification.typeId}`} key={notification._id} className="p-4 hover:bg-gray-50" onClick={() => handleLinkClick(notification._id)}>
+                <Link href={`/freelancer/proposals/${notification.typeId}`} key={notification._id} className="p-4 hover:bg-gray-50" onClick={() => handleLinkClick(notification._id)}>
                   <div className="px-5 hover:bg-gray-50">
                     <p className="text-sm text-gray-800">{notification.message}</p>
                     <p className="text-xs text-gray-500 mt-1">{formatDate(notification.createdAt)}</p>

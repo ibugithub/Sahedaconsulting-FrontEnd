@@ -94,6 +94,7 @@ export interface ServiceInterface {
   hiredFreelancers: FreelancersInterface[];
   appliedFreelancers: FreelancersInterface[];
   requiredFreelancers: number;
+  createdAt: Date;
 }
 
 export interface EmploymentHistoryProps {
@@ -128,4 +129,14 @@ export interface NotificationInterface {
   type : string,
   typeId : string,
   createdAt : string
+}
+
+export interface ProposalDetailsInterface {
+  _id : string,
+  freelancerId: string,
+  service: ServiceInterface, 
+  status: "pending" | "accepted" | "rejected",
+  coverLetter: string,
+  price: number,
+  createdAt: Date
 }
