@@ -55,7 +55,7 @@ export const ContForServices = () => {
       return;
     }
     try {
-      const response = await axios.post(url, {formData, type: 'contactForService'});
+      const response = await axios.post(url, { formData, type: 'contactForService' });
       if (response.status === 200) {
         toast.success('An Email has been sent to the according administrator')
         setForm({
@@ -83,77 +83,138 @@ export const ContForServices = () => {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-4">
-      <div className='text-center mb-6'>
-        <span className='text-red-500'> {warning} </span>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
+      <div className="bg-white shadow-xl rounded-3xl p-8 w-full max-w-2xl">
+        <h2 className="text-3xl font-bold text-center mb-8 text-[#ff00ff]">Contact for Service</h2>
+
+        {warning && (
+          <div className="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-center mb-6">
+            {warning}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* First & Last Name */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-700 font-semibold mb-1" htmlFor="firstName">
+                First Name
+              </label>
+              <input
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                id="firstName"
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                placeholder="Enter your first name"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-1" htmlFor="lastName">
+                Last Name
+              </label>
+              <input
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                id="lastName"
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                placeholder="Enter your last name"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              id="email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="example@mail.com"
+              required
+            />
+          </div>
+
+          {/* Service Type */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1" htmlFor="serviceType">
+              Service Type
+            </label>
+            <select
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              id="serviceType"
+              name="serviceType"
+              value={formData.serviceType}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select a service type...</option>
+              <option value="Programming">Engineering Consulting</option>
+              <option value="Engineering">Management Consulting</option>
+              <option value="Consulting">IT Consulting</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+
+          {/* Service As */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1" htmlFor="serviceAs">
+              Service As
+            </label>
+            <select
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              id="serviceAs"
+              name="serviceAs"
+              value={formData.serviceAs}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select service as...</option>
+              <option value="Buyer">Buyer</option>
+              <option value="Freelancer">Freelancer</option>
+            </select>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1" htmlFor="description">
+              Service Description
+            </label>
+            <textarea
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={4}
+              placeholder="Describe your needs..."
+              required
+            ></textarea>
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="bg-green-500 hover:opacity-90 text-white font-semibold py-2 px-8 rounded-full shadow-lg transition duration-300"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit} className="w-full max-w-md">
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstName">
-            First Name
-          </label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstName" type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
-            Last Name
-          </label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="lastName" type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" value={formData.email} onChange={handleChange} />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="serviceType">
-            Service Type
-          </label>
-          <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="serviceType" name="serviceType" value={formData.serviceType} onChange={handleChange}>
-            <option value="">Select a service type...</option>
-            <option value="Programming">Engineering consulting</option>
-            <option value="Engineering">Management consulting</option>
-            <option value="Consulting">IT Consulting</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="serviceAs">
-            Service As
-          </label>
-          <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="serviceAs" name="serviceAs" value={formData.serviceAs} onChange={handleChange}>
-            <option value="">Select service as...</option>
-            <option value="Buyer">Buyer</option>
-            <option value="Freelancer">Freelancer</option>
-          </select>
-        </div>
-
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-            Service Description
-          </label>
-          <textarea
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows={4}
-          ></textarea>
-        </div>
-
-        <div className="flex items-center justify-center">
-          <button className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-            Submit
-          </button>
-        </div>
-      </form>
     </div>
   );
+
 };

@@ -49,7 +49,7 @@ export const ServiceDetails = ({ id }: { id: string }) => {
     }
     fetchDetails();
     fetchUserId();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {
@@ -61,48 +61,79 @@ export const ServiceDetails = ({ id }: { id: string }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg overflow-hidden">
-        {service && (
-          <div className="p-6 lg:p-8">
-            <h1 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-4">{service.title}</h1>
-            <p className="text-gray-700 text-lg mb-4">{service.description}</p>
-            <div className="flex flex-wrap mb-4">
-              <span className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
-                Price: ${service.price}
-              </span>
-              <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
-                Proposals: {service.proposalsCount}
-              </span>
-              <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
-                Hired: {service.hiredCount}
-              </span>
-              <span className="bg-yellow-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
-                Required Freelancers: {service.requiredFreelancers}
-              </span>
-            </div>
-            <p className="text-gray-500 text-sm mb-8">Skills: {service.skills.join(', ')}</p>
+    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+      {service && (
+        <>
+          {/* Header */}
+          <div className="p-6 border-b">
+            <h1 className="text-2xl font-bold text-gray-800">{service.title}</h1>
+            <p className="mt-2 text-gray-600">{service.description}</p>
+          </div>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Applied Freelancers</h2>
-            <div className="space-y-4">
-              {service.proposals.length > 0 ? (
-                service.proposals.map((proposal) => (
-                    <Link href={`/adminDashboard/proposals/${proposal._id}`} key={proposal._id}>
-                    <div className="p-4 mb-3 bg-gray-100 rounded-lg flex justify-between items-center">
-                      <div> 
-                        <p className="text-gray-900 font-bold">{proposal.freelancer.user.firstName}</p>
-                        <p className="text-gray-600">{proposal.freelancer.user.email}</p>
-                      </div>
-                    </div>
-                  </Link>
-                ))
-              ) : (
-                <p className="text-gray-600">No freelancers have applied for this service yet.</p>
-              )}
+          {/* Service Stats */}
+          <div className="bg-gray-50 p-4 grid grid-cols-2 md:grid-cols-4 gap-4 border-b">
+            <div className="flex flex-col">
+              <span className="text-sm text-gray-500">Price</span>
+              <span className="text-lg font-semibold text-green-600">${service.price}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm text-gray-500">Proposals</span>
+              <span className="text-lg font-semibold">{service.proposalsCount}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm text-gray-500">Hired</span>
+              <span className="text-lg font-semibold">{service.hiredCount}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm text-gray-500">Required Freelancers</span>
+              <span className="text-lg font-semibold">{service.requiredFreelancers}</span>
             </div>
           </div>
-        )}
-      </div>
+
+          {/* Skills */}
+          <div className="p-6 border-b">
+            <h2 className="text-lg font-semibold mb-3">Skills Required</h2>
+            <div className="flex flex-wrap gap-2">
+              {service.skills.map((skill, index) => (
+                <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Applicants */}
+          <div className="p-6">
+            <h2 className="text-lg font-semibold mb-4">Applied Freelancers</h2>
+
+            {service.proposals.length > 0 ? (
+              <div className="space-y-3">
+                {service.proposals.map((proposal, index) => (
+                  <div key={index} className="flex items-center p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold mr-3">
+                      {proposal.freelancer.user.firstName.charAt(0)}
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{proposal.freelancer.user.firstName}</h3>
+                      <p className="text-gray-500 text-sm">{proposal.freelancer.user.email}</p>
+                    </div>
+
+                    <button className="ml-auto bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                      <Link href={`/adminDashboard/freelancerDetails/${proposal.freelancer._id}`}>
+                        View Profile
+                      </Link>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center text-gray-500">
+                No freelancers have applied for this service yet.
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

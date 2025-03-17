@@ -54,16 +54,17 @@ export const FindWork = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="bg-gray-50 min-h-screen py-8">
+      <div className="max-w-5xl mx-auto px-4">
+        
+        <div className="space-y-4 mt-6">
           {services.map((service) => (
             <motion.div
               key={service._id}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-              initial={{ opacity: 0, y: 20 }}
+              className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-green-500 transition-colors duration-200"
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.3 }}
             >
               {editingService && editingService._id === service._id ? (
                 <EditService
@@ -73,32 +74,63 @@ export const FindWork = () => {
                   onCancel={handleCancel}
                 />
               ) : (
-                <>
-                  {
-                    service.image !== 'noImage' && (
-                      <div className="relative h-48">
-                        <Image
-                          src={`${cloudinaryUrl}/${service.image}`}
-                          alt="Description of Image"
-                          layout="fill"
-                          objectFit="cover"
-                        />
-                      </div>
-                    )
-                  }
-                  <Link href={`/findWork/${service._id}`}>
-                    <div className="p-6">
-                      <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                        {service.title}
-                      </h2>
-                      <p className="text-gray-600 ">{service.description.length > 100 ? service.description.substring(0, 200) + "..." : service.description}</p>
-                      {service.description.length > 100 && <Link href={`/findWork/${service._id}`} className="text-green-500"> Read More</Link>}
-                      <p className="text-gray-700 font-semibold mt-5">
-                        Prize: {service.price}
-                      </p>
+                <div className="flex flex-col md:flex-row">
+                  {service.image !== 'noImage' && (
+                    <div className="md:w-1/4 relative h-40 md:h-auto">
+                      <Image
+                        src={`${cloudinaryUrl}/${service.image}`}
+                        alt={service.title}
+                        layout="fill"
+                        objectFit="cover"
+                      />
                     </div>
-                  </Link>
-                </>
+                  )}
+                  <div className="p-5 flex-1 flex flex-col">
+                    <div className="flex-1">
+                      <Link href={`/findWork/${service._id}`}>
+                        <h2 className="text-lg font-semibold text-gray-800 hover:text-green-600 transition-colors">
+                          {service.title}
+                        </h2>
+                      </Link>
+                      
+                      <div className="flex items-center text-sm text-gray-500 mt-2 space-x-4">
+                        <span className="flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Fixed Price: ${service.price}
+                        </span>
+                        
+                        {/* You can add more metadata here like category, location, etc. */}
+                      </div>
+                      
+                      <p className="text-gray-600 mt-3 line-clamp-2">{service.description}</p>
+                    </div>
+                    
+                    <div className="mt-4 flex justify-between items-center pt-3 border-t border-gray-100">
+                      <div>
+                        {service.description.length > 100 && (
+                          <Link href={`/findWork/${service._id}`}>
+                            <span className="text-green-600 text-sm font-medium hover:text-green-700 transition-colors">
+                              View details
+                            </span>
+                          </Link>
+                        )}
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <button className="px-4 py-2 bg-white border border-green-600 text-green-600 rounded hover:bg-green-50 text-sm font-medium transition-colors mr-2">
+                          Save
+                        </button>
+                        <Link href={`/findWork/${service._id}`}>
+                          <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-medium transition-colors">
+                            Apply Now
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
             </motion.div>
           ))}
